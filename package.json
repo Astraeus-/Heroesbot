@@ -1,0 +1,29 @@
+{
+  "name": "heroesbot",
+  "version": "3.0.0",
+  "description": "Discord bot for Heroes Lounge",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node .",
+    "test": "standard",
+    "fix": "standard --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Astraeus-/Heroesbot.git"
+  },
+  "author": "Astraeus-",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Astraeus-/Heroesbot/issues"
+  },
+  "homepage": "https://github.com/Astraeus-/Heroesbot#readme",
+  "dependencies": {
+    "dateformat": "^3.0.3",
+    "eris": "^0.8.5",
+    "heroeslounge-api": "^1.0.0"
+  },
+  "devDependencies": {
+    "standard": "^11.0.1"
+  }
+}
