@@ -36,9 +36,9 @@ class Announce extends BaseCommand {
     const channelMention = msg.channelMentions[0] || null
     const announcementChannel = msg.channel.guild.channels.get(channelMention)
 
-    if (announcementChannel.length > 0 && announcementMessage) {
+    if (announcementChannel && announcementMessage) {
       if (msg.attachments.length === 0) {
-        announcementChannel[0].createMessage(announcementMessage)
+        announcementChannel.createMessage(announcementMessage)
       } else {
         const attachment = {
           'image': {
@@ -46,7 +46,7 @@ class Announce extends BaseCommand {
           }
         }
 
-        announcementChannel[0].createMessage({
+        announcementChannel.createMessage({
           content: announcementMessage,
           embed: attachment
         })
