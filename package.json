@@ -21,7 +21,8 @@
   "dependencies": {
     "dateformat": "^3.0.3",
     "eris": "^0.8.5",
-    "heroeslounge-api": "^1.0.0"
+    "heroeslounge-api": "^1.0.0",
+    "node-cron": "^1.2.1"
   },
   "devDependencies": {
     "standard": "^11.0.1"
