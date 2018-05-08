@@ -2,6 +2,9 @@ const BaseCommand = require('../Classes/BaseCommand.js')
 const heroesloungeApi = require('heroeslounge-api')
 const Logger = require('../util/Logger.js')
 
+const FileHandler = require('../util/FileHandler.js')
+const path = require('path')
+
 class Matchestoday extends BaseCommand {
   constructor (bot) {
     const permissions = {
@@ -23,7 +26,7 @@ class Matchestoday extends BaseCommand {
       aliases: ['upcomingmatches', 'today', 'todaymatches'],
       description: 'Lists all of today\'s upcoming matches',
       syntax: 'matchestoday',
-      delInvokeMsg: true
+      cooldown: 180000
     }
 
     super(permissions, options)
@@ -62,7 +65,7 @@ class Matchestoday extends BaseCommand {
       msg.channel.sendTyping()
     }
 
-    heroesloungeApi.getMatchesToday().then(async (matches) => {
+    FileHandler.readJSONFile(path.join(__dirname, '../Data/MatchesToday.json')).then(async (matches) => {
       if (matches.length === 0) return null
 
       matches.sort((a, b) => {

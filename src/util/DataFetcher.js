@@ -7,3 +7,9 @@ module.exports.allTeamData = () => {
     FileHandler.writeJSONFile(path.join(__dirname, '../Data/Teamdata.json'), teams)
   })
 }
+
+module.exports.matchesToday = () => {
+  heroesloungeApi.getMatchesToday().then((matches) => {
+    FileHandler.writeJSONFile(path.join(__dirname, '../Data/MatchesToday.json'), matches)
+  })
+}
