@@ -25,12 +25,22 @@ module.exports = (bot) => {
       if (command) {
         if (!command.enabled) return bot.getDMChannel(msg.author.id).then((channel) => channel.createMessage(`Command ${command.prefix + command.command} is disabled`))
         if (!msg.channel.guild && !command.invokeDM) return msg.channel.createMessage(`The command ${command.prefix + command.command} is disabled for use in DM's`)
-        if (CommandHandler.checkCooldown(command, msg.channel.id)) return // Silently return when command is on cooldown.
+
+        const cooldown = CommandHandler.checkCooldown(command, msg.channel.id)
+        if (cooldown) {
+          if (command.prefix === '!') {
+            return bot.getDMChannel(msg.author.id).then((channel) => channel.createMessage(`The command ${command.prefix + command.command} is on cooldown for ${cooldown}ms`))
+          }
+          return // Exit silently if #command is on cooldown.
+        }
 
         const hasPermissions = msg.channel.guild ? CommandHandler.checkPermissions(command, msg) : true
         if (!hasPermissions) {
-          if (command.prefix === '!') return bot.getDMChannel(msg.author.id).then((channel) => channel.createMessage(`You do not have permission to use ${command.prefix + command.command}`))
-          return // Silently return when user can not use #commands.
+          if (command.prefix === '!') {
+            return bot.getDMChannel(msg.author.id).then((channel) => channel.createMessage(`You do not have permission to use ${command.prefix + command.command}`))
+          } else {
+            return // Exit silently if user does not have permission to use #commands.
+          }
         }
 
         try {
