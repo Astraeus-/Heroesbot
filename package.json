@@ -20,7 +20,7 @@
   "homepage": "https://github.com/Astraeus-/Heroesbot#readme",
   "dependencies": {
     "dateformat": "^3.0.3",
-    "eris": "^0.8.5",
+    "eris": "^0.8.6",
     "heroeslounge-api": "^1.0.0",
     "node-cron": "^1.2.1"
   },
