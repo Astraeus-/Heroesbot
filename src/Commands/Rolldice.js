@@ -1,4 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
+const Logger = require('../util/Logger.js')
 
 class Rolldice extends BaseCommand {
   constructor (bot) {
@@ -41,7 +42,7 @@ class Rolldice extends BaseCommand {
     }
 
     msg.channel.createMessage(output).catch((error) => {
-      throw error
+      Logger.error('Unable to respond with dice roll result', error)
     })
   }
 }

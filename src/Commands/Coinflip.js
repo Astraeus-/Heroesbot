@@ -1,4 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
+const Logger = require('../util/Logger.js')
 const fs = require('fs')
 const path = require('path')
 
@@ -41,7 +42,7 @@ class Coinflip extends BaseCommand {
       file: file,
       name: `${output}.png`
     }).catch((error) => {
-      throw error
+      Logger.error('Unable to respond with coinflip result', error)
     })
   }
 }

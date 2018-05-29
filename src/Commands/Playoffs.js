@@ -1,4 +1,6 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
+const Logger = require('../util/Logger.js')
+// @todo -> auto populate the channels with the eligible captains from the website.
 
 class Playoffs extends BaseCommand {
   constructor (bot) {
@@ -61,7 +63,7 @@ class Playoffs extends BaseCommand {
       this.bot.getDMChannel(msg.author.id).then((channel) => {
         channel.createMessage(`Error creating playoff channels in ${guild.name}`)
       })
-      throw error
+      Logger.error('Unable to create playoffs channels', error)
     })
   }
 }

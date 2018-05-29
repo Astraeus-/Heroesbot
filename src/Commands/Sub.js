@@ -1,4 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
+const Logger = require('../util/Logger.js')
 const config = require('../config.json')
 
 class Sub extends BaseCommand {
@@ -39,13 +40,13 @@ class Sub extends BaseCommand {
       this.bot.addGuildMemberRole(guild.id, msg.author.id, role.id).then(() => {
         notificationMessage = `Welcome to the ${guild.name} substitute player group.`
       }).catch((error) => {
-        throw error
+        Logger.error('Could not add sub role to member', error)
       })
     } else {
       this.bot.removeGuildMemberRole(guild.id, msg.author.id, role.id).then(() => {
         notificationMessage = `You have left the ${guild.name} substitute player group.`
       }).catch((error) => {
-        throw error
+        Logger.error('Could not remove sub role from member', error)
       })
     }
 
@@ -53,7 +54,7 @@ class Sub extends BaseCommand {
       this.bot.getDMChannel(msg.author.id)
         .then((channel) => channel.createMessage(notificationMessage))
         .catch((error) => {
-          throw error
+          Logger.warn('Could not notify member about sub role status', error)
         })
     }
   }

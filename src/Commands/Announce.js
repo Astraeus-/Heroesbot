@@ -1,4 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
+const Logger = require('../util/Logger.js')
 
 class Announce extends BaseCommand {
   constructor (bot) {
@@ -34,7 +35,7 @@ class Announce extends BaseCommand {
       return this.bot.getDMChannel(msg.author.id)
         .then((channel) => channel.createMessage('Invalid number of arguments'))
         .catch((error) => {
-          throw error
+          Logger.warn('Could not inform invalid number of arguments', error)
         })
     }
 
@@ -57,13 +58,13 @@ class Announce extends BaseCommand {
       }
 
       announcementChannel.createMessage(announcement).catch((error) => {
-        throw error
+        Logger.error('Could not make announcement', error)
       })
     } else {
       this.bot.getDMChannel(msg.author.id)
         .then((channel) => channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`))
         .catch((error) => {
-          throw error
+          Logger.warn('Could not inform invalid syntax', error)
         })
     }
   }

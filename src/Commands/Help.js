@@ -81,8 +81,7 @@ class Help extends BaseCommand {
       channel.createMessage({
         embed: embed
       }).catch((error) => {
-        Logger.error('!help embed has grown too large', error)
-        throw error
+        Logger.error('Unable to provide member with help', error)
       })
     })
   }

@@ -52,11 +52,11 @@ module.exports = (bot) => {
               description: `Command: ${command.prefix + command.command} \nGuild: ${msg.channel.guild ? msg.channel.guild.name : 'N/A'} \nUser: ${msg.author.username}#${msg.author.discriminator}`
             })
           }
-          command.exec(msg, args)
-          CommandHandler.addCooldown(command, msg.channel.id, command.cooldown)
         } catch (error) {
           Logger.error(`Error executing ${command.command}`, error)
         }
+        command.exec(msg, args)
+        CommandHandler.addCooldown(command, msg.channel.id, command.cooldown)
       }
     }
   })

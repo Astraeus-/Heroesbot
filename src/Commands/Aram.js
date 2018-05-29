@@ -1,4 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
+const Logger = require('../util/Logger.js')
 const config = require('../config.json')
 
 class Aram extends BaseCommand {
@@ -38,13 +39,13 @@ class Aram extends BaseCommand {
       this.bot.addGuildMemberRole(guild.id, msg.author.id, role.id).then(() => {
         notificationMessage = `Welcome to the ${guild.name} ARAM group.`
       }).catch((error) => {
-        throw error
+        Logger.error('Could not add Aram role to member', error)
       })
     } else {
       this.bot.removeGuildMemberRole(guild.id, msg.author.id, role.id).then(() => {
         notificationMessage = `You have left the ${guild.name} ARAM group.`
       }).catch((error) => {
-        throw error
+        Logger.error('Could not remove Aram role from member', error)
       })
     }
 
@@ -52,7 +53,7 @@ class Aram extends BaseCommand {
       this.bot.getDMChannel(msg.author.id)
         .then((channel) => channel.createMessage(notificationMessage))
         .catch((error) => {
-          throw error
+          Logger.warn('Could not notify member about Aram role status', error)
         })
     }
   }

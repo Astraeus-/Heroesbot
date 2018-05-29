@@ -1,4 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
+const Logger = require('../util/Logger.js')
 const heroesloungeApi = require('heroeslounge-api')
 
 const FileHandler = require('../util/FileHandler.js')
@@ -103,7 +104,7 @@ class Teaminfo extends BaseCommand {
           })
       }
     }).catch((error) => {
-      throw error
+      Logger.error('Unable to provide team info', error)
     })
   }
 }

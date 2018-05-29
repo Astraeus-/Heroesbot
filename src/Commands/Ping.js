@@ -1,4 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
+const Logger = require('../util/Logger.js')
 
 class Ping extends BaseCommand {
   constructor (bot) {
@@ -27,7 +28,7 @@ class Ping extends BaseCommand {
 
   exec (msg) {
     msg.channel.createMessage('Pong').catch((error) => {
-      throw error
+      Logger.error('Unable to respond to ping', error)
     })
   }
 }

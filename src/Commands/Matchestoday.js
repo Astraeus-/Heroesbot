@@ -1,4 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
+const Logger = require('../util/Logger.js')
 const heroesloungeApi = require('heroeslounge-api')
 
 const FileHandler = require('../util/FileHandler.js')
@@ -96,7 +97,6 @@ class Matchestoday extends BaseCommand {
             throw error
           })
         }
-
         channel.createMessage({
           embed: embed
         }).catch((error) => {
@@ -104,7 +104,7 @@ class Matchestoday extends BaseCommand {
         })
       })
     }).catch((error) => {
-      throw error
+      Logger.error('Unable to list upcoming matches', error)
     })
   }
 }

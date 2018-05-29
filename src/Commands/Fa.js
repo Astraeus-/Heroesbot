@@ -1,4 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
+const Logger = require('../util/Logger.js')
 const config = require('../config.json')
 
 class Fa extends BaseCommand {
@@ -39,13 +40,13 @@ class Fa extends BaseCommand {
       this.bot.addGuildMemberRole(guild.id, msg.author.id, role.id).then(() => {
         notificationMessage = `Welcome to the ${guild.name} Free-agent group.\nMake sure to check out our #free-agent-lounge under Competition.`
       }).catch((error) => {
-        throw error
+        Logger.error('Could not add Free-agent role to member', error)
       })
     } else {
       this.bot.removeGuildMemberRole(guild.id, msg.author.id, role.id).then(() => {
         notificationMessage = `You have left the ${guild.name} Free-agent group.`
       }).catch((error) => {
-        throw error
+        Logger.error('Could not remove Free-agent role from member', error)
       })
     }
 
@@ -53,7 +54,7 @@ class Fa extends BaseCommand {
       this.bot.getDMChannel(msg.author.id)
         .then((channel) => channel.createMessage(notificationMessage))
         .catch((error) => {
-          throw error
+          Logger.warn('Could not notify member about Free-agent role status', error)
         })
     }
   }

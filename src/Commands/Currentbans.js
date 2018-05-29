@@ -1,4 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
+const Logger = require('../util/Logger.js')
 const heroesloungeApi = require('heroeslounge-api')
 
 class Currentbans extends BaseCommand {
@@ -90,7 +91,7 @@ class Currentbans extends BaseCommand {
         throw error
       })
     }).catch((error) => {
-      throw error
+      Logger.error('Unable to list current bans', error)
     })
   }
 }
