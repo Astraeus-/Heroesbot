@@ -1,4 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
+const Logger = require('../util/Logger.js')
 
 class Playoffs extends BaseCommand {
   constructor (bot) {
@@ -34,26 +35,34 @@ class Playoffs extends BaseCommand {
       return role.name === 'Staff'
     })
 
-    this.bot.createChannel(guildId, 'Playoffs', 4).then((category) => {
+    this.bot.createChannel(guild.id, 'Playoffs', 4).then((category) => {
       // Updates category permissions.
-      category.editPermission(guild.id, 0, 1024, 'role')
-      category.editPermission(staffRole.id, 1024, 0, 'role')
+      category.editPermission(guild.id, 0, 1024, 'role').catch((error) => {
+        throw error
+      })
+      category.editPermission(staffRole.id, 1024, 0, 'role').catch((error) => {
+        throw error
+      })
 
       for (let i = 0; i < channelNames.length; i++) {
-        this.bot.createChannel(guild.id, `championship-group-${channelNames[i]}`, 0, '', category.id)
+        this.bot.createChannel(guild.id, `championship-group-${channelNames[i]}`, 0, '', category.id).catch((error) => {
+          throw error
+        })
       }
       for (let i = 0; i < channelNames.length; i++) {
-        this.bot.createChannel(guild.id, `cup-group-${channelNames[i]}`, 0, '', category.id)
+        this.bot.createChannel(guild.id, `cup-group-${channelNames[i]}`, 0, '', category.id).catch((error) => {
+          throw error
+        })
       }
     }).then(() => {
       this.bot.getDMChannel(msg.author.id).then((channel) => {
-        channel.createMessage(`Successfully created playoff channels in guild ${guild.name}`)
+        channel.createMessage(`Successfully created playoff channels in ${guild.name}`)
       })
     }).catch((error) => {
       this.bot.getDMChannel(msg.author.id).then((channel) => {
-        channel.createMessage(`Error creating playoff channels in guild ${guild.name}`)
+        channel.createMessage(`Error creating playoff channels in ${guild.name}`)
       })
-      console.log(error)
+      Logger.error(`Could not create playoff channels for ${guild.name}`, error)
     })
   }
 }
