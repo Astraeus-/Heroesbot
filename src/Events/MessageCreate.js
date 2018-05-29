@@ -55,7 +55,7 @@ module.exports = (bot) => {
           command.exec(msg, args)
           CommandHandler.addCooldown(command, msg.channel.id, command.cooldown)
         } catch (error) {
-          Logger.error(error)
+          Logger.error(`Error executing ${command.command}`, error)
         }
       }
     }

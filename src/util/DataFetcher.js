@@ -8,7 +8,7 @@ module.exports.allTeamData = () => {
     Logger.info('Updating Teamdata cache')
     FileHandler.writeJSONFile(path.join(__dirname, '../Data/Teamdata.json'), teams)
   }).catch((error) => {
-    Logger.warn(`Could not update Teamdata cache\n${error}`)
+    Logger.warn('Could not update Teamdata cache', error)
   })
 }
 
@@ -17,6 +17,6 @@ module.exports.matchesToday = () => {
     Logger.info('Updating MatchesToday cache')
     FileHandler.writeJSONFile(path.join(__dirname, '../Data/MatchesToday.json'), matches)
   }).catch((error) => {
-    Logger.warn(`Could not update MatchesToday cache\n${error}`)
+    Logger.warn('Could not update MatchesToday cache', error)
   })
 }
