@@ -1,5 +1,5 @@
 
-class Basecommand {
+class BaseCommand {
   constructor (permissions, options) {
     /* eslint-disable */
     this.permissions  = permissions
@@ -18,4 +18,4 @@ class Basecommand {
   }
 }
 
-module.exports = Basecommand
+module.exports = BaseCommand
