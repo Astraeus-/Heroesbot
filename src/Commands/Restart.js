@@ -14,7 +14,7 @@ class Restart extends BaseCommand {
     const options = {
       prefix: '!',
       command: 'restart',
-      description: 'Restarts the host OS.'
+      description: 'Restarts the host OS.',
       invokeDM: false,
       ignoreInHelp: true
     }
