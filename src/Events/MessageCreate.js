@@ -34,7 +34,7 @@ module.exports = (bot) => {
           return // Exit silently if #command is on cooldown.
         }
 
-        const hasPermissions = msg.channel.guild ? CommandHandler.checkPermissions(command, msg) : true
+        const hasPermissions = msg.channel.guild ? CommandHandler.checkPermissions(command, msg) : CommandHandler.checkUsersPermission(command, msg)
         if (!hasPermissions) {
           if (command.prefix === '!') {
             return bot.getDMChannel(msg.author.id).then((channel) => channel.createMessage(`You do not have permission to use ${command.prefix + command.command}`))

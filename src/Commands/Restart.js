@@ -15,14 +15,15 @@ class Restart extends BaseCommand {
       prefix: '!',
       command: 'restart',
       description: 'Restarts the host OS.',
-      invokeDM: false,
       ignoreInHelp: true
     }
 
     super(permissions, options)
+    this.bot = bot
   }
 
   exec (msg) {
+    if (this.bot.user.id === '321643992624267265') return
     Logger.info('Restarting Heroesbot and host, please wait...')
     require('child_process').exec('sudo /sbin/reboot', (msg) => {
       Logger.info(msg)

@@ -66,6 +66,25 @@ class CommandHandler {
     return hasPermission
   }
 
+  checkUsersPermission (command, msg) {
+    const permissions = command.permissions
+    const invokerId = msg.author.id
+    let usersArray = []
+    let hasPermission = false
+
+    for (let server in permissions) {
+      usersArray = usersArray.concat(permissions[server].users)
+    }
+
+    if (usersArray.length === 0 || usersArray.includes(invokerId)) {
+      hasPermission = true
+    } else {
+      hasPermission = false
+    }
+    
+    return hasPermission
+  }
+
   listArguments (invoke, msg) {
     let parameters
     let startPos = msg.content.indexOf(invoke)

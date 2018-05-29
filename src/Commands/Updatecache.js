@@ -8,7 +8,7 @@ class Updatecache extends BaseCommand {
       'Test-Server': {
         channels: ['robotchannel'],
         roles: ['Admin'],
-        users: []
+        users: ['108153813143126016']
       }
     }
 
