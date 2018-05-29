@@ -7,7 +7,7 @@ class Restart extends BaseCommand {
       'Test-Server': {
         channels: ['robotchannel'],
         roles: ['Admin'],
-        users: ['108153813143126016']
+        users: ['108153813143126016', '202174629245222912']
       }
     }
 
