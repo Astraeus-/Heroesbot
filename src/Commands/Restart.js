@@ -23,6 +23,7 @@ class Restart extends BaseCommand {
   }
 
   exec (msg) {
+    Logger.info('Restarting Heroesbot and host, please wait...')
     require('child_process').exec('sudo /sbin/reboot', (msg) => {
       Logger.info(msg)
     })
