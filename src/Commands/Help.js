@@ -82,6 +82,7 @@ class Help extends BaseCommand {
         embed: embed
       }).catch((error) => {
         Logger.error('!help embed has grown too large', error)
+        throw error
       })
     })
   }

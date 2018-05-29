@@ -62,7 +62,7 @@ class Playoffs extends BaseCommand {
       this.bot.getDMChannel(msg.author.id).then((channel) => {
         channel.createMessage(`Error creating playoff channels in ${guild.name}`)
       })
-      Logger.error(`Could not create playoff channels for ${guild.name}`, error)
+      throw error
     })
   }
 }

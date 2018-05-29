@@ -40,6 +40,8 @@ class Coinflip extends BaseCommand {
     {
       file: file,
       name: `${output}.png`
+    }).catch((error) => {
+      throw error
     })
   }
 }

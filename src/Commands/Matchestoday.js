@@ -92,14 +92,20 @@ class Matchestoday extends BaseCommand {
       return embed
     }).then((embed) => {
       this.bot.getDMChannel(msg.author.id).then((channel) => {
-        if (!embed) return channel.createMessage('There are no upcoming matches')
+        if (!embed) {
+          return channel.createMessage('There are no upcoming matches').catch((error) => {
+            throw error
+          })
+        }
 
         channel.createMessage({
           embed: embed
+        }).catch((error) => {
+          throw error
         })
       })
     }).catch((error) => {
-      Logger.error('Could not fetch a list of today\'s matches', error)
+      throw error
     })
   }
 }

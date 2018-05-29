@@ -30,29 +30,41 @@ class Announce extends BaseCommand {
   }
 
   exec (msg, args) {
-    if (args.length < this.min_args) return this.bot.getDMChannel(msg.author.id).then((channel) => channel.createMessage('Invalid number of arguments'))
+    if (args.length < this.min_args) {
+      return this.bot.getDMChannel(msg.author.id)
+        .then((channel) => channel.createMessage('Invalid number of arguments'))
+        .catch((error) => {
+          throw error
+        })
+    }
 
     const announcementMessage = args.slice(1, args.length).join(' ')
     const channelMention = msg.channelMentions[0] || null
     const announcementChannel = msg.channel.guild.channels.get(channelMention)
 
     if (announcementChannel && announcementMessage) {
-      if (msg.attachments.length === 0) {
-        announcementChannel.createMessage(announcementMessage)
-      } else {
+      let announcement = {
+        content: announcementMessage
+      }
+
+      if (msg.attachments.length > 0) {
         const attachment = {
           'image': {
             'url': msg.attachments[0].url
           }
         }
-
-        announcementChannel.createMessage({
-          content: announcementMessage,
-          embed: attachment
-        })
+        announcement.embed = attachment
       }
+
+      announcementChannel.createMessage(announcement).catch((error) => {
+        throw error
+      })
     } else {
-      this.bot.getDMChannel(msg.author.id).then((channel) => channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`))
+      this.bot.getDMChannel(msg.author.id)
+        .then((channel) => channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`))
+        .catch((error) => {
+          throw error
+        })
     }
   }
 }

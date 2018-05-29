@@ -40,7 +40,9 @@ class Rolldice extends BaseCommand {
       output = '```Total: ' + total + '```'
     }
 
-    msg.channel.createMessage(output)
+    msg.channel.createMessage(output).catch((error) => {
+      throw error
+    })
   }
 }
 

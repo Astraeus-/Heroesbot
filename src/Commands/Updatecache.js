@@ -31,9 +31,11 @@ class Updatecache extends BaseCommand {
         channel.createMessage('Updated cache files!')
       })
     }).catch((error) => {
-      this.bot.getDMChannel(msg.author.id).then((channel) => {
-        channel.createMessage(`Could not update cache files\n\`\`\`js\n${error}\n\`\`\``)
-      })
+      this.bot.getDMChannel(msg.author.id)
+        .then((channel) => channel.createMessage(`Could not update cache files\n\`\`\`js\n${error}\n\`\`\``))
+        .catch((error) => {
+          throw error
+        })
     })
   }
 }

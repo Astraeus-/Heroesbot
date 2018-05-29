@@ -35,15 +35,25 @@ class Aram extends BaseCommand {
     let notificationMessage
 
     if (!memberRoles.includes(role.id)) {
-      this.bot.addGuildMemberRole(guild.id, msg.author.id, role.id)
-      notificationMessage = `Welcome to the ${guild.name} ARAM group.`
+      this.bot.addGuildMemberRole(guild.id, msg.author.id, role.id).then(() => {
+        notificationMessage = `Welcome to the ${guild.name} ARAM group.`
+      }).catch((error) => {
+        throw error
+      })
     } else {
-      this.bot.removeGuildMemberRole(guild.id, msg.author.id, role.id)
-      notificationMessage = `You have left the ${guild.name} ARAM group.`
+      this.bot.removeGuildMemberRole(guild.id, msg.author.id, role.id).then(() => {
+        notificationMessage = `You have left the ${guild.name} ARAM group.`
+      }).catch((error) => {
+        throw error
+      })
     }
 
     if (notificationMessage) {
-      this.bot.getDMChannel(msg.author.id).then((channel) => channel.createMessage(notificationMessage))
+      this.bot.getDMChannel(msg.author.id)
+        .then((channel) => channel.createMessage(notificationMessage))
+        .catch((error) => {
+          throw error
+        })
     }
   }
 }

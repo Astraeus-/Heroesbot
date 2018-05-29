@@ -34,7 +34,14 @@ class Teaminfo extends BaseCommand {
   }
 
   exec (msg, args) {
-    if (args.length < this.min_args) return this.bot.getDMChannel(msg.author.id).then((channel) => channel.createMessage('Invalid number of arguments'))
+    if (args.length < this.min_args) {
+      return this.bot.getDMChannel(msg.author.id)
+        .then((channel) => channel.createMessage('Invalid number of arguments'))
+        .catch((error) => {
+          throw error
+        })
+    }
+
     const embed = {
       color: this.bot.embed.color,
       footer: this.bot.embed.footer,
@@ -86,14 +93,18 @@ class Teaminfo extends BaseCommand {
       if (embed) {
         msg.channel.createMessage({
           embed: embed
+        }).catch((error) => {
+          throw error
         })
       } else {
-        this.bot.getDMChannel(msg.author.id).then((channel) => {
-          channel.createMessage(`Team with SLUG ${args} does not exist`)
-        })
+        this.bot.getDMChannel(msg.author.id)
+          .then((channel) => channel.createMessage(`Team with SLUG ${args} does not exist`))
+          .catch((error) => {
+            throw error
+          })
       }
     }).catch((error) => {
-      Logger.error(`Could not fetch team info for team with SLUG: ${args.join(' ')}`, error)
+      throw error
     })
   }
 }
