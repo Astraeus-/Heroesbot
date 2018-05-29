@@ -1,6 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
 const Logger = require('../util/Logger.js')
-const {exec} = require ('child_process')
 
 class Restart extends BaseCommand {
   constructor (bot) {
@@ -24,7 +23,9 @@ class Restart extends BaseCommand {
   }
 
   exec (msg) {
-
+    require('child_process').exec('sudo /sbin/reboot', (msg) => {
+      Logger.info(msg)
+    })
   }
 }
 
