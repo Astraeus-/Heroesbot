@@ -1,5 +1,4 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
-const Logger = require('../util/Logger.js')
 
 class Playoffs extends BaseCommand {
   constructor (bot) {

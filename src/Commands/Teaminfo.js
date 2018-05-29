@@ -1,6 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
 const heroesloungeApi = require('heroeslounge-api')
-const Logger = require('../util/Logger.js')
 
 const FileHandler = require('../util/FileHandler.js')
 const path = require('path')
