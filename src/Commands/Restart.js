@@ -1,0 +1,31 @@
+const BaseCommand = require('../Classes/BaseCommand.js')
+const Logger = require('../util/Logger.js')
+const {exec} = require ('child_process')
+
+class Restart extends BaseCommand {
+  constructor (bot) {
+    const permissions = {
+      'Test-Server': {
+        channels: ['robotchannel'],
+        roles: ['Admin'],
+        users: ['108153813143126016']
+      }
+    }
+
+    const options = {
+      prefix: '!',
+      command: 'restart',
+      description: 'Restarts the host OS.'
+      invokeDM: false,
+      ignoreInHelp: true
+    }
+
+    super(permissions, options)
+  }
+
+  exec (msg) {
+
+  }
+}
+
+module.exports = Restart
