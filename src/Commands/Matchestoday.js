@@ -94,13 +94,13 @@ class Matchestoday extends BaseCommand {
       this.bot.getDMChannel(msg.author.id).then((channel) => {
         if (!embed) {
           return channel.createMessage('There are no upcoming matches').catch((error) => {
-            throw error
+            Logger.warn('Could not send current match data', error)
           })
         }
         channel.createMessage({
           embed: embed
         }).catch((error) => {
-          throw error
+          Logger.warn('Could not send current match data', error)
         })
       })
     }).catch((error) => {

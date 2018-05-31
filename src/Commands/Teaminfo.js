@@ -94,13 +94,13 @@ class Teaminfo extends BaseCommand {
         msg.channel.createMessage({
           embed: embed
         }).catch((error) => {
-          throw error
+          Logger.warn('Unable to send team info', error)
         })
       } else {
         this.bot.getDMChannel(msg.author.id)
           .then((channel) => channel.createMessage(`Team with SLUG ${args} does not exist`))
           .catch((error) => {
-            throw error
+            Logger.warn('Unable to send team info', error)
           })
       }
     }).catch((error) => {

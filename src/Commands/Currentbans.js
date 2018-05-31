@@ -55,7 +55,7 @@ class Currentbans extends BaseCommand {
 
     msg.channel.sendTyping()
 
-    heroesloungeApi.getBans().then(async (bans) => {
+    heroesloungeApi.getBans().then((bans) => {
       if (bans.length === 0) return null
 
       for (let ban of bans) {
@@ -81,14 +81,14 @@ class Currentbans extends BaseCommand {
     }).then((embed) => {
       if (!embed) {
         return msg.channel.createMessage('There are currently no additional bans').catch((error) => {
-          throw error
+          Logger.warn('Could not send current ban data', error)
         })
       }
 
       msg.channel.createMessage({
         embed: embed
       }).catch((error) => {
-        throw error
+        Logger.warn('Could not send current ban data', error)
       })
     }).catch((error) => {
       Logger.error('Unable to list current bans', error)

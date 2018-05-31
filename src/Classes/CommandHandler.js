@@ -81,7 +81,7 @@ class CommandHandler {
     } else {
       hasPermission = false
     }
-    
+
     return hasPermission
   }
 
