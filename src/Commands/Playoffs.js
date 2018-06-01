@@ -36,14 +36,14 @@ class Playoffs extends BaseCommand {
       return role.name === 'Staff'
     })
 
+    let errorMessage = ''
+
     this.bot.createChannel(guild.id, 'Playoffs', 4).then((category) => {
-      let errorMessage = ''
       // Updates category permissions.
       category.editPermission(guild.id, 0, 1024, 'role').catch((error) => {
         let msg = 'Unable to update @everyone permissions'
         errorMessage += `- ${msg}\n`
         Logger.warn(msg, error)
-
       })
       category.editPermission(staffRole.id, 1024, 0, 'role').catch((error) => {
         let msg = 'Unable to update @staff permissions'

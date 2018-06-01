@@ -71,7 +71,7 @@ class Teaminfo extends BaseCommand {
       })
     }).then((teamInfo) => {
       if (!teamInfo) return null
-      
+
       let creationDate = teamInfo.created_at.slice(0, 10).split('-')
       creationDate = `${creationDate[2]}-${creationDate[1]}-${creationDate[0]}`
       embed.title = teamInfo.title
