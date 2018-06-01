@@ -59,17 +59,19 @@ class Teaminfo extends BaseCommand {
       ]
     }
 
-    FileHandler.readJSONFile(path.join(__dirname, '../Data/Teamdata.json')).then(async (teams) => {
+    FileHandler.readJSONFile(path.join(__dirname, '../Data/Teamdata.json')).then((teams) => {
       let selectedTeam = teams.find((team) => {
         return team.slug.toLowerCase() === args.join(' ').toLowerCase()
       })
 
       if (!selectedTeam) return null
 
-      let teamInfo = await heroesloungeApi.getTeamInfo(selectedTeam.id).catch((error) => {
+      return heroesloungeApi.getTeamInfo(selectedTeam.id).catch((error) => {
         throw error
       })
-
+    }).then((teamInfo) => {
+      if (!teamInfo) return null
+      
       let creationDate = teamInfo.created_at.slice(0, 10).split('-')
       creationDate = `${creationDate[2]}-${creationDate[1]}-${creationDate[0]}`
       embed.title = teamInfo.title
@@ -91,17 +93,17 @@ class Teaminfo extends BaseCommand {
       return embed
     }).then((embed) => {
       if (embed) {
-        msg.channel.createMessage({
-          embed: embed
-        }).catch((error) => {
-          Logger.warn('Unable to send team info', error)
+        return msg.channel.createMessage({embed: embed}).catch((error) => {
+          throw error
         })
       } else {
-        this.bot.getDMChannel(msg.author.id)
-          .then((channel) => channel.createMessage(`Team with SLUG ${args} does not exist`))
-          .catch((error) => {
-            Logger.warn('Unable to send team info', error)
+        return this.bot.getDMChannel(msg.author.id).then((channel) => {
+          return channel.createMessage(`Team with SLUG ${args} does not exist`).catch((error) => {
+            throw error
           })
+        }).catch((error) => {
+          throw error
+        })
       }
     }).catch((error) => {
       Logger.error('Unable to provide team info', error)

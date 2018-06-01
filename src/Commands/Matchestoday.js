@@ -74,7 +74,9 @@ class Matchestoday extends BaseCommand {
 
       let matchDivisions = []
       for (let match in matches) {
-        matchDivisions[match] = matches[match].div_id ? heroesloungeApi.getDivisionInfo(matches[match].div_id) : 'No division'
+        matchDivisions[match] = matches[match].div_id ? heroesloungeApi.getDivisionInfo(matches[match].div_id).catch((error) => {
+          Logger.warn('Unable to get division info', error)
+        }) : 'No division'
       }
 
       // Wait for all of the division requests to complete.
@@ -91,17 +93,18 @@ class Matchestoday extends BaseCommand {
 
       return embed
     }).then((embed) => {
-      this.bot.getDMChannel(msg.author.id).then((channel) => {
+      return this.bot.getDMChannel(msg.author.id).then((channel) => {
         if (!embed) {
           return channel.createMessage('There are no upcoming matches').catch((error) => {
-            Logger.warn('Could not send current match data', error)
+            throw error
           })
         }
-        channel.createMessage({
-          embed: embed
-        }).catch((error) => {
-          Logger.warn('Could not send current match data', error)
+
+        return channel.createMessage({embed: embed}).catch((error) => {
+          throw error
         })
+      }).catch((error) => {
+        throw error
       })
     }).catch((error) => {
       Logger.error('Unable to list upcoming matches', error)

@@ -81,14 +81,12 @@ class Currentbans extends BaseCommand {
     }).then((embed) => {
       if (!embed) {
         return msg.channel.createMessage('There are currently no additional bans').catch((error) => {
-          Logger.warn('Could not send current ban data', error)
+          throw error
         })
       }
 
-      msg.channel.createMessage({
-        embed: embed
-      }).catch((error) => {
-        Logger.warn('Could not send current ban data', error)
+      return msg.channel.createMessage({embed: embed}).catch((error) => {
+        throw error
       })
     }).catch((error) => {
       Logger.error('Unable to list current bans', error)
