@@ -4,6 +4,7 @@ const cron = require('node-cron')
 const DataFetcher = require('./util/DataFetcher.js')
 
 const bot = new Client(config.token, {
+  getAllUsers: true,
   disableEveryone: false
 })
 bot.launch()
