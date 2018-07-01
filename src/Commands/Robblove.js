@@ -1,5 +1,6 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
 const config = require('../config.json')
+const Logger = require('../util/Logger.js')
 
 class Robblove extends BaseCommand {
   constructor (bot) {
@@ -43,7 +44,9 @@ class Robblove extends BaseCommand {
     ]
 
     for (let emoji of emojisArray) {
-      msg.addReaction(emoji)
+      msg.addReaction(emoji).catch((error) => {
+        Logger.warn(`Could not add emoji ${emoji}`, error)
+      })
     }
   }
 }
