@@ -58,7 +58,7 @@ class CommandHandler {
       'server': Object.keys(permissions).includes(guildName),
       'channel': channels.includes(msg.channel.name) || channels.length === 0,
       'role': roles.some((r) => memberRoles.includes(r)) || roles.length === 0,
-      'user': users.includes(msg.author.username) || users.length === 0
+      'user': users.includes(msg.author.id) || users.length === 0
     }
     const memberPermits = roles.length > 0 && users.length > 0 ? permits.role || permits.user : permits.role && permits.user
     const hasPermission = permits.server && permits.channel && memberPermits
