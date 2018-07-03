@@ -2,6 +2,8 @@ const BaseCommand = require('../Classes/BaseCommand.js')
 const heroesloungeApi = require('heroeslounge-api')
 const Logger = require('../util/Logger.js')
 
+// @todo Define the season id with a variable.
+
 class Playoffs extends BaseCommand {
   constructor (bot) {
     const permissions = {
@@ -50,7 +52,7 @@ class Playoffs extends BaseCommand {
         Logger.warn(msg, error)
       })
 
-      heroesloungeApi.getSeasonInfo(3).then(async (seasonInfo) => {
+      return heroesloungeApi.getSeasonInfo(3).then(async (seasonInfo) => {
         const seasonTournaments = seasonInfo.playoffs
         let tournaments = []
 
@@ -59,9 +61,8 @@ class Playoffs extends BaseCommand {
           seasonTournaments[tournament]['divisions'] = tournamentDetails.divisions
           tournaments.push(seasonTournaments[tournament])
         }
-
         return tournaments
-      }).then(async (tournaments) => {
+      }).then((tournaments) => {
         for (let tournament in tournaments) {
           for (let division of tournaments[tournament].divisions) {
             this.bot.createChannel(guild.id, `${tournaments[tournament].title}-${division.slug}`, 0, '', category.id).catch((error) => {
@@ -69,14 +70,10 @@ class Playoffs extends BaseCommand {
               errorMessage += `- ${msg}\n`
               Logger.warn(msg, error)
             })
-
-            const divisionDetails = await heroesloungeApi.getDivisionInfo(division.id)
-            division['teams'] = divisionDetails.teams
           }
         }
-        return tournaments
       }).catch((error) => {
-        console.log(error)
+        throw error
       })
     }).then(() => {
       return this.bot.getDMChannel(msg.author.id).then((channel) => {
