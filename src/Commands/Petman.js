@@ -1,5 +1,6 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
 const config = require('../config.json')
+const Logger = require('../util/Logger.js')
 
 class Petman extends BaseCommand {
   constructor (bot) {

@@ -1,6 +1,6 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
+const heroesloungeApi = require('heroeslounge-api')
 const Logger = require('../util/Logger.js')
-// @todo -> auto populate the channels with the eligible captains from the website.
 
 class Playoffs extends BaseCommand {
   constructor (bot) {
@@ -51,20 +51,35 @@ class Playoffs extends BaseCommand {
         Logger.warn(msg, error)
       })
 
-      for (let i = 0; i < channelNames.length; i++) {
-        this.bot.createChannel(guild.id, `championship-group-${channelNames[i]}`, 0, '', category.id).catch((error) => {
-          let msg = `Unable to create channel championship-group-${channelNames[i]}`
-          errorMessage += `- ${msg}\n`
-          Logger.warn(msg, error)
-        })
-      }
-      for (let i = 0; i < channelNames.length; i++) {
-        this.bot.createChannel(guild.id, `cup-group-${channelNames[i]}`, 0, '', category.id).catch((error) => {
-          let msg = `Unable to create channel cup-group-${channelNames[i]}`
-          errorMessage += `- ${msg}\n`
-          Logger.warn(msg, error)
-        })
-      }
+      heroesloungeApi.getSeasonInfo(3).then(async (seasonInfo) => {
+        const seasonTournaments = seasonInfo.playoffs
+        let tournaments = []
+
+        for (let tournament in seasonTournaments) {
+          const tournamentDetails = await heroesloungeApi.getPlayoffInfo(seasonTournaments[tournament].id)
+          seasonTournaments[tournament]['divisions'] = tournamentDetails.divisions
+          tournaments.push(seasonTournaments[tournament])
+        }
+
+        return tournaments
+      }).then(async (tournaments) => {
+        for (let tournament in tournaments) {
+          for (let division of tournaments[tournament].divisions) {
+            this.bot.createChannel(guild.id, `${tournaments[tournament].title}-${division.slug}`, 0, '', category.id).catch((error) => {
+              let msg = `Unable to create channel ${tournaments[tournament].title}-${division.slug}`
+              errorMessage += `- ${msg}\n`
+              Logger.warn(msg, error)
+            })
+
+            const divisionDetails = await heroesloungeApi.getDivisionInfo(division.id)
+            division['teams'] = divisionDetails.teams
+          }
+
+        }
+        return tournaments
+      }).catch((error) => {
+        console.log(error)
+      })
     }).then(() => {
       return this.bot.getDMChannel(msg.author.id).then((channel) => {
         return channel.createMessage(`Finished Playoffs creations with errors:\n${errorMessage}`).catch((error) => {
