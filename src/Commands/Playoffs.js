@@ -31,7 +31,6 @@ class Playoffs extends BaseCommand {
 
   exec (msg) {
     const guild = msg.channel.guild
-    const channelNames = ['a', 'b', 'c', 'd']
     const staffRole = guild.roles.find((role) => {
       return role.name === 'Staff'
     })
@@ -74,7 +73,6 @@ class Playoffs extends BaseCommand {
             const divisionDetails = await heroesloungeApi.getDivisionInfo(division.id)
             division['teams'] = divisionDetails.teams
           }
-
         }
         return tournaments
       }).catch((error) => {
