@@ -57,6 +57,11 @@ class Matchestoday extends BaseCommand {
       ]
     }
 
+    let Embeds = []
+    let embedCounter = 0
+
+    Embeds[embedCounter] = JSON.parse(JSON.stringify(embed))
+
     if (msg.channel.guild) {
       this.bot.getDMChannel(msg.author.id).then((channel) => {
         channel.sendTyping()
@@ -86,21 +91,27 @@ class Matchestoday extends BaseCommand {
 
       for (let match in matches) {
         const matchURL = 'https://heroeslounge.gg/match/view/' + matches[match].id
-        embed.fields[0].value += `${matches[match].wbp.slice(-8, -3)} ${matchDivisions[match].division.title}\n`
-        embed.fields[1].value += `[${matches[match].teams[0].slug} Vs ${matches[match].teams[1].slug}](${matchURL})\n`
-        embed.fields[2].value += `${matches[match].casters ? `[Channel](${matches[match].twitch.url})` : 'No'}\n`
+
+        if (Embeds[embedCounter].fields[1].value.length >= 975) {
+          embedCounter++
+          Embeds = addEmbed(embed, Embeds, embedCounter)
+        }
+
+        Embeds[embedCounter].fields[0].value += `${matches[match].wbp.slice(-8, -3)} ${matchDivisions[match].division.title}\n`
+        Embeds[embedCounter].fields[1].value += `[${matches[match].teams[0].slug} Vs ${matches[match].teams[1].slug}](${matchURL})\n`
+        Embeds[embedCounter].fields[2].value += `${matches[match].casters ? `[Channel](${matches[match].twitch.url})` : 'No'}\n`
       }
 
-      return embed
-    }).then((embed) => {
+      return Embeds
+    }).then((Embeds) => {
       return this.bot.getDMChannel(msg.author.id).then((channel) => {
-        if (!embed) {
+        if (!Embeds) {
           return channel.createMessage('There are no upcoming matches').catch((error) => {
             throw error
           })
         }
 
-        return channel.createMessage({embed: embed}).catch((error) => {
+        return sendMatchesTodayResponse(channel, Embeds).catch((error) => {
           throw error
         })
       }).catch((error) => {
@@ -110,6 +121,23 @@ class Matchestoday extends BaseCommand {
       Logger.error('Unable to list upcoming matches', error)
     })
   }
+}
+
+let addEmbed = (embed, Embeds, embedCounter) => {
+  Embeds[embedCounter] = JSON.parse(JSON.stringify(embed))
+  delete Embeds[embedCounter].description
+  return Embeds
+}
+
+let sendMatchesTodayResponse = (channel, Embeds) => {
+  let response = []
+
+  for (let embed in Embeds) {
+    response.push(channel.createMessage({'embed': Embeds[embed]}).catch((error) => {
+      throw error
+    }))
+  }
+  return Promise.all(response)
 }
 
 module.exports = Matchestoday
