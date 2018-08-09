@@ -32,21 +32,21 @@ class Fa extends BaseCommand {
     let guild = msg.channel.guild || this.bot.guilds.get(config.defaultServer)
     let memberRoles = guild.members.get(msg.author.id).roles
     let role = guild.roles.find((role) => {
-      return role.name === 'Free-agent'
+      return role.name === 'FreeAgent'
     })
     let notificationMessage
 
     if (!memberRoles.includes(role.id)) {
       this.bot.addGuildMemberRole(guild.id, msg.author.id, role.id).then(() => {
-        notificationMessage = `Welcome to the ${guild.name} Free-agent group.\nMake sure to check out our #free-agent-lounge under Competition.`
+        notificationMessage = `Welcome to the ${guild.name} Free Agent group.`
       }).catch((error) => {
-        Logger.error('Could not add Free-agent role to member', error)
+        Logger.error('Could not add FreeAgent role to member', error)
       })
     } else {
       this.bot.removeGuildMemberRole(guild.id, msg.author.id, role.id).then(() => {
         notificationMessage = `You have left the ${guild.name} Free-agent group.`
       }).catch((error) => {
-        Logger.error('Could not remove Free-agent role from member', error)
+        Logger.error('Could not remove FreeAgent role from member', error)
       })
     }
 
@@ -54,7 +54,7 @@ class Fa extends BaseCommand {
       this.bot.getDMChannel(msg.author.id)
         .then((channel) => channel.createMessage(notificationMessage))
         .catch((error) => {
-          Logger.warn('Could not notify member about Free-agent role status', error)
+          Logger.warn('Could not notify member about FreeAgent role status', error)
         })
     }
   }
