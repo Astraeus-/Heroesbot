@@ -40,7 +40,7 @@ module.exports = (bot) => {
         break
       case 'Patreon VIP':
       case 'Twitch Subscriber':
-      case 'Honorary VIP':
+      case 'Honorary Sloth':
         if (addedRole) {
           bot.addGuildMemberRole(guild.id, member.user.id, config.vip[guild.id].roleID)
         } else {
