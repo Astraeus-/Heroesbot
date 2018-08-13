@@ -10,6 +10,11 @@ class Draft extends BaseCommand {
         channels: ['robotchannel'],
         roles: ['Admin'],
         users: []
+      },
+      'Heroes Lounge': {
+        channels: ['mockdrafts'],
+        roles: [],
+        users: []
       }
     }
 
@@ -18,7 +23,7 @@ class Draft extends BaseCommand {
       command: 'draft',
       aliases: ['mock', 'mockdraft'],
       description: 'Creates a Heroes of the Storm mockdraft.',
-      syntax: 'draft [map] [teamA] [teamB]\nThe map is specialised by all first letters e.g.: Battlefield of Eternity = BOE',
+      syntax: 'draft [map] [team 1] [team 2] [r]\nThe map is specialised by all first letters e.g.: Battlefield of Eternity = BOE.\nteam 1 has first pick by default.',
       min_args: 3
     }
 
