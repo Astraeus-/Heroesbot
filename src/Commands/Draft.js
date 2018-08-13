@@ -23,7 +23,7 @@ class Draft extends BaseCommand {
       command: 'draft',
       aliases: ['mock', 'mockdraft'],
       description: 'Creates a Heroes of the Storm mockdraft.',
-      syntax: 'draft [map] [team 1] [team 2] [r]\nThe map is specialised by all first letters e.g.: Battlefield of Eternity = BOE.\nteam 1 has first pick by default.',
+      syntax: 'draft [map] [team 1] [team 2] [-nt]\nThe map is specialised by all first letters e.g.: Battlefield of Eternity = BOE.\nteam 1 has first pick by default.\nAdding optional flag "-nt" creates a draft with no pick timer.',
       min_args: 3
     }
 
@@ -65,6 +65,7 @@ class Draft extends BaseCommand {
     const map = args[0].toUpperCase()
     const teamA = args[1]
     const teamB = args[2]
+    const timerOff = !!(args[3] && args[3].search('-nt') !== -1)
 
     // Check that the map input actually exists.
     if (!checkMap(map)) {
@@ -75,10 +76,11 @@ class Draft extends BaseCommand {
         })
     }
 
-    createDraft(map, teamA, teamB).then((draft) => {
+    createDraft(map, teamA, teamB, timerOff).then((draft) => {
       const battleground = draft.map.toLowerCase().replace(/\s/g, '-')
 
       embed.title += `${draft.map}`
+      embed.description = timerOff ? 'Pick timer disabled' : 'Pick timer enabled'
       embed.fields[0].value = `[${draft.teams[0].name}](${draft.teams[0].url})`
       embed.fields[1].value = `[${draft.teams[1].name}](${draft.teams[1].url})`
       embed.fields[2].value = `[Observer](${draft.viewer.url})`
@@ -122,7 +124,7 @@ let checkMap = (map) => {
   return maps.includes(map)
 }
 
-let createDraft = (map, teamA, teamB) => {
+let createDraft = (map, teamA, teamB, timerOff) => {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'nexus-brawls.com',
@@ -137,7 +139,8 @@ let createDraft = (map, teamA, teamB) => {
     const requestData = {
       'team1': teamA,
       'team2': teamB,
-      'map': map
+      'map': map,
+      'timerOff': timerOff
     }
 
     const req = http.request(options, (res) => {
