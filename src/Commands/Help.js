@@ -19,8 +19,8 @@ class Help extends BaseCommand {
     const options = {
       prefix: '!',
       command: 'help',
-      description: 'Lists all of Heroesbot\'s commands.',
-      syntax: 'help [command]'
+      description: 'Lists all of Heroesbot\'s commands. Specify a command for additional info.',
+      syntax: 'help [!command]'
     }
 
     super(permissions, options)

@@ -21,7 +21,7 @@ class Announce extends BaseCommand {
       command: 'announce',
       aliases: ['a'],
       description: 'Makes an announcement in the specified channel.',
-      syntax: 'announce [#channel] [message]',
+      syntax: 'announce <#channel> <message>',
       min_args: 2,
       invokeDM: false
     }
