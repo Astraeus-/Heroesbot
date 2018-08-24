@@ -5,7 +5,7 @@ module.exports.info = (msg) => {
 }
 
 module.exports.warn = (msg, warning) => {
-  console.warn(`${dateformat(Date.now(), 'dd/mm/yyyy hh:MM:ss TT')}| ${msg}}`)
+  console.warn(`${dateformat(Date.now(), 'dd/mm/yyyy hh:MM:ss TT')}| ${msg}`)
   console.warn(warning)
 }
 
