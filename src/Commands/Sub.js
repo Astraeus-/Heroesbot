@@ -45,7 +45,6 @@ class Sub extends BaseCommand {
       }).catch((error) => {
         Logger.error(`Could not update ${role.name} status of ${member.username}`, error)
       })
-
     } else {
       this.bot.getDMChannel(msg.author.id)
         .then((channel) => channel.createMessage(`You are not part of ${guild.name} so can not assign ${role.name}`))
@@ -59,13 +58,13 @@ class Sub extends BaseCommand {
 let updateMember = async (member, role) => {
   if (!member.roles.includes(role.id)) {
     return member.addRole(role.id).then(() => {
-      return `Welcome to the ${guild.name} substitute player group.`
+      return `Welcome to the ${member.guild.name} substitute player group.`
     }).catch((error) => {
       throw error
     })
   } else {
     return member.removeRole(role.id).then(() => {
-      return `You have left the ${guild.name} substitute player group.`
+      return `You have left the ${member.guild.name} substitute player group.`
     }).catch((error) => {
       throw error
     })
