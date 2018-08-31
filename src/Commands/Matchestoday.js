@@ -63,63 +63,65 @@ class Matchestoday extends BaseCommand {
     Embeds[embedCounter] = JSON.parse(JSON.stringify(embed))
 
     if (msg.channel.guild) {
-      this.bot.getDMChannel(msg.author.id).then((channel) => {
-        channel.sendTyping()
-      })
+      this.bot.getDMChannel(msg.author.id)
+        .then(channel => channel.sendTyping())
     } else {
       msg.channel.sendTyping()
     }
 
-    FileHandler.readJSONFile(path.join(__dirname, '../Data/MatchesToday.json')).then(async (matches) => {
-      if (matches.length === 0) return null
+    FileHandler.readJSONFile(path.join(__dirname, '../Data/MatchesToday.json'))
+      .then(async (matches) => {
+        if (matches.length === 0) return null
 
-      matches.sort((a, b) => {
-        return parseInt(a.wbp.slice(-8, -3).replace(':', '')) - parseInt(b.wbp.slice(-8, -3).replace(':', ''))
-      })
+        matches.sort((a, b) => {
+          return parseInt(a.wbp.slice(-8, -3).replace(':', '')) - parseInt(b.wbp.slice(-8, -3).replace(':', ''))
+        })
 
-      let matchDivisions = []
-      for (let match in matches) {
-        matchDivisions[match] = matches[match].div_id ? heroesloungeApi.getDivisionInfo(matches[match].div_id).catch((error) => {
-          Logger.warn('Unable to get division info', error)
-        }) : 'No division'
-      }
-
-      // Wait for all of the division requests to complete.
-      for (let m in matchDivisions) {
-        matchDivisions[m] = await matchDivisions[m]
-      }
-
-      for (let match in matches) {
-        const matchURL = 'https://heroeslounge.gg/match/view/' + matches[match].id
-
-        if (Embeds[embedCounter].fields[1].value.length >= 975) {
-          embedCounter++
-          Embeds = addEmbed(embed, Embeds, embedCounter)
+        let matchDivisions = []
+        for (let match in matches) {
+          matchDivisions[match] = matches[match].div_id ? heroesloungeApi.getDivisionInfo(matches[match].div_id).catch((error) => {
+            Logger.warn('Unable to get division info', error)
+          }) : 'No division'
         }
 
-        Embeds[embedCounter].fields[0].value += `${matches[match].wbp.slice(-8, -3)} ${matchDivisions[match].division.title}\n`
-        Embeds[embedCounter].fields[1].value += `[${matches[match].teams[0].slug} Vs ${matches[match].teams[1].slug}](${matchURL})\n`
-        Embeds[embedCounter].fields[2].value += `${matches[match].casters ? `[Channel](${matches[match].twitch.url})` : 'No'}\n`
-      }
+        // Wait for all of the division requests to complete.
+        for (let m in matchDivisions) {
+          matchDivisions[m] = await matchDivisions[m]
+        }
 
-      return Embeds
-    }).then((Embeds) => {
-      return this.bot.getDMChannel(msg.author.id).then((channel) => {
-        if (!Embeds) {
-          return channel.createMessage('There are no upcoming matches').catch((error) => {
+        for (let match in matches) {
+          const matchURL = 'https://heroeslounge.gg/match/view/' + matches[match].id
+
+          if (Embeds[embedCounter].fields[1].value.length >= 975) {
+            embedCounter++
+            Embeds = addEmbed(embed, Embeds, embedCounter)
+          }
+
+          Embeds[embedCounter].fields[0].value += `${matches[match].wbp.slice(-8, -3)} ${matchDivisions[match].division.title}\n`
+          Embeds[embedCounter].fields[1].value += `[${matches[match].teams[0].slug} Vs ${matches[match].teams[1].slug}](${matchURL})\n`
+          Embeds[embedCounter].fields[2].value += `${matches[match].casters ? `[Channel](${matches[match].twitch.url})` : 'No'}\n`
+        }
+
+        return Embeds
+      })
+      .then((Embeds) => {
+        return this.bot.getDMChannel(msg.author.id)
+          .then((channel) => {
+            if (!Embeds) {
+              return channel.createMessage('There are no upcoming matches')
+                .catch((error) => {
+                  throw error
+                })
+            } else {
+              return sendMatchesTodayResponse(channel, Embeds)
+                .catch((error) => {
+                  throw error
+                })
+            }
+          }).catch((error) => {
             throw error
           })
-        }
-
-        return sendMatchesTodayResponse(channel, Embeds).catch((error) => {
-          throw error
-        })
-      }).catch((error) => {
-        throw error
-      })
-    }).catch((error) => {
-      Logger.error('Unable to list upcoming matches', error)
-    })
+      }).catch(error => Logger.error('Unable to list upcoming matches', error))
   }
 }
 
@@ -133,9 +135,11 @@ let sendMatchesTodayResponse = (channel, Embeds) => {
   let response = []
 
   for (let embed in Embeds) {
-    response.push(channel.createMessage({'embed': Embeds[embed]}).catch((error) => {
-      throw error
-    }))
+    response.push(
+      channel.createMessage({'embed': Embeds[embed]})
+        .catch((error) => {
+          throw error
+        }))
   }
   return Promise.all(response)
 }

@@ -7,13 +7,13 @@ module.exports = (bot) => {
     if (member.roles.length === oldMember.roles.length) return
     const addedRole = member.roles.length > oldMember.roles.length
 
-    let changedRoleIds = addedRole ? member.roles.filter((role) => {
+    const changedRoleIds = addedRole ? member.roles.filter((role) => {
       return !oldMember.roles.includes(role)
     }) : oldMember.roles.filter((role) => {
       return !member.roles.includes(role)
     })
 
-    let changedRole = guild.roles.get(changedRoleIds[0])
+    const changedRole = guild.roles.get(changedRoleIds[0])
 
     switch (changedRole.name) {
       case 'Muted':
@@ -44,7 +44,7 @@ module.exports = (bot) => {
         if (addedRole) {
           bot.addGuildMemberRole(guild.id, member.user.id, vip[guild.id].roleID)
         } else {
-          let stillDeserving = member.roles.some((roleID) => {
+          const stillDeserving = member.roles.some((roleID) => {
             return guild.roles.find((guildRole) => {
               if (roleID === guildRole.id) return vip[guild.id].rewardRoles.includes(guildRole.name)
             })

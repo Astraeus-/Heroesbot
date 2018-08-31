@@ -39,7 +39,7 @@ class Help extends BaseCommand {
 
     if (args.length > 0) {
       if (args[0].startsWith('!')) {
-        let command = args[0].toLowerCase().slice(1)
+        const command = args[0].toLowerCase().slice(1)
         let commands = Array.from(this.bot.commands.values())
         helpCommand = commands.find((c) => c.command === command || c.aliases.includes(command))
       }
@@ -77,13 +77,14 @@ class Help extends BaseCommand {
       })
     }
 
-    this.bot.getDMChannel(msg.author.id).then((channel) => {
-      channel.createMessage({
-        embed: embed
-      }).catch((error) => {
-        Logger.error('Unable to provide member with help', error)
-      })
-    })
+    this.bot.getDMChannel(msg.author.id)
+      .then((channel) => {
+        return channel.createMessage({
+          embed: embed
+        }).catch((error) => {
+          throw error
+        })
+      }).catch(error => Logger.error('Unable to provide member with help', error))
   }
 }
 

@@ -31,13 +31,11 @@ class Eval extends BaseCommand {
       /* eslint-enable */
       if (evalOutput.toString().length > 2000) throw Error(`Eval output is too large: ${evalOutput.toString().length}`)
 
-      msg.channel.createMessage(`\`\`\`js\n${evalOutput}\`\`\``).catch((error) => {
-        Logger.warn(`Sending eval result`, error)
-      })
+      msg.channel.createMessage(`\`\`\`js\n${evalOutput}\`\`\``)
+        .catch(error => Logger.error(`Could not send eval result`, error))
     } catch (error) {
-      msg.channel.createMessage(`Could not evaluate input properly\n${error}`).catch((error) => {
-        Logger.error(`Error eval'ing input:\n${input}`, error)
-      })
+      msg.channel.createMessage(`Could not evaluate input properly\n${error}`)
+        .catch(error => Logger.error(`Error eval'ing input:\n${input}`, error))
     }
   }
 }

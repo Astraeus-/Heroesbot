@@ -62,32 +62,31 @@ class Draft extends BaseCommand {
     // Check that the map input actually exists.
     if (!checkMap(map)) {
       return this.bot.getDMChannel(msg.author.id)
-        .then((channel) => channel.createMessage(`Channel with abbreviation: ${map} does not exist`))
-        .catch((error) => {
-          Logger.warn('Could not inform about invalid map syntax', error)
-        })
+        .then(channel => channel.createMessage(`Channel with abbreviation: ${map} does not exist`))
+        .catch(error => Logger.warn('Could not inform about invalid map syntax', error))
     }
 
-    createDraft(map, teamA, teamB, timerOff).then((draft) => {
-      const battleground = draft.map.toLowerCase().replace(/\s/g, '-')
+    createDraft(map, teamA, teamB, timerOff)
+      .then((draft) => {
+        const battleground = draft.map.toLowerCase().replace(/\s/g, '-')
 
-      embed.title += `${draft.map}`
-      embed.description = timerOff ? 'Pick timer disabled' : 'Pick timer enabled'
-      embed.fields[0].value = `[${draft.teams[0].name}](${draft.teams[0].url})`
-      embed.fields[1].value = `[${draft.teams[1].name}](${draft.teams[1].url})`
-      embed.fields[2].value = `[Observer](${draft.viewer.url})`
-      embed.thumbnail = {
-        'url': `https://heroeslounge.gg/themes/HeroesLounge-Theme/assets/img/maps/bg_${battleground}.jpg`
-      }
+        embed.title += `${draft.map}`
+        embed.description = timerOff ? 'Pick timer disabled' : 'Pick timer enabled'
+        embed.fields[0].value = `[${draft.teams[0].name}](${draft.teams[0].url})`
+        embed.fields[1].value = `[${draft.teams[1].name}](${draft.teams[1].url})`
+        embed.fields[2].value = `[Observer](${draft.viewer.url})`
+        embed.thumbnail = {
+          'url': `https://heroeslounge.gg/themes/HeroesLounge-Theme/assets/img/maps/bg_${battleground}.jpg`
+        }
 
-      return embed
-    }).then((embed) => {
-      return msg.channel.createMessage({embed: embed}).catch((error) => {
-        throw error
+        return embed
       })
-    }).catch((error) => {
-      Logger.error('Unable to create mockdraft', error)
-    })
+      .then((embed) => {
+        return msg.channel.createMessage({embed: embed})
+          .catch((error) => {
+            throw error
+          })
+      }).catch(error => Logger.error('Unable to create mockdraft', error))
   }
 }
 

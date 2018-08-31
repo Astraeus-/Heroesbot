@@ -55,42 +55,44 @@ class Currentbans extends BaseCommand {
 
     msg.channel.sendTyping()
 
-    heroesloungeApi.getBans().then((bans) => {
-      if (bans.length === 0) return null
+    heroesloungeApi.getBans()
+      .then((bans) => {
+        if (bans.length === 0) return null
 
-      for (let ban of bans) {
-        if (ban.literal) {
-          embed.fields[1].value += `-${ban.literal}\n`
-        } else {
-          if (ban.talent) {
-            embed.fields[2].value += `-${ban.hero.title}- ${ban.talent.title}\n`
+        for (let ban of bans) {
+          if (ban.literal) {
+            embed.fields[1].value += `-${ban.literal}\n`
           } else {
-            let roundStart = ban.round_start ? ban.round_start : ''
-            let roundEnd = ban.round_length ? parseInt(roundStart) + parseInt(ban.round_length) : ''
-            let roundInfo = roundStart && roundEnd ? `Rounds[${roundStart}-${roundEnd}]` : ''
-            embed.fields[0].value += `-${ban.hero.title} ${roundInfo}\n`
+            if (ban.talent) {
+              embed.fields[2].value += `-${ban.hero.title}- ${ban.talent.title}\n`
+            } else {
+              const roundStart = ban.round_start ? ban.round_start : ''
+              const roundEnd = ban.round_length ? parseInt(roundStart) + parseInt(ban.round_length) : ''
+              const roundInfo = roundStart && roundEnd ? `Rounds[${roundStart}-${roundEnd}]` : ''
+              embed.fields[0].value += `-${ban.hero.title} ${roundInfo}\n`
+            }
           }
         }
-      }
 
-      for (let field in embed.fields) {
-        if (embed.fields[field].value.length === 0) embed.fields[field].value += '-None'
-      }
+        for (let field in embed.fields) {
+          if (embed.fields[field].value.length === 0) embed.fields[field].value += '-None'
+        }
 
-      return embed
-    }).then((embed) => {
-      if (!embed) {
-        return msg.channel.createMessage('There are currently no additional bans').catch((error) => {
-          throw error
-        })
-      }
-
-      return msg.channel.createMessage({embed: embed}).catch((error) => {
-        throw error
+        return embed
       })
-    }).catch((error) => {
-      Logger.error('Unable to list current bans', error)
-    })
+      .then((embed) => {
+        if (!embed) {
+          return msg.channel.createMessage('There are currently no additional bans')
+            .catch((error) => {
+              throw error
+            })
+        } else {
+          return msg.channel.createMessage({embed: embed})
+            .catch((error) => {
+              throw error
+            })
+        }
+      }).catch(error => Logger.error('Unable to list current bans', error))
   }
 }
 

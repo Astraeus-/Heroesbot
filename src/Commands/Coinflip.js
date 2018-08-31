@@ -35,8 +35,8 @@ class Coinflip extends BaseCommand {
   }
 
   exec (msg) {
-    let output = Math.round(Math.random() >= 0.5) ? 'heads' : 'tails'
-    let file = fs.readFileSync(path.join(__dirname, `../Data/Images/${output}.png`))
+    const output = Math.round(Math.random() >= 0.5) ? 'heads' : 'tails'
+    const file = fs.readFileSync(path.join(__dirname, `../Data/Images/${output}.png`))
     msg.channel.createMessage({
       content: 'Current bans and rules:\nhttps://heroeslounge.gg/general/ruleset',
       image: {
@@ -46,9 +46,7 @@ class Coinflip extends BaseCommand {
     {
       file: file,
       name: `${output}.png`
-    }).catch((error) => {
-      Logger.error('Unable to respond with coinflip result', error)
-    })
+    }).catch(error => Logger.error('Unable to respond with coinflip result', error))
   }
 }
 

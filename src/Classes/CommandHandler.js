@@ -21,16 +21,14 @@ class CommandHandler {
   }
 
   checkCooldown (command, channelID) {
-    let cooldownRemaining
-    let cooldown = this.commandCooldowns.findIndex((c) => {
-      if (c) {
-        return (c.channelID === channelID && c.command === command.command)
-      }
+    const cooldown = this.commandCooldowns.findIndex((c) => {
+      if (c) return (c.channelID === channelID && c.command === command.command)
     })
+    let cooldownRemaining
 
     if (cooldown >= 0) {
-      let endCooldown = new Date(this.commandCooldowns[cooldown].cooldown)
-      let date = Date.now()
+      const endCooldown = new Date(this.commandCooldowns[cooldown].cooldown)
+      const date = Date.now()
       if (date < endCooldown) {
         cooldownRemaining = endCooldown - date
       } else {
@@ -86,9 +84,9 @@ class CommandHandler {
   }
 
   listArguments (invoke, msg) {
+    const startPos = msg.content.indexOf(invoke)
+    const commandArgs = msg.content.slice(startPos + invoke.length + 1, msg.content.length)
     let parameters
-    let startPos = msg.content.indexOf(invoke)
-    let commandArgs = msg.content.slice(startPos + invoke.length + 1, msg.content.length)
 
     if (commandArgs) {
       parameters = commandArgs.split(' ')

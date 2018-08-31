@@ -28,10 +28,10 @@ class Rolldice extends BaseCommand {
   }
 
   exec (msg) {
-    let nDice = (msg.content.match(/\s\d+/i) ? parseInt(msg.content.match(/\d+/i)) : 1)
-    let nFaces = (msg.content.match(/[d]\d+/i) ? parseInt(msg.content.match(/[d]\d+/i)[0].substr(1)) : 6)
+    const nDice = (msg.content.match(/\s\d+/i) ? parseInt(msg.content.match(/\d+/i)) : 1)
+    const nFaces = (msg.content.match(/[d]\d+/i) ? parseInt(msg.content.match(/[d]\d+/i)[0].substr(1)) : 6)
 
-    let roll = rollDice(nDice, nFaces)
+    const roll = rollDice(nDice, nFaces)
     let total = roll.reduce((total, num) => {
       return total + num
     })
@@ -41,9 +41,8 @@ class Rolldice extends BaseCommand {
       output = '```Total: ' + total + '```'
     }
 
-    msg.channel.createMessage(output).catch((error) => {
-      Logger.error('Unable to respond with dice roll result', error)
-    })
+    msg.channel.createMessage(output)
+      .catch(error => Logger.error('Unable to respond with dice roll result', error))
   }
 }
 
@@ -51,7 +50,7 @@ let rollDice = (nDice, nFaces) => {
   let outcomes = []
 
   for (let i = 0; i < nDice; i++) {
-    let roll = Math.floor((Math.random() * nFaces) + 1)
+    const roll = Math.floor((Math.random() * nFaces) + 1)
     outcomes.push(roll)
   }
   return outcomes

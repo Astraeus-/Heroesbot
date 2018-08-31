@@ -7,9 +7,9 @@ const webhook = new WebhookClient(webhooks.id, webhooks.token)
 module.exports = (bot) => {
   bot.on('guildMemberAdd', (guild, member) => {
     FileHandler.readJSONFile(path.join(__dirname, '../Data/Muted.json')).then((data) => {
-      let isMutedMember = Object.keys(data).some((d) => d === member.user.id)
+      const isMutedMember = Object.keys(data).some((d) => d === member.user.id)
       if (isMutedMember) {
-        let mutedRole = guild.roles.find((role) => {
+        const mutedRole = guild.roles.find((role) => {
           return role.name === 'Muted'
         })
 
