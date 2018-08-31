@@ -12,8 +12,8 @@ class CasterStatistics extends BaseCommand {
       },
       'Heroes Lounge': {
         channels: ['bot_commands'],
-        roles: ['Lounge Master', 'Manager', 'Moderators', 'Staff'],
-        users: ['181073539770613761']
+        roles: ['Lounge Master', 'Manager', 'Moderators', 'Staff', 'Casters'],
+        users: []
       }
     }
 
@@ -23,7 +23,9 @@ class CasterStatistics extends BaseCommand {
       aliases: ['caststats', 'casterstats'],
       description: 'Provides you with the casting statistics of the specified season.',
       syntax: 'casterstats <season>',
-      min_args: 1
+      enabled: false,
+      min_args: 1,
+      ignoreInHelp: true
     }
 
     super(permissions, options)
@@ -66,7 +68,7 @@ class CasterStatistics extends BaseCommand {
           if (parseInt(entry) > 0) {
             embed.fields[0].value += `Round ${entry}: ${roundData[entry].matches} matches\n`
             embed.fields[1].value += `${roundData[entry].casts}\n`
-            embed.fields[2].value += `${roundData[entry].coverage}\n`
+            embed.fields[2].value += `${roundData[entry].coverage !== 'undefined' ? roundData[entry].coverage : 0}%\n`
           }
         }
 
