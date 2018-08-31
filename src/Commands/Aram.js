@@ -28,34 +28,45 @@ class Aram extends BaseCommand {
   }
 
   exec (msg) {
-    let guild = msg.channel.guild || this.bot.guilds.get(defaultServer)
-    let memberRoles = guild.members.get(msg.author.id).roles
-    let role = guild.roles.find((role) => {
+    const guild = msg.channel.guild || this.bot.guilds.get(defaultServer)
+    const member = guild.members.get(msg.author.id)
+    const role = guild.roles.find((role) => {
       return role.name === 'Aramplayers'
     })
-    let notificationMessage
 
-    if (!memberRoles.includes(role.id)) {
-      this.bot.addGuildMemberRole(guild.id, msg.author.id, role.id).then(() => {
-        notificationMessage = `Welcome to the ${guild.name} ARAM group.`
+    if (member) {
+      updateMember(member, role).then((notificationMessage) => {
+        this.bot.getDMChannel(msg.author.id)
+          .then((channel) => channel.createMessage(notificationMessage))
+          .catch((error) => {
+            Logger.warn(`Could not notify ${member.username} about ${role.name} status`, error)
+          })
       }).catch((error) => {
-        Logger.error('Could not add Aramplayers role to member', error)
+        Logger.error(`Could not update ${role.name} status of ${member.username}`, error)
       })
     } else {
-      this.bot.removeGuildMemberRole(guild.id, msg.author.id, role.id).then(() => {
-        notificationMessage = `You have left the ${guild.name} ARAM group.`
-      }).catch((error) => {
-        Logger.error('Could not remove Aramplayers role from member', error)
-      })
-    }
-
-    if (notificationMessage) {
       this.bot.getDMChannel(msg.author.id)
-        .then((channel) => channel.createMessage(notificationMessage))
+        .then((channel) => channel.createMessage(`You are not part of ${guild.name} so can not assign ${role.name}`))
         .catch((error) => {
-          Logger.warn('Could not notify member about Aramplayers role status', error)
+          Logger.warn(`Could not notify ${msg.author.username} about not belonging to ${guild.name}`, error)
         })
     }
+  }
+}
+
+let updateMember = async (member, role) => {
+  if (!member.roles.includes(role.id)) {
+    return member.addRole(role.id).then(() => {
+      return `Welcome to the ${member.guild.name} ARAM group.`
+    }).catch((error) => {
+      throw error
+    })
+  } else {
+    return member.removeRole(role.id).then(() => {
+      return `You have left the ${member.guild.name} ARAM group.`
+    }).catch((error) => {
+      throw error
+    })
   }
 }
 
