@@ -28,13 +28,6 @@ class Restart extends BaseCommand {
 
   exec (msg, args) {
     if (this.bot.user.id === '321643992624267265') return
-    if (args.length < this.min_args) {
-      return this.bot.getDMChannel(msg.author.id)
-        .then((channel) => channel.createMessage('Invalid number of arguments'))
-        .catch((error) => {
-          Logger.warn('Could not inform invalid number of arguments', error)
-        })
-    }
 
     if (args[0] === 'all') {
       Logger.info('Restarting Heroesbot host, please wait...')

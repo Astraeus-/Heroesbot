@@ -32,14 +32,6 @@ class Draft extends BaseCommand {
   }
 
   exec (msg, args) {
-    if (args.length < this.min_args) {
-      return this.bot.getDMChannel(msg.author.id)
-        .then((channel) => channel.createMessage('Invalid number of arguments'))
-        .catch((error) => {
-          Logger.warn('Could not inform invalid number of arguments', error)
-        })
-    }
-
     const embed = {
       color: this.bot.embed.color,
       footer: this.bot.embed.footer,

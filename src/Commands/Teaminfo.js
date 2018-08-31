@@ -34,14 +34,6 @@ class Teaminfo extends BaseCommand {
   }
 
   exec (msg, args) {
-    if (args.length < this.min_args) {
-      return this.bot.getDMChannel(msg.author.id)
-        .then((channel) => channel.createMessage('Invalid number of arguments'))
-        .catch((error) => {
-          throw error
-        })
-    }
-
     const embed = {
       color: this.bot.embed.color,
       footer: this.bot.embed.footer,

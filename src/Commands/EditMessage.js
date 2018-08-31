@@ -31,14 +31,6 @@ class EditMessage extends BaseCommand {
   }
 
   exec (msg, args) {
-    if (args.length < this.min_args) {
-      return this.bot.getDMChannel(msg.author.id)
-        .then((channel) => channel.createMessage('Invalid number of arguments'))
-        .catch((error) => {
-          Logger.warn('Could not inform invalid number of arguments', error)
-        })
-    }
-
     const updateMessage = args.slice(2, args.length).join(' ')
     const updateMessageId = args[1]
     const channelMention = msg.channelMentions[0] || null

@@ -25,6 +25,11 @@ module.exports = (bot) => {
       if (command) {
         if (!command.enabled) return bot.getDMChannel(msg.author.id).then((channel) => channel.createMessage(`Command ${command.prefix + command.command} is disabled`))
         if (!msg.channel.guild && !command.invokeDM) return msg.channel.createMessage(`The command ${command.prefix + command.command} is disabled for use in DM's`)
+        if (args.length < command.min_args) {
+          return bot.getDMChannel(msg.author.id)
+            .then(channel => channel.createMessage('Invalid number of arguments'))
+            .catch(error => Logger.warn(`Could not inform invalid number of arguments for ${command.command}`, error))
+        }
 
         const cooldown = CommandHandler.checkCooldown(command, msg.channel.id)
         if (cooldown) {
