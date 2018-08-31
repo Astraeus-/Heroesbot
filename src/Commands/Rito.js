@@ -1,5 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
-const config = require('../config.json')
+const {memeCooldown} = require('../config.json')
 const Logger = require('../util/Logger.js')
 
 class Rito extends BaseCommand {
@@ -21,7 +21,7 @@ class Rito extends BaseCommand {
       prefix: '#',
       command: 'rito',
       description: 'Have Heroesbot join in on the rito',
-      cooldown: config.memeCooldown,
+      cooldown: memeCooldown,
       invokeDM: false,
       ignoreInHelp: true
     }

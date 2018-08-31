@@ -1,5 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
-const config = require('../config.json')
+const {memeCooldown} = require('../config.json')
 const Logger = require('../util/Logger.js')
 
 class Rigged extends BaseCommand {
@@ -21,7 +21,7 @@ class Rigged extends BaseCommand {
       prefix: '#',
       command: 'rigged',
       description: 'Loungebot agrees that rigging has occured',
-      cooldown: config.memeCooldown,
+      cooldown: memeCooldown,
       invokeDM: false,
       ignoreInHelp: true
     }

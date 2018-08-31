@@ -1,6 +1,6 @@
 const FileHandler = require('../util/FileHandler.js')
 const path = require('path')
-const config = require('../config.json')
+const {vip} = require('../config.json')
 
 module.exports = (bot) => {
   bot.on('guildMemberUpdate', (guild, member, oldMember) => {
@@ -42,14 +42,14 @@ module.exports = (bot) => {
       case 'Twitch Subscriber':
       case 'Honorary Sloth':
         if (addedRole) {
-          bot.addGuildMemberRole(guild.id, member.user.id, config.vip[guild.id].roleID)
+          bot.addGuildMemberRole(guild.id, member.user.id, vip[guild.id].roleID)
         } else {
           let stillDeserving = member.roles.some((roleID) => {
             return guild.roles.find((guildRole) => {
-              if (roleID === guildRole.id) return config.vip[guild.id].rewardRoles.includes(guildRole.name)
+              if (roleID === guildRole.id) return vip[guild.id].rewardRoles.includes(guildRole.name)
             })
           })
-          if (!stillDeserving) bot.removeGuildMemberRole(guild.id, member.user.id, config.vip[guild.id].roleID)
+          if (!stillDeserving) bot.removeGuildMemberRole(guild.id, member.user.id, vip[guild.id].roleID)
         }
         break
       default:

@@ -1,5 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
-const config = require('../config.json')
+const {memeCooldown} = require('../config.json')
 const Logger = require('../util/Logger.js')
 
 class Blametinyowl extends BaseCommand {
@@ -21,7 +21,7 @@ class Blametinyowl extends BaseCommand {
       prefix: '#',
       command: 'blametinyowl',
       description: 'Responds blaming tinyowl',
-      cooldown: config.memeCooldown,
+      cooldown: memeCooldown,
       invokeDM: false,
       ignoreInHelp: true
     }

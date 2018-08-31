@@ -1,8 +1,8 @@
 const FileHandler = require('../util/FileHandler.js')
 const path = require('path')
-const config = require('../config.json')
+const {webhooks} = require('../config.json')
 const WebhookClient = require('../Classes/WebhookClient.js')
-const webhook = new WebhookClient(config.webhooks.id, config.webhooks.token)
+const webhook = new WebhookClient(webhooks.id, webhooks.token)
 
 module.exports = (bot) => {
   bot.on('guildMemberAdd', (guild, member) => {

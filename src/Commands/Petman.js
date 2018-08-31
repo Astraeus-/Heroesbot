@@ -1,5 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
-const config = require('../config.json')
+const {memeCooldown} = require('../config.json')
 const Logger = require('../util/Logger.js')
 
 class Petman extends BaseCommand {
@@ -21,7 +21,7 @@ class Petman extends BaseCommand {
       prefix: '#',
       command: 'petman',
       description: 'Heroesbot joins in on the Petman chant',
-      cooldown: config.memeCooldown,
+      cooldown: memeCooldown,
       invokeDM: false,
       ignoreInHelp: true
     }

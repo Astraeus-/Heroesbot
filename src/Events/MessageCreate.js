@@ -1,8 +1,8 @@
 const Handler = require('../Classes/CommandHandler.js')
 const Logger = require('../util/Logger.js')
-const config = require('../config.json')
+const {webhooks} = require('../config.json')
 const WebhookClient = require('../Classes/WebhookClient.js')
-const webhook = new WebhookClient(config.webhooks.id, config.webhooks.token)
+const webhook = new WebhookClient(webhooks.id, webhooks.token)
 
 module.exports = (bot) => {
   const CommandHandler = new Handler(bot)

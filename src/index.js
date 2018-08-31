@@ -1,9 +1,9 @@
 const Client = require('./Client.js')
-const config = require('./config.json')
+const {token} = require('./config.json')
 const cron = require('node-cron')
 const DataFetcher = require('./util/DataFetcher.js')
 
-const bot = new Client(config.token, {
+const bot = new Client(token, {
   getAllUsers: true,
   disableEveryone: false
 })

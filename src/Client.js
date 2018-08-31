@@ -1,7 +1,7 @@
 const Eris = require('eris')
 const fs = require('fs')
 const path = require('path')
-const config = require('./config.json')
+const {embed} = require('./config.json')
 
 class Client {
   constructor (...args) {
@@ -10,7 +10,7 @@ class Client {
 
   launch () {
     this.bot.commands = new Map()
-    this.bot.embed = config.embed
+    this.bot.embed = embed
 
     this.loadCommands(path.join(__dirname, 'Commands'))
     this.loadEvents(path.join(__dirname, 'Events'))

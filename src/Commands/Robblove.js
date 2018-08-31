@@ -1,5 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
-const config = require('../config.json')
+const {memeCooldown} = require('../config.json')
 const Logger = require('../util/Logger.js')
 
 class Robblove extends BaseCommand {
@@ -21,7 +21,7 @@ class Robblove extends BaseCommand {
       prefix: '#',
       command: 'robblove',
       description: 'Responds loving Robb',
-      cooldown: config.memeCooldown,
+      cooldown: memeCooldown,
       invokeDM: false,
       ignoreInHelp: true
     }

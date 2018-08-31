@@ -1,6 +1,6 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
 const Logger = require('../util/Logger.js')
-const config = require('../config.json')
+const {defaultServer} = require('../config.json')
 
 class Aram extends BaseCommand {
   constructor (bot) {
@@ -28,7 +28,7 @@ class Aram extends BaseCommand {
   }
 
   exec (msg) {
-    let guild = msg.channel.guild || this.bot.guilds.get(config.defaultServer)
+    let guild = msg.channel.guild || this.bot.guilds.get(defaultServer)
     let memberRoles = guild.members.get(msg.author.id).roles
     let role = guild.roles.find((role) => {
       return role.name === 'Aramplayers'
