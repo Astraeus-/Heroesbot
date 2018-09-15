@@ -67,6 +67,16 @@ module.exports = (bot) => {
         command.exec(msg, args)
         CommandHandler.addCooldown(command, msg.channel.id, command.cooldown)
       }
+    } else {
+      if (msg.channel.type === 1) {
+        const author = `${msg.author.username}#${msg.author.discriminator}`
+        const info = `User: ${author}\n${msg.content}`
+        webhook.send({
+          title: 'DM suggestion message',
+          color: 123456,
+          description: info
+        })
+      }
     }
   })
 }
