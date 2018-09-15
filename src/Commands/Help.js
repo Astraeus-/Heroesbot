@@ -37,12 +37,10 @@ class Help extends BaseCommand {
 
     let helpCommand
 
-    if (args.length > 0) {
-      if (args[0].startsWith('!')) {
-        const command = args[0].toLowerCase().slice(1)
-        let commands = Array.from(this.bot.commands.values())
-        helpCommand = commands.find((c) => c.command === command || c.aliases.includes(command))
-      }
+    if (args[0] && args[0].startsWith('!')) {
+      const command = args[0].toLowerCase().slice(1)
+      let commands = Array.from(this.bot.commands.values())
+      helpCommand = commands.find((c) => c.command === command || c.aliases.includes(command))
     }
 
     if (helpCommand) {
