@@ -20,6 +20,11 @@ class Coinflip extends BaseCommand {
         channels: ['match_lounge_1', 'match_lounge_2'],
         roles: [],
         users: []
+      },
+      'Nexus Schoolhouse': {
+        channels: ['mockdrafts'],
+        roles: [],
+        users: []
       }
     }
 

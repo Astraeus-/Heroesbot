@@ -15,6 +15,11 @@ class Draft extends BaseCommand {
         channels: ['mockdrafts'],
         roles: [],
         users: []
+      },
+      'Nexus Schoolhouse': {
+        channels: ['mockdrafts'],
+        roles: [],
+        users: []
       }
     }
 
