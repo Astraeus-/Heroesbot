@@ -26,7 +26,7 @@ class Matchestoday extends BaseCommand {
       aliases: ['upcomingmatches', 'today', 'todaymatches'],
       description: 'Lists all of today\'s upcoming matches',
       syntax: 'matchestoday',
-      cooldown: 180000
+      cooldown: 10000
     }
 
     super(permissions, options)
