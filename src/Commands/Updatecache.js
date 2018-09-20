@@ -2,7 +2,7 @@ const BaseCommand = require('../Classes/BaseCommand.js')
 const Logger = require('../util/Logger.js')
 const DataFetcher = require('../util/DataFetcher.js')
 
-class Updatecache extends BaseCommand {
+class UpdateCache extends BaseCommand {
   constructor (bot) {
     const permissions = {
       'Test-Server': {
@@ -40,4 +40,4 @@ class Updatecache extends BaseCommand {
   }
 }
 
-module.exports = Updatecache
+module.exports = UpdateCache

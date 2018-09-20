@@ -2,7 +2,7 @@ const BaseCommand = require('../Classes/BaseCommand.js')
 const Logger = require('../util/Logger.js')
 const heroesloungeApi = require('heroeslounge-api')
 
-class Currentbans extends BaseCommand {
+class CurrentBans extends BaseCommand {
   constructor (bot) {
     const permissions = {
       'Test-Server': {
@@ -96,4 +96,4 @@ class Currentbans extends BaseCommand {
   }
 }
 
-module.exports = Currentbans
+module.exports = CurrentBans

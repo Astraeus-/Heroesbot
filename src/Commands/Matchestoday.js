@@ -5,7 +5,7 @@ const heroesloungeApi = require('heroeslounge-api')
 const FileHandler = require('../util/FileHandler.js')
 const path = require('path')
 
-class Matchestoday extends BaseCommand {
+class MatchesToday extends BaseCommand {
   constructor (bot) {
     const permissions = {
       'Test-Server': {
@@ -144,4 +144,4 @@ let sendMatchesTodayResponse = (channel, Embeds) => {
   return Promise.all(response)
 }
 
-module.exports = Matchestoday
+module.exports = MatchesToday
