@@ -11,8 +11,8 @@ class CastsToday extends BaseCommand {
         users: []
       },
       'Heroes Lounge': {
-        channels: [],
-        roles: [],
+        channels: ['casters_lounge'],
+        roles: ['Casters', 'CoCasters'],
         users: []
       }
     }
@@ -23,7 +23,8 @@ class CastsToday extends BaseCommand {
       aliases: ['casts'],
       description: 'Lists all of today\'s upcoming casts.',
       syntax: 'caststoday',
-      cooldown: 30000
+      cooldown: 30000,
+      ignoreInHelp: true
     }
 
     super(permissions, options)
