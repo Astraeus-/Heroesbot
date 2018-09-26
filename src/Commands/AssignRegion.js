@@ -29,11 +29,8 @@ class AssignRegion extends BaseCommand {
   exec (msg) {
     const guildId = '200267155479068672'
 
-    heroesloungeApi.getSloths(5).then((sloths) => {
-      let slothsProcessed = 0
-      sloths.forEach((sloth, index, array) => {
-        slothsProcessed++
-        if (slothsProcessed % 100 === 0) console.log(`Updated members: ${slothsProcessed}`)
+    heroesloungeApi.getSloths().then((sloths) => {
+      sloths.forEach((sloth) => {
         // Check if we have a discord id for the user.
         if (sloth.discord_id.length === 0) return
 
@@ -66,10 +63,6 @@ class AssignRegion extends BaseCommand {
 
         this.bot.addGuildMemberRole(guildId, sloth.discord_id, regionRoleId)
           .catch(error => Logger.error(`Error assigning region role to ${sloth.discord_tag}`, error))
-
-        if (slothsProcessed === array.length) {
-          console.log('All processed!')
-        }
       })
     }).catch(error => Logger.error('Error getting list of all sloths', error))
   }
