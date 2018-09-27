@@ -18,6 +18,6 @@ cron.schedule('*/15 * * * *', () => {
   DataFetcher.matchesToday()
 })
 
-cron.schedule('* */1 * * *', () => {
+cron.schedule('0 * * * *', () => {
   util.syncRegionRoles(bot.bot)
 })
