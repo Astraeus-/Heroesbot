@@ -28,23 +28,19 @@ module.exports = (bot) => {
     })
 
     // Assign the EU or NA role for returning Discord members.
-    // Currently uses the expensive operation of searching through all of our sloths.
-    // heroesloungeApi.getSloths().then((sloths) => {
-    //   let returningSloth = sloths.find((sloth) => {
-    //     return sloth.discord_id === member.user.id
-    //   })
-    //
-    //   if (returningSloth) {
-    //     let regionRoleId
-    //     if (returningSloth.region_id === '1') {
-    //       regionRoleId = '494534903547822105' // EU
-    //     } else if (returningSloth.region_id === '2') {
-    //       regionRoleId = '494535033722372106' // NA
-    //     }
-    //
-    //     bot.addGuildMemberRole(guild.id, member.user.id, regionRoleId)
-    //       .catch(error => Logger.error(`Unable to reassign region role to ${member.user.username}`, error))
-    //   }
-    // })
+    heroesloungeApi.getSlothByDiscordId(member.user.id).then((sloth) => {
+      if (sloth.length > 0) {
+        let returningSloth = sloth[0]
+        let regionRoleId
+        if (returningSloth.region_id === '1') {
+          regionRoleId = '494534903547822105' // EU
+        } else if (returningSloth.region_id === '2') {
+          regionRoleId = '494535033722372106' // NA
+        }
+
+        bot.addGuildMemberRole(guild.id, member.user.id, regionRoleId)
+          .catch(error => Logger.error(`Unable to reassign region role to ${member.user.username}`, error))
+      }
+    }).catch(error => Logger.error('Unable to verify sloth on website', error))
   })
 }
