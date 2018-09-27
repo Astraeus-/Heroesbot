@@ -12,7 +12,7 @@ class Blametinyowl extends BaseCommand {
       },
       'Heroes Lounge': {
         channels: [],
-        roles: ['Lounge Master', 'Manager', 'Moderators', 'Staff', 'VIP'],
+        roles: ['Lounge Master', 'Board', 'Managers', 'Moderators', 'VIP'],
         users: ['108153813143126016']
       }
     }

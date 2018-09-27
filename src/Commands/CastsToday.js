@@ -12,7 +12,7 @@ class CastsToday extends BaseCommand {
       },
       'Heroes Lounge': {
         channels: ['casters_lounge'],
-        roles: ['Lounge Master', 'Manager', 'Moderators', 'Staff', 'Casters', 'CoCasters'],
+        roles: ['Lounge Master', 'Board', 'Managers', 'Moderators', 'Casters', 'CoCasters'],
         users: []
       }
     }

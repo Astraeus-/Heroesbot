@@ -33,8 +33,8 @@ class Playoffs extends BaseCommand {
 
   exec (msg) {
     const guild = msg.channel.guild
-    const staffRole = guild.roles.find((role) => {
-      return role.name === 'Staff'
+    const modRole = guild.roles.find((role) => {
+      return role.name === 'Moderators'
     })
 
     let errorMessage = ''
@@ -48,9 +48,9 @@ class Playoffs extends BaseCommand {
             errorMessage += `- ${msg}\n`
             Logger.warn(msg, error)
           })
-        category.editPermission(staffRole.id, 1024, 0, 'role')
+        category.editPermission(modRole.id, 1024, 0, 'role')
           .catch((error) => {
-            const msg = 'Unable to update @staff permissions'
+            const msg = 'Unable to update @Moderators permissions'
             errorMessage += `- ${msg}\n`
             Logger.warn(msg, error)
           })

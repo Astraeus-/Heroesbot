@@ -11,7 +11,7 @@ class Ping extends BaseCommand {
       },
       'Heroes Lounge': {
         channels: ['devops'],
-        roles: ['Lounge Master', 'Manager', 'Moderators', 'Staff'],
+        roles: ['Lounge Master', 'Board', 'Managers', 'Moderators'],
         users: []
       }
     }

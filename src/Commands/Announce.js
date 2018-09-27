@@ -11,7 +11,7 @@ class Announce extends BaseCommand {
       },
       'Heroes Lounge': {
         channels: ['devops', 'bot_commands'],
-        roles: ['Lounge Master', 'Manager', 'Moderators', 'Staff'],
+        roles: ['Lounge Master', 'Board', 'Managers', 'Moderators'],
         users: []
       }
     }

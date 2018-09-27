@@ -12,7 +12,7 @@ class CasterStatistics extends BaseCommand {
       },
       'Heroes Lounge': {
         channels: ['bot_commands'],
-        roles: ['Lounge Master', 'Manager', 'Moderators', 'Staff', 'Casters'],
+        roles: ['Lounge Master', 'Board', 'Managers', 'Moderators', 'Casters'],
         users: []
       }
     }
