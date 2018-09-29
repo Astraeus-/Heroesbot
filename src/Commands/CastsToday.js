@@ -50,7 +50,7 @@ class CastsToday extends BaseCommand {
         for (let match in castedMatches) {
           matchDivisions[match] = castedMatches[match].div_id ? heroesloungeApi.getDivisionInfo(castedMatches[match].div_id).catch((error) => {
             Logger.warn('Unable to get division info', error)
-          }) : 'No division'
+          }) : ''
         }
 
         // Wait for all of the division requests to complete.
@@ -71,13 +71,18 @@ class CastsToday extends BaseCommand {
           })
 
           // Attach a division name or tournament + group.
-          const division = matchDivisions[match].division
+          const division = typeof matchDivisions[match] === 'object' ? matchDivisions[match].division : matchDivisions[match]
           let divisionName = ''
-          if (division.playoff_id !== null) {
-            const playoff = await heroesloungeApi.getPlayoffInfo(division.playoff_id)
-            divisionName = `Heroes Lounge ${playoff.title} ${division.title.toLowerCase()}`
+
+          if (typeof division === 'object') {
+            if (division.playoff_id !== null) {
+              const playoff = await heroesloungeApi.getPlayoffInfo(division.playoff_id)
+              divisionName = `Heroes Lounge ${playoff.title} ${division.title.toLowerCase()}`
+            } else {
+              divisionName = matchDivisions[match].division.title.toLowerCase()
+            }
           } else {
-            divisionName = matchDivisions[match].division.title.toLowerCase()
+            divisionName = division
           }
 
           const time = castedMatches[match].wbp.slice(-8, -3)

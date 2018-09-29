@@ -81,7 +81,7 @@ class MatchesToday extends BaseCommand {
         for (let match in matches) {
           matchDivisions[match] = matches[match].div_id ? heroesloungeApi.getDivisionInfo(matches[match].div_id).catch((error) => {
             Logger.warn('Unable to get division info', error)
-          }) : 'No division'
+          }) : ''
         }
 
         // Wait for all of the division requests to complete.
@@ -91,13 +91,14 @@ class MatchesToday extends BaseCommand {
 
         for (let match in matches) {
           const matchURL = 'https://heroeslounge.gg/match/view/' + matches[match].id
+          const division = typeof matchDivisions[match] === 'object' ? matchDivisions[match].division.title : matchDivisions[match]
 
           if (Embeds[embedCounter].fields[1].value.length >= 975) {
             embedCounter++
             Embeds = addEmbed(embed, Embeds, embedCounter)
           }
 
-          Embeds[embedCounter].fields[0].value += `${matches[match].wbp.slice(-8, -3)} ${matchDivisions[match].division.title}\n`
+          Embeds[embedCounter].fields[0].value += `${matches[match].wbp.slice(-8, -3)} ${division}\n`
           Embeds[embedCounter].fields[1].value += `[${matches[match].teams[0].slug} Vs ${matches[match].teams[1].slug}](${matchURL})\n`
           Embeds[embedCounter].fields[2].value += `${matches[match].casters ? `[Channel](${matches[match].twitch.url})` : 'No'}\n`
         }
