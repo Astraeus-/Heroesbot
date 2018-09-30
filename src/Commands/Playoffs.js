@@ -15,7 +15,7 @@ class Playoffs extends BaseCommand {
       'Heroes Lounge': {
         channels: ['bot_commands'],
         roles: [],
-        users: ['108153813143126016', '87976337234464768']
+        users: ['108153813143126016', '202174629245222912', '188331826970886144']
       }
     }
 
