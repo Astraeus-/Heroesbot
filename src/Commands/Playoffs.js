@@ -15,7 +15,7 @@ class Playoffs extends BaseCommand {
       'Heroes Lounge': {
         channels: ['bot_commands'],
         roles: [],
-        users: ['108153813143126016']
+        users: ['108153813143126016', '87976337234464768']
       }
     }
 
@@ -62,15 +62,50 @@ class Playoffs extends BaseCommand {
 
             for (let tournament in seasonTournaments) {
               const tournamentDetails = await heroesloungeApi.getPlayoffInfo(seasonTournaments[tournament].id)
+                .catch((error) => {
+                  Logger.error(`Unable to find playoffs with id: ${seasonTournaments[tournament].id}`, error)
+                })
               seasonTournaments[tournament]['divisions'] = tournamentDetails.divisions
               tournaments.push(seasonTournaments[tournament])
             }
             return tournaments
           })
-          .then((tournaments) => {
+          .then(async (tournaments) => {
             for (let tournament in tournaments) {
               for (let division of tournaments[tournament].divisions) {
+                const divisionInfo = await heroesloungeApi.getDivisionInfo(division.id).catch((error) => {
+                  Logger.error(`Unable to retrieve division info for division with id: ${division.id}`, error)
+                })
                 this.bot.createChannel(guild.id, `${tournaments[tournament].title}-${division.slug}`, 0, '', category.id)
+                  .then((channel) => {
+                    let divisionTeamDetails = []
+                    for (let team of divisionInfo.teams) {
+                      divisionTeamDetails.push(
+                        heroesloungeApi.getTeamInfo(team.id).catch((error) => {
+                          Logger.error(`Unable to get team in for team with id: ${team.id}`, error)
+                        })
+                      )
+                    }
+                    Promise.all(divisionTeamDetails).then((teamDetails) => {
+                      for (let team of teamDetails) {
+                        for (let sloth of team.sloths) {
+                          if (sloth.is_captain === '1') {
+                            if (!sloth.discord_id) {
+                              const msg = `Unable to add ${sloth.title} of ${team.title} to ${channel.name}`
+                              errorMessage += `- ${msg}\n`
+                            } else {
+                              channel.editPermission(sloth.discord_id, 1024, 0, 'member').catch((error) => {
+                                const msg = `Error adding ${sloth.title} of ${team.title} to ${channel.name}`
+                                errorMessage += `- ${msg}\n`
+                                Logger.warn(msg, error)
+                              })
+                            }
+                            break
+                          }
+                        }
+                      }
+                    })
+                  })
                   .catch((error) => {
                     const msg = `Unable to create channel ${tournaments[tournament].title}-${division.slug}`
                     errorMessage += `- ${msg}\n`
