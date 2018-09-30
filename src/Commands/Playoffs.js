@@ -22,8 +22,10 @@ class Playoffs extends BaseCommand {
     const options = {
       prefix: '!',
       command: 'playoffs',
-      description: 'Creates the playoff channels',
-      syntax: 'playoffs',
+      description: 'Creates the playoff channels for the specified season',
+      syntax: 'playoffs <seasonId>',
+      min_args: 1,
+      invokeDM: false,
       ignoreInHelp: true
     }
 
@@ -31,8 +33,9 @@ class Playoffs extends BaseCommand {
     this.bot = bot
   }
 
-  exec (msg) {
+  exec (msg, args) {
     const guild = msg.channel.guild
+    const seasonId = args[0]
     const modRole = guild.roles.find((role) => {
       return role.name === 'Moderators'
     })
@@ -55,7 +58,7 @@ class Playoffs extends BaseCommand {
             Logger.warn(msg, error)
           })
 
-        return heroesloungeApi.getSeasonInfo(3)
+        return heroesloungeApi.getSeasonInfo(seasonId)
           .then(async (seasonInfo) => {
             const seasonTournaments = seasonInfo.playoffs
             let tournaments = []
