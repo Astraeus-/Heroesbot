@@ -46,9 +46,8 @@ module.exports.syncRegionRoles = async (bot) => {
 
     return syncedSloths
   }).then((syncedSloths) => {
-    Logger.info(syncedSloths.length)
     return Promise.all(syncedSloths).then(() => {
-      Logger.info('Region role synchronisation complete')
+      Logger.info(`Region role synchronisation complete, updated ${syncedSloths.length} users`)
       return 'Region role synchronisation complete'
     }).catch((error) => {
       throw error
