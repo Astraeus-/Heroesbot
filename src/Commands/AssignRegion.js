@@ -26,10 +26,10 @@ class AssignRegion extends BaseCommand {
   }
 
   exec (msg) {
-    util.syncRegionRoles(this.bot).then(() => {
+    util.syncRegionRoles(this.bot).then((response) => {
       return this.bot.getDMChannel(msg.author.id)
         .then((channel) => {
-          return channel.createMessage('Completed region role sync!')
+          return channel.createMessage(response)
             .catch((error) => {
               throw error
             })

@@ -9,10 +9,10 @@ module.exports.syncRegionRoles = async (bot) => {
 
     for (let sloth in sloths) {
       const currentSloth = sloths[sloth]
-      if (currentSloth.discord_id.length === 0) return
+      if (currentSloth.discord_id.length === 0) continue
 
       const member = bot.guilds.get(defaultServer).members.get(currentSloth.discord_id)
-      if (!member) return
+      if (!member) continue
 
       const roles = member.roles
       let regionRoleId
@@ -21,11 +21,11 @@ module.exports.syncRegionRoles = async (bot) => {
       } else if (currentSloth.region_id === '2') {
         regionRoleId = '494535033722372106' // NA
       } else {
-        return
+        continue
       }
 
       // User already has regionRole trying to assign.
-      if (roles.includes(regionRoleId)) return
+      if (roles.includes(regionRoleId)) continue
 
       // Remove NA region role if region changed to EU.
       if (currentSloth.region_id === '1' && roles.includes('494535033722372106')) {
@@ -44,8 +44,14 @@ module.exports.syncRegionRoles = async (bot) => {
       )
     }
 
+    return syncedSloths
+  }).then((syncedSloths) => {
+    Logger.info(syncedSloths.length)
     return Promise.all(syncedSloths).then(() => {
       Logger.info('Region role synchronisation complete')
+      return 'Region role synchronisation complete'
+    }).catch((error) => {
+      throw error
     })
-  }).catch(error => Logger.error('Error getting list of all sloths', error))
+  }).catch(error => Logger.error('Error syncing all region roles', error))
 }
