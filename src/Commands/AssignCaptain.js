@@ -1,23 +1,23 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
 const Logger = require('../util/Logger.js')
-const {syncRegionRoles} = require('../util/SyncRoles.js')
+const {syncCaptains} = require('../util/SyncRoles.js')
 
-class AssignRegion extends BaseCommand {
+class AssignCaptain extends BaseCommand {
   constructor (bot) {
     const permissions = {
       'Test-Server': {
         channels: ['robotchannel'],
         roles: ['Admin'],
-        users: ['108153813143126016']
+        users: []
       }
     }
 
     const options = {
       prefix: '!',
-      command: 'assignregion',
+      command: 'assigncaptain',
       aliases: [],
-      description: 'Assigns the EU or NA region to all the registered website users.',
-      syntax: 'assignregion',
+      description: 'Assigns the Captain role to all the captains of participating teams.',
+      syntax: 'assigncaptain',
       ignoreInHelp: true
     }
 
@@ -26,18 +26,18 @@ class AssignRegion extends BaseCommand {
   }
 
   exec (msg) {
-    syncRegionRoles(this.bot).then((response) => {
+    syncCaptains(this.bot).then((response) => {
       return this.bot.getDMChannel(msg.author.id)
         .then((channel) => {
-          return channel.createMessage(response)
+          return channel.createMessage(`Updated captains: ${response.updatedCaptainCounter}\nErrors:\n${response.errorMessage}`)
             .catch((error) => {
               throw error
             })
         }).catch((error) => {
           throw error
         })
-    }).catch(error => Logger.error('Unable to sync region roles', error))
+    }).catch(error => Logger.error('Unable to sync captains', error))
   }
 }
 
-module.exports = AssignRegion
+module.exports = AssignCaptain

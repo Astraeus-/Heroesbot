@@ -2,7 +2,7 @@ const Client = require('./Client.js')
 const {token} = require('./config.json')
 const cron = require('node-cron')
 const DataFetcher = require('./util/DataFetcher.js')
-const util = require('./util/SyncRegionRoles.js')
+const {syncRegionRoles} = require('./util/SyncRoles.js')
 
 const bot = new Client(token, {
   getAllUsers: true,
@@ -19,5 +19,5 @@ cron.schedule('*/15 * * * *', () => {
 })
 
 cron.schedule('0 */2 * * *', () => {
-  util.syncRegionRoles(bot.bot)
+  syncRegionRoles(bot.bot)
 })
