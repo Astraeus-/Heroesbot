@@ -93,7 +93,7 @@ class MatchesToday extends BaseCommand {
           const matchURL = 'https://heroeslounge.gg/match/view/' + matches[match].id
           const division = typeof matchDivisions[match] === 'object' ? matchDivisions[match].division.title : matchDivisions[match]
 
-          if (Embeds[embedCounter].fields[1].value.length >= 975) {
+          if (Embeds[embedCounter].fields[1].value.length >= 950) {
             embedCounter++
             Embeds = addEmbed(embed, Embeds, embedCounter)
           }
