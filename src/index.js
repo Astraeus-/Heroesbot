@@ -1,8 +1,8 @@
 const Client = require('./Client.js')
-const {token} = require('./config.json')
+const { token } = require('./config.json')
 const cron = require('node-cron')
 const DataFetcher = require('./util/DataFetcher.js')
-const {syncRegionRoles} = require('./util/SyncRoles.js')
+const { syncRegionRoles } = require('./util/SyncRoles.js')
 
 const bot = new Client(token, {
   getAllUsers: true,

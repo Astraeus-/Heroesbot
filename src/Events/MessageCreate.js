@@ -1,6 +1,6 @@
 const Handler = require('../Classes/CommandHandler.js')
 const Logger = require('../util/Logger.js')
-const {webhooks} = require('../config.json')
+const { webhooks } = require('../config.json')
 const WebhookClient = require('../Classes/WebhookClient.js')
 const webhook = new WebhookClient(webhooks.id, webhooks.token)
 

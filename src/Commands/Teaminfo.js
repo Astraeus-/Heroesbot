@@ -89,7 +89,7 @@ class Teaminfo extends BaseCommand {
       })
       .then((embed) => {
         if (embed) {
-          return msg.channel.createMessage({embed: embed})
+          return msg.channel.createMessage({ embed: embed })
             .catch((error) => {
               throw error
             })

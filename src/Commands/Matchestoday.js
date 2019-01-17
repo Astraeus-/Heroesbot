@@ -137,7 +137,7 @@ let sendMatchesTodayResponse = (channel, Embeds) => {
 
   for (let embed in Embeds) {
     response.push(
-      channel.createMessage({'embed': Embeds[embed]})
+      channel.createMessage({ 'embed': Embeds[embed] })
         .catch((error) => {
           throw error
         }))

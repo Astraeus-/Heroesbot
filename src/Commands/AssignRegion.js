@@ -1,6 +1,6 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
 const Logger = require('../util/Logger.js')
-const {syncRegionRoles} = require('../util/SyncRoles.js')
+const { syncRegionRoles } = require('../util/SyncRoles.js')
 
 class AssignRegion extends BaseCommand {
   constructor (bot) {

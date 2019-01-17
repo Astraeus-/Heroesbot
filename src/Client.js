@@ -1,7 +1,7 @@
 const Eris = require('eris')
 const fs = require('fs')
 const path = require('path')
-const {embed} = require('./config.json')
+const { embed } = require('./config.json')
 
 class Client {
   constructor (...args) {

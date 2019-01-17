@@ -72,7 +72,7 @@ class CasterStatistics extends BaseCommand {
           }
         }
 
-        return msg.channel.createMessage({embed: embed})
+        return msg.channel.createMessage({ embed: embed })
           .catch((error) => {
             throw error
           })

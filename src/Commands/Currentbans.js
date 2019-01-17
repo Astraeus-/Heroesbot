@@ -87,7 +87,7 @@ class CurrentBans extends BaseCommand {
               throw error
             })
         } else {
-          return msg.channel.createMessage({embed: embed})
+          return msg.channel.createMessage({ embed: embed })
             .catch((error) => {
               throw error
             })

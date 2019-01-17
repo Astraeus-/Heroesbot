@@ -1,6 +1,6 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
 const Logger = require('../util/Logger.js')
-const {syncCaptains} = require('../util/SyncRoles.js')
+const { syncCaptains } = require('../util/SyncRoles.js')
 
 class AssignCaptain extends BaseCommand {
   constructor (bot) {

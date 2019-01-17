@@ -1,6 +1,6 @@
 const FileHandler = require('../util/FileHandler.js')
 const path = require('path')
-const {webhooks} = require('../config.json')
+const { webhooks } = require('../config.json')
 const WebhookClient = require('../Classes/WebhookClient.js')
 const webhook = new WebhookClient(webhooks.id, webhooks.token)
 

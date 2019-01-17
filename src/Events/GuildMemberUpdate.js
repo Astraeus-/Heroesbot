@@ -1,6 +1,6 @@
 const FileHandler = require('../util/FileHandler.js')
 const path = require('path')
-const {vip} = require('../config.json')
+const { vip } = require('../config.json')
 
 module.exports = (bot) => {
   bot.on('guildMemberUpdate', (guild, member, oldMember) => {
