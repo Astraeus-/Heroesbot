@@ -78,29 +78,39 @@ class MatchesToday extends BaseCommand {
         })
 
         let matchDivisions = []
+        let matchTeams = []
+
         for (let match in matches) {
-          matchDivisions[match] = matches[match].div_id ? heroesloungeApi.getDivisionInfo(matches[match].div_id).catch((error) => {
+          matchDivisions[match] = matches[match].div_id ? heroesloungeApi.getDivision(matches[match].div_id).catch((error) => {
             Logger.warn('Unable to get division info', error)
           }) : ''
-        }
 
-        // Wait for all of the division requests to complete.
-        for (let m in matchDivisions) {
-          matchDivisions[m] = await matchDivisions[m]
+          matchTeams[match] = heroesloungeApi.getMatchTeams(matches[match].id).catch((error) => {
+            Logger.warn('Unable to get match team info', error)
+          })
         }
 
         for (let match in matches) {
+          const teams = await matchTeams[match]
+          const division = await matchDivisions[match]
           const matchURL = 'https://heroeslounge.gg/match/view/' + matches[match].id
-          const division = typeof matchDivisions[match] === 'object' ? matchDivisions[match].division.title : matchDivisions[match]
+
+          let twitchChannel
+
+          if (matches[match].channel_id) {
+            twitchChannel = await heroesloungeApi.getTwitchChannel(matches[match].channel_id).catch((error) => {
+              Logger.warn('Unable to get Twitch channel info', error)
+            })
+          }
 
           if (Embeds[embedCounter].fields[1].value.length >= 950) {
             embedCounter++
             Embeds = addEmbed(embed, Embeds, embedCounter)
           }
 
-          Embeds[embedCounter].fields[0].value += `${matches[match].wbp.slice(-8, -3)} ${division}\n`
-          Embeds[embedCounter].fields[1].value += `[${matches[match].teams[0].slug} Vs ${matches[match].teams[1].slug}](${matchURL})\n`
-          Embeds[embedCounter].fields[2].value += `${matches[match].casters ? `[Channel](${matches[match].twitch.url})` : 'No'}\n`
+          Embeds[embedCounter].fields[0].value += `${matches[match].wbp.slice(-8, -3)} ${division.title}\n`
+          Embeds[embedCounter].fields[1].value += `[${teams[0].slug} Vs ${teams[1].slug}](${matchURL})\n`
+          Embeds[embedCounter].fields[2].value += `${twitchChannel ? `[Channel](${twitchChannel.url})` : 'No'}\n`
         }
 
         return Embeds

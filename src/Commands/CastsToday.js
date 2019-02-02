@@ -37,7 +37,7 @@ class CastsToday extends BaseCommand {
         if (matches.length === 0) return null
 
         let castedMatches = matches.filter((match) => {
-          return match.casters && match.casters.length > 0
+          return match.channel_id
         })
 
         if (castedMatches.length === 0) return null
@@ -47,21 +47,30 @@ class CastsToday extends BaseCommand {
         })
 
         let matchDivisions = []
+        let matchTeams = []
+        let matchCasters = []
+
         for (let match in castedMatches) {
-          matchDivisions[match] = castedMatches[match].div_id ? heroesloungeApi.getDivisionInfo(castedMatches[match].div_id).catch((error) => {
+          matchDivisions[match] = castedMatches[match].div_id ? heroesloungeApi.getDivision(castedMatches[match].div_id).catch((error) => {
             Logger.warn('Unable to get division info', error)
           }) : ''
-        }
 
-        // Wait for all of the division requests to complete.
-        for (let m in matchDivisions) {
-          matchDivisions[m] = await matchDivisions[m]
+          matchTeams[match] = heroesloungeApi.getMatchTeams(matches[match].id).catch((error) => {
+            Logger.warn('Unable to get match team info', error)
+          })
+
+          matchCasters[match] = heroesloungeApi.getMatchCasters(castedMatches[match].id).catch((error) => {
+            Logger.warn('Unable to get caster info', error)
+          })
         }
 
         let response = ''
 
         for (let match in castedMatches) {
-          const casters = castedMatches[match].casters
+          const division = await matchDivisions[match]
+          const casters = await matchCasters[match]
+          const teams = await matchTeams[match]
+
           let casterMessage = ''
 
           // Attach all of the casters to the casterMessage.
@@ -71,23 +80,25 @@ class CastsToday extends BaseCommand {
           })
 
           // Attach a division name or tournament + group.
-          const division = typeof matchDivisions[match] === 'object' ? matchDivisions[match].division : matchDivisions[match]
           let divisionName = ''
 
-          if (typeof division === 'object') {
-            if (division.playoff_id !== null) {
-              const playoff = await heroesloungeApi.getPlayoffInfo(division.playoff_id)
-              divisionName = `Heroes Lounge ${playoff.title} ${division.title.toLowerCase()}`
-            } else {
-              divisionName = matchDivisions[match].division.title.toLowerCase()
-            }
+          if (division.playoff_id !== null) {
+            const playoff = await heroesloungeApi.getPlayoff(division.playoff_id).catch((error) => {
+              Logger.warn('Unable to get playoff info', error)
+            })
+            divisionName = `Heroes Lounge ${playoff.title} ${division.title.toLowerCase()}`
           } else {
-            divisionName = division
+            divisionName = division.title.toLowerCase()
           }
 
           const time = castedMatches[match].wbp.slice(-8, -3)
-          const teams = castedMatches[match].teams
-          const channelUrl = castedMatches[match].twitch ? castedMatches[match].twitch.url : ''
+          let twitchChannel
+
+          if (castedMatches[match].channel_id) {
+            twitchChannel = await heroesloungeApi.getTwitchChannel(castedMatches[match].channel_id).catch((error) => {
+              Logger.warn('Unable to get twitch channel info', error)
+            })
+          }
 
           // Group all match statement with the same time together.
           if (match > 0 && castedMatches[match].wbp.slice(-8, -3) > castedMatches[match - 1].wbp.slice(-8, -3)) {
@@ -98,7 +109,7 @@ class CastsToday extends BaseCommand {
             response += `At ${time}\n`
           }
 
-          response += `${casterMessage} will be bringing you a ${divisionName} match between ${teams[0].title} and ${teams[1].title} on \`${channelUrl}\`\n`
+          response += `${casterMessage} will be bringing you a ${divisionName} match between ${teams[0].title} and ${teams[1].title} on \`${twitchChannel.url}\`\n`
         }
 
         return response

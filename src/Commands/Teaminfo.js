@@ -59,24 +59,32 @@ class Teaminfo extends BaseCommand {
 
         if (!selectedTeam) return null
 
-        return heroesloungeApi.getTeamInfo(selectedTeam.id)
+        return heroesloungeApi.getTeam(selectedTeam.id)
           .catch((error) => {
             throw error
           })
       })
-      .then((teamInfo) => {
-        if (!teamInfo) return null
+      .then(async (team) => {
+        if (!team) return null
 
-        let creationDate = teamInfo.created_at.slice(0, 10).split('-')
+        const teamSloths = await heroesloungeApi.getTeamSloths(team.id).catch((error) => {
+          Logger.warn(`Unable to get team sloths for ${team.title}`, error)
+        })
+
+        const teamLogo = await heroesloungeApi.getTeamLogo(team.id).catch((error) => {
+          Logger.warn(`Unable to get team logo for ${team.title}`, error)
+        })
+
+        let creationDate = team.created_at.slice(0, 10).split('-')
         creationDate = `${creationDate[2]}-${creationDate[1]}-${creationDate[0]}`
-        embed.title = teamInfo.title
-        embed.description = `${teamInfo.short_description.replace(/<(.|\n)*?>/g, '')}\n\nCreated on: ${creationDate}`
-        embed.url = `https://heroeslounge.gg/team/view/${teamInfo.slug.replace(' ', '%20')}`
+        embed.title = team.title
+        embed.description = `${team.short_description.replace(/<(.|\n)*?>/g, '')}\n\nCreated on: ${creationDate}`
+        embed.url = `https://heroeslounge.gg/team/view/${team.slug.replace(' ', '%20')}`
         embed.thumbnail = {
-          'url': teamInfo.logo.path || 'https://heroeslounge.gg/plugins/rikki/heroeslounge/assets/img/bg_75.png'
+          'url': teamLogo.path || 'https://heroeslounge.gg/plugins/rikki/heroeslounge/assets/img/bg_75.png'
         }
 
-        for (let sloth of teamInfo.sloths) {
+        for (let sloth of teamSloths) {
           embed.fields[0].value += `${sloth.title}\n`
           embed.fields[1].value += `${sloth.battle_tag}\n`
         }

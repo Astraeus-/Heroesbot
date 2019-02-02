@@ -66,20 +66,20 @@ class Playoffs extends BaseCommand {
           return playoffSeason
         })
         .then((playoffSeason) => {
-          return heroesloungeApi.getSeasonInfo(playoffSeason.id).catch((error) => {
+          return heroesloungeApi.getSeasonPlayoffs(playoffSeason.id).catch((error) => {
             throw error
           })
         })
-        .then(async (playoffSeasonInfo) => {
-          const seasonTournaments = playoffSeasonInfo.playoffs
+        .then(async (seasonPlayoffs) => {
+          const seasonTournaments = seasonPlayoffs
           let tournaments = []
 
           for (let tournament in seasonTournaments) {
-            const tournamentDetails = await heroesloungeApi.getPlayoffInfo(seasonTournaments[tournament].id)
+            const tournamentDivisions = await heroesloungeApi.getPlayoffDivisions(seasonTournaments[tournament].id)
               .catch((error) => {
-                Logger.error(`Unable to find playoffs with id: ${seasonTournaments[tournament].id}`, error)
+                Logger.error(`Unable to get playoff details for playoff with id: ${seasonTournaments[tournament].id}`, error)
               })
-            seasonTournaments[tournament]['divisions'] = tournamentDetails.divisions
+            seasonTournaments[tournament]['divisions'] = tournamentDivisions
             tournaments.push(seasonTournaments[tournament])
           }
           return tournaments
@@ -112,8 +112,8 @@ class Playoffs extends BaseCommand {
 
           for (let tournament in tournaments) {
             for (let division of tournaments[tournament].divisions) {
-              const divisionInfo = await heroesloungeApi.getDivisionInfo(division.id).catch((error) => {
-                Logger.error(`Unable to retrieve division info for division with id: ${division.id}`, error)
+              const divisionTeams = await heroesloungeApi.getDivisionTeams(division.id).catch((error) => {
+                Logger.error(`Unable to get division teams for division with id: ${division.id}`, error)
               })
 
               let channel = await this.bot.createChannel(guild.id, `${tournaments[tournament].title}-${division.slug}`, 0, '', category.id).catch((error) => {
@@ -123,12 +123,12 @@ class Playoffs extends BaseCommand {
               })
 
               /* Grants access to the playoff channel to the team's captain */
-              for (let team of divisionInfo.teams) {
-                const divisionTeamInfo = await heroesloungeApi.getTeamInfo(team.id).catch((error) => {
-                  Logger.error(`Unable to get team in for team with id: ${team.id}`, error)
+              for (let team of divisionTeams) {
+                const divisionTeamSloths = await heroesloungeApi.getTeamSloths(team.id).catch((error) => {
+                  Logger.error(`Unable to get team sloths for team with id: ${team.id}`, error)
                 })
 
-                for (let sloth of divisionTeamInfo.sloths) {
+                for (let sloth of divisionTeamSloths) {
                   if (sloth.is_captain === '1') {
                     if (!sloth.discord_id) {
                       const msg = `Unable to add ${sloth.title} of ${team.title} to ${channel.name}`

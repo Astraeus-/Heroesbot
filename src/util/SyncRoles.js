@@ -4,20 +4,29 @@ const Logger = require('./Logger.js')
 
 module.exports.syncCaptains = async (bot) => {
   Logger.info('Synchronising captain roles')
-  const currentSeasonEU = await heroesloungeApi.getSeasonInfo(6).catch((error) => {
+  const currentSeasonEUTeams = await heroesloungeApi.getSeasonTeams(6).catch((error) => {
     throw error
   })
-  const currentSeasonNA = await heroesloungeApi.getSeasonInfo(5).catch((error) => {
+  const currentSeasonNATeams = await heroesloungeApi.getSeasonTeams(5).catch((error) => {
     throw error
   })
 
   let currentTeams = []
-  currentTeams = [...currentTeams, ...currentSeasonEU.teams, ...currentSeasonNA.teams]
+  currentTeams = [...currentTeams, ...currentSeasonEUTeams, ...currentSeasonNATeams]
 
   let teamDetails = []
   for (let team of currentTeams) {
-    const teamInfo = heroesloungeApi.getTeamInfo(team.id).catch((error) => {
-      Logger.warn(`Unable to get team info for team ${team.title}`, error)
+    let teamInfo = new Promise((resolve, reject) => {
+      heroesloungeApi.getTeamSloths(team.id).then((sloths) => {
+        let fullTeam = team
+        fullTeam['sloths'] = sloths
+        resolve(fullTeam)
+      }).catch((error) => {
+        Logger.warn(`Unable to get team sloths for team ${team.title}`, error)
+        let fullTeam = team
+        fullTeam['sloths'] = {}
+        resolve(fullTeam)
+      })
     })
 
     teamDetails = [...teamDetails, teamInfo]
