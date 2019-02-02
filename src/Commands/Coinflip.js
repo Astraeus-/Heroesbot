@@ -43,7 +43,7 @@ class Coinflip extends BaseCommand {
     const output = Math.round(Math.random() >= 0.5) ? 'heads' : 'tails'
     const file = fs.readFileSync(path.join(__dirname, `../Data/Images/${output}.png`))
     msg.channel.createMessage({
-      content: 'Current bans and rules:\nhttps://heroeslounge.gg/general/ruleset',
+      content: 'Amateur series rules: https://heroeslounge.gg/general/ruleset \nDivision S rules: https://heroeslounge.gg/divisionS/ruleset',
       image: {
         url: `attachment://${output}.png`
       }
