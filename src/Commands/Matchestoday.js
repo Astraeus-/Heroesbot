@@ -97,6 +97,21 @@ class MatchesToday extends BaseCommand {
 
           let twitchChannel
 
+          // Attach a division name or tournament + group.
+          let fixture = ''
+
+          if (division.playoff_id || matches[match].playoff_id) {
+            const playoff = matches[match].playoff_id ? await heroesloungeApi.getPlayoff(matches[match].playoff_id).catch((error) => {
+              Logger.warn('Unable to get playoff info', error)
+            }) : division.playoff_id ? await heroesloungeApi.getPlayoff(division.playoff_id).catch((error) => {
+              Logger.warn('Unable to get playoff info', error)
+            }) : ''
+
+            fixture = `${playoff.title}${division ? ` ${division.title}` : ''}`
+          } else {
+            fixture = division.title
+          }
+
           if (matches[match].channel_id) {
             twitchChannel = await heroesloungeApi.getTwitchChannel(matches[match].channel_id).catch((error) => {
               Logger.warn('Unable to get Twitch channel info', error)
@@ -108,8 +123,11 @@ class MatchesToday extends BaseCommand {
             Embeds = addEmbed(embed, Embeds, embedCounter)
           }
 
-          Embeds[embedCounter].fields[0].value += `${matches[match].wbp.slice(-8, -3)} ${division.title}\n`
-          Embeds[embedCounter].fields[1].value += `[${teams[0].slug} Vs ${teams[1].slug}](${matchURL})\n`
+          const leftTeamSlug = teams[0] ? teams[0].slug : 'TBD'
+          const rightTeamSlug = teams[1] ? teams[1].slug : 'TBD'
+
+          Embeds[embedCounter].fields[0].value += `${matches[match].wbp.slice(-8, -3)} ${fixture}\n`
+          Embeds[embedCounter].fields[1].value += `[${leftTeamSlug} Vs ${rightTeamSlug}](${matchURL})\n`
           Embeds[embedCounter].fields[2].value += `${twitchChannel ? `[Channel](${twitchChannel.url})` : 'No'}\n`
         }
 

@@ -80,15 +80,18 @@ class CastsToday extends BaseCommand {
           })
 
           // Attach a division name or tournament + group.
-          let divisionName = ''
+          let fixture = ''
 
-          if (division.playoff_id !== null) {
-            const playoff = await heroesloungeApi.getPlayoff(division.playoff_id).catch((error) => {
+          if (division.playoff_id || castedMatches[match].playoff_id) {
+            const playoff = castedMatches[match].playoff_id ? await heroesloungeApi.getPlayoff(castedMatches[match].playoff_id).catch((error) => {
               Logger.warn('Unable to get playoff info', error)
-            })
-            divisionName = `Heroes Lounge ${playoff.title} ${division.title.toLowerCase()}`
+            }) : division.playoff_id ? await heroesloungeApi.getPlayoff(division.playoff_id).catch((error) => {
+              Logger.warn('Unable to get playoff info', error)
+            }) : ''
+
+            fixture = `Heroes Lounge ${playoff.title}${division ? ` ${division.title}` : ''}`
           } else {
-            divisionName = division.title.toLowerCase()
+            fixture = division.title
           }
 
           const time = castedMatches[match].wbp.slice(-8, -3)
@@ -109,7 +112,7 @@ class CastsToday extends BaseCommand {
             response += `At ${time}\n`
           }
 
-          response += `${casterMessage} will be bringing you a ${divisionName} match between ${teams[0].title} and ${teams[1].title} on \`${twitchChannel.url}\`\n`
+          response += `${casterMessage} will be bringing you a ${fixture} match between ${teams[0].title} and ${teams[1].title} on \`${twitchChannel.url}\`\n`
         }
 
         return response
