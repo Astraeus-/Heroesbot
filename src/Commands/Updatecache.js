@@ -24,8 +24,8 @@ class UpdateCache extends BaseCommand {
   }
 
   exec (msg) {
-    let TeamData = DataFetcher.allTeamData()
-    let MatchesToday = DataFetcher.matchesToday()
+    const TeamData = DataFetcher.allTeamData()
+    const MatchesToday = DataFetcher.matchesToday()
 
     Promise.all([TeamData, MatchesToday])
       .then(() => {
