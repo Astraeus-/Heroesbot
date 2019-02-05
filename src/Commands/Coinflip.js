@@ -1,6 +1,6 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
 const Logger = require('../util/Logger.js')
-const fs = require('fs')
+const fs = require('fs').promises
 const path = require('path')
 
 class Coinflip extends BaseCommand {
@@ -41,16 +41,19 @@ class Coinflip extends BaseCommand {
 
   exec (msg) {
     const output = Math.round(Math.random() >= 0.5) ? 'heads' : 'tails'
-    const file = fs.readFileSync(path.join(__dirname, `../Data/Images/${output}.png`))
-    msg.channel.createMessage({
-      content: 'Amateur series rules: https://heroeslounge.gg/general/ruleset \nDivision S rules: https://heroeslounge.gg/divisionS/ruleset',
-      image: {
-        url: `attachment://${output}.png`
-      }
-    },
-    {
-      file: file,
-      name: `${output}.png`
+    fs.readFile(path.join(__dirname, `../Data/Images/${output}.png`)).then((file) => {
+      msg.channel.createMessage({
+        content: 'Amateur series rules: https://heroeslounge.gg/general/ruleset \nDivision S rules: https://heroeslounge.gg/divisionS/ruleset',
+        image: {
+          url: `attachment://${output}.png`
+        }
+      },
+      {
+        file: file,
+        name: `${output}.png`
+      }).catch((error) => {
+        throw error
+      })
     }).catch(error => Logger.error('Unable to respond with coinflip result', error))
   }
 }

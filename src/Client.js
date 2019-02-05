@@ -1,5 +1,5 @@
 const Eris = require('eris')
-const fs = require('fs')
+const fs = require('fs').promises
 const path = require('path')
 const { embed } = require('./config.json')
 
@@ -19,23 +19,25 @@ class Client {
   }
 
   loadCommands (dir) {
-    fs.readdir(dir, (error, commands) => {
-      if (error) throw error
+    fs.readdir(dir).then((commands) => {
       for (let i = 0; i < commands.length; i++) {
         const Command = require(path.join(__dirname, 'Commands', commands[i]))
         const command = new Command(this.bot)
         this.bot.commands.set(command.command, command)
       }
+    }).catch((error) => {
+      throw error
     })
   }
 
   loadEvents (dir) {
-    fs.readdir(dir, (error, events) => {
-      if (error) throw error
+    fs.readdir(dir).then((events) => {
       for (let i = 0; i < events.length; i++) {
         const event = require(path.join(__dirname, 'Events', events[i]))
         event(this.bot)
       }
+    }).catch((error) => {
+      throw error
     })
   }
 }

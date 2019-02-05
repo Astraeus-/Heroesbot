@@ -2,6 +2,8 @@ const FileHandler = require('../util/FileHandler.js')
 const path = require('path')
 const { vip } = require('../config.json')
 
+const Logger = require('../util/Logger.js')
+
 module.exports = (bot) => {
   bot.on('guildMemberUpdate', (guild, member, oldMember) => {
     if (member.roles.length === oldMember.roles.length) return
@@ -29,13 +31,17 @@ module.exports = (bot) => {
               }
             }
             data[guild.id][member.user.id] = mutedMember
-            FileHandler.writeJSONFile(path.join(__dirname, '../Data/Muted.json'), data)
-          })
+            FileHandler.writeJSONFile(path.join(__dirname, '../Data/Muted.json'), data).catch((error) => {
+              throw error
+            })
+          }).catch((error) => Logger.warn('Unable to update muted list', error))
         } else {
           FileHandler.readJSONFile(path.join(__dirname, '../Data/Muted.json')).then((data) => {
             delete data[guild.id][member.user.id]
-            FileHandler.writeJSONFile(path.join(__dirname, '../Data/Muted.json'), data)
-          })
+            FileHandler.writeJSONFile(path.join(__dirname, '../Data/Muted.json'), data).catch((error) => {
+              throw error
+            })
+          }).catch((error) => Logger.error('Unable to updated muted list', error))
         }
         break
       case 'Patreon VIP':

@@ -25,6 +25,8 @@ module.exports = (bot) => {
           description: `:exclamation: User ${member.user.username} attempted to circumvent their mute on ${guild.name}`
         })
       }
+    }).catch((error) => {
+      Logger.warn(`Unable to check mute ${member.user.username}#${member.user.discriminator}`, error)
     })
 
     // Assign the EU or NA role for returning Discord members.
