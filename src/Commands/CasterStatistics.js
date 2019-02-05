@@ -59,26 +59,24 @@ class CasterStatistics extends BaseCommand {
     const season = parseInt(args[0])
     const seasonId = season - 3 // Id 1 belong to season 4.
 
-    heroesloungeApi.getSeasonCasterStatistics(seasonId)
-      .then((stats) => {
-        embed.description += season
-        const roundData = stats.dataByRound
+    heroesloungeApi.getSeasonCasterStatistics(seasonId).then((stats) => {
+      embed.description += season
+      const roundData = stats.dataByRound
 
-        for (let entry in roundData) {
-          if (parseInt(entry) > 0) {
-            embed.fields[0].value += `Round ${entry}: ${roundData[entry].matches} matches\n`
-            embed.fields[1].value += `${roundData[entry].casts}\n`
-            embed.fields[2].value += `${roundData[entry].coverage !== 'undefined' ? roundData[entry].coverage : 0}%\n`
-          }
+      for (let entry in roundData) {
+        if (parseInt(entry) > 0) {
+          embed.fields[0].value += `Round ${entry}: ${roundData[entry].matches} matches\n`
+          embed.fields[1].value += `${roundData[entry].casts}\n`
+          embed.fields[2].value += `${roundData[entry].coverage !== 'undefined' ? roundData[entry].coverage : 0}%\n`
         }
+      }
 
-        return msg.channel.createMessage({ embed: embed })
-          .catch((error) => {
-            throw error
-          })
-      }).catch((error) => {
-        Logger.error(`Unable to get casterstatistics for season: ${season}`, error)
+      msg.channel.createMessage({ embed: embed }).catch((error) => {
+        Logger.warn(`Could not notify casterstatistics`, error)
       })
+    }).catch((error) => {
+      Logger.error(`Unable to get casterstatistics for season: ${season}`, error)
+    })
   }
 }
 

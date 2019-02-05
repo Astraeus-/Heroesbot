@@ -6,9 +6,7 @@ const Logger = require('./Logger.js')
 module.exports.allTeamData = () => {
   return heroesloungeApi.getTeams().then((teams) => {
     Logger.info('Updating Teamdata cache')
-    FileHandler.writeJSONFile(path.join(__dirname, '../Data/Teamdata.json'), teams).catch((error) => {
-      throw error
-    })
+    return FileHandler.writeJSONFile(path.join(__dirname, '../Data/Teamdata.json'), teams)
   }).then(() => {
     Logger.info('Updating Teamdata cache complete')
   }).catch((error) => {
@@ -19,9 +17,7 @@ module.exports.allTeamData = () => {
 module.exports.matchesToday = () => {
   return heroesloungeApi.getMatchesToday().then((matches) => {
     Logger.info('Updating MatchesToday cache')
-    FileHandler.writeJSONFile(path.join(__dirname, '../Data/MatchesToday.json'), matches).catch((error) => {
-      throw error
-    })
+    return FileHandler.writeJSONFile(path.join(__dirname, '../Data/MatchesToday.json'), matches)
   }).then(() => {
     Logger.info('Updating MatchesToday cache complete')
   }).catch((error) => {

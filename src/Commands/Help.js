@@ -75,14 +75,13 @@ class Help extends BaseCommand {
       })
     }
 
-    this.bot.getDMChannel(msg.author.id)
-      .then((channel) => {
-        return channel.createMessage({
-          embed: embed
-        }).catch((error) => {
-          throw error
-        })
-      }).catch(error => Logger.error('Unable to provide member with help', error))
+    this.bot.getDMChannel(msg.author.id).then((channel) => {
+      return channel.createMessage({
+        embed: embed
+      })
+    }).catch((error) => {
+      Logger.error(`Unable to provide ${msg.author.username} with help`, error)
+    })
   }
 }
 

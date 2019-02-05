@@ -27,16 +27,19 @@ class UpdateCache extends BaseCommand {
     const TeamData = DataFetcher.allTeamData()
     const MatchesToday = DataFetcher.matchesToday()
 
-    Promise.all([TeamData, MatchesToday])
-      .then(() => {
-        this.bot.getDMChannel(msg.author.id)
-          .then(channel => channel.createMessage('Updated cache files!'))
-          .catch(error => Logger.warn('Could not notify user about updating cache files', error))
+    Promise.all([TeamData, MatchesToday]).then(() => {
+      this.bot.getDMChannel(msg.author.id).then((channel) => {
+        return channel.createMessage('Updated cache files!')
       }).catch((error) => {
-        this.bot.getDMChannel(msg.author.id)
-          .then(channel => channel.createMessage(`Could not update cache files\n\`\`\`js\n${error}\n\`\`\``))
-          .catch(error => Logger.warn('Could not notify user about failing to update cache files', error))
+        Logger.warn(`Could not notify about updating cache files`, error)
       })
+    }).catch((error) => {
+      this.bot.getDMChannel(msg.author.id).then((channel) => {
+        return channel.createMessage(`Could not update cache files\n\`\`\`js\n${error}\n\`\`\``)
+      }).catch((error) => {
+        Logger.warn(`Could not notify about failing to update cache files`, error)
+      })
+    })
   }
 }
 

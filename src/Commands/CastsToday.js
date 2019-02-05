@@ -118,23 +118,16 @@ class CastsToday extends BaseCommand {
         return response
       })
       .then((response) => {
-        return this.bot.getDMChannel(msg.author.id)
-          .then((channel) => {
-            if (!response) {
-              return channel.createMessage('There are no casted matches')
-                .catch((error) => {
-                  throw error
-                })
-            } else {
-              return channel.createMessage(response)
-                .catch((error) => {
-                  throw error
-                })
-            }
-          }).catch((error) => {
-            throw error
-          })
-      }).catch(error => Logger.error('Unable to list upcoming casts', error))
+        return this.bot.getDMChannel(msg.author.id).then((channel) => {
+          if (!response) {
+            return channel.createMessage('There are no casted matches')
+          } else {
+            return channel.createMessage(response)
+          }
+        })
+      }).catch((error) => {
+        Logger.error('Unable to list upcoming casts', error)
+      })
   }
 }
 

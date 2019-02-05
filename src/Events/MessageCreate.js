@@ -26,17 +26,21 @@ module.exports = (bot) => {
         if (!command.enabled) return bot.getDMChannel(msg.author.id).then((channel) => channel.createMessage(`Command ${command.prefix + command.command} is disabled`))
         if (!msg.channel.guild && !command.invokeDM) return msg.channel.createMessage(`The command ${command.prefix + command.command} is disabled for use in DM's`)
         if (args.length < command.min_args) {
-          return bot.getDMChannel(msg.author.id)
-            .then(channel => channel.createMessage('Invalid number of arguments'))
-            .catch(error => Logger.warn(`Could not inform invalid number of arguments for ${command.command}`, error))
+          return bot.getDMChannel(msg.author.id).then((channel) => {
+            channel.createMessage('Invalid number of arguments')
+          }).catch((error) => {
+            Logger.warn(`Could not inform invalid number of arguments for ${command.command}`, error)
+          })
         }
 
         const cooldown = CommandHandler.checkCooldown(command, msg.channel.id)
         if (cooldown) {
           if (command.prefix === '!') {
-            return bot.getDMChannel(msg.author.id)
-              .then(channel => channel.createMessage(`The command ${command.prefix + command.command} is on cooldown for ${cooldown}ms`))
-              .catch(error => Logger.warn(`Could not inform about ${command.prefix + command.command} being on cooldown`, error))
+            return bot.getDMChannel(msg.author.id).then((channel) => {
+              return channel.createMessage(`The command ${command.prefix + command.command} is on cooldown for ${cooldown}ms`)
+            }).catch((error) => {
+              Logger.warn(`Could not inform about ${command.prefix + command.command} being on cooldown`, error)
+            })
           }
           return // Exit silently if #command is on cooldown.
         }
@@ -44,9 +48,11 @@ module.exports = (bot) => {
         const hasPermissions = msg.channel.guild ? CommandHandler.checkPermissions(command, msg) : CommandHandler.checkUsersPermission(command, msg)
         if (!hasPermissions) {
           if (command.prefix === '!') {
-            return bot.getDMChannel(msg.author.id)
-              .then(channel => channel.createMessage(`You do not have permission to use ${command.prefix + command.command}`))
-              .catch(error => Logger.warn(`Could not inform about no permission for ${command.prefix + command.command}`, error))
+            return bot.getDMChannel(msg.author.id).then((channel) => {
+              return channel.createMessage(`You do not have permission to use ${command.prefix + command.command}`)
+            }).catch((error) => {
+              Logger.warn(`Could not inform about no permission for ${command.prefix + command.command}`, error)
+            })
           } else {
             return // Exit silently if user does not have permission to use #commands.
           }

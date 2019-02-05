@@ -113,18 +113,21 @@ module.exports.syncRegionRoles = async (bot) => {
 
       // Remove NA region role if region changed to EU.
       if (currentSloth.region_id === '1' && roles.includes('494535033722372106')) {
-        bot.removeGuildMemberRole(defaultServer, currentSloth.discord_id, '494535033722372106')
-          .catch(error => Logger.error(`Error removing old region role from ${currentSloth.discord_tag}`, error))
+        bot.removeGuildMemberRole(defaultServer, currentSloth.discord_id, '494535033722372106').catch((error) => {
+          Logger.error(`Error removing old region role from ${currentSloth.discord_tag}`, error)
+        })
       }
       // Remove EU region role if region changed to NA.
       if (currentSloth.region_id === '2' && roles.includes('494534903547822105')) {
-        bot.removeGuildMemberRole(defaultServer, currentSloth.discord_id, '494534903547822105')
-          .catch(error => Logger.error(`Error removing old region role from ${currentSloth.discord_tag}`, error))
+        bot.removeGuildMemberRole(defaultServer, currentSloth.discord_id, '494534903547822105').catch((error) => {
+          Logger.error(`Error removing old region role from ${currentSloth.discord_tag}`, error)
+        })
       }
 
       syncedSloths.push(
-        bot.addGuildMemberRole(defaultServer, currentSloth.discord_id, regionRoleId)
-          .catch(error => Logger.error(`Error assigning region role to ${currentSloth.discord_tag}`, error))
+        bot.addGuildMemberRole(defaultServer, currentSloth.discord_id, regionRoleId).catch((error) => {
+          Logger.error(`Error assigning region role to ${currentSloth.discord_tag}`, error)
+        })
       )
     }
 
@@ -133,8 +136,8 @@ module.exports.syncRegionRoles = async (bot) => {
     return Promise.all(syncedSloths).then(() => {
       Logger.info(`Region role synchronisation complete, updated ${syncedSloths.length} users`)
       return 'Region role synchronisation complete'
-    }).catch((error) => {
-      throw error
     })
-  }).catch(error => Logger.error('Error syncing all region roles', error))
+  }).catch((error) => {
+    Logger.error('Error syncing all region roles', error)
+  })
 }

@@ -31,17 +31,17 @@ module.exports = (bot) => {
               }
             }
             data[guild.id][member.user.id] = mutedMember
-            FileHandler.writeJSONFile(path.join(__dirname, '../Data/Muted.json'), data).catch((error) => {
-              throw error
-            })
-          }).catch((error) => Logger.warn('Unable to update muted list', error))
+            return FileHandler.writeJSONFile(path.join(__dirname, '../Data/Muted.json'), data)
+          }).catch((error) => {
+            Logger.warn('Unable to update muted list', error)
+          })
         } else {
           FileHandler.readJSONFile(path.join(__dirname, '../Data/Muted.json')).then((data) => {
             delete data[guild.id][member.user.id]
-            FileHandler.writeJSONFile(path.join(__dirname, '../Data/Muted.json'), data).catch((error) => {
-              throw error
-            })
-          }).catch((error) => Logger.error('Unable to updated muted list', error))
+            return FileHandler.writeJSONFile(path.join(__dirname, '../Data/Muted.json'), data)
+          }).catch((error) => {
+            Logger.error('Unable to updated muted list', error)
+          })
         }
         break
       case 'Patreon VIP':

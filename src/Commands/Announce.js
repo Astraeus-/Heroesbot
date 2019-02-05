@@ -49,12 +49,15 @@ class Announce extends BaseCommand {
         announcement.embed = attachment
       }
 
-      announcementChannel.createMessage(announcement)
-        .catch(error => Logger.error('Could not make announcement', error))
+      announcementChannel.createMessage(announcement).catch((error) => {
+        Logger.error('Could not make announcement', error)
+      })
     } else {
-      this.bot.getDMChannel(msg.author.id)
-        .then(channel => channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`))
-        .catch(error => Logger.warn('Could not inform invalid syntax', error))
+      this.bot.getDMChannel(msg.author.id).then((channel) => {
+        return channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`)
+      }).catch((error) => {
+        Logger.warn(`Could not notify invalid announcement syntax`, error)
+      })
     }
   }
 }

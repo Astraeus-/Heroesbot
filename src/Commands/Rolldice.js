@@ -41,8 +41,9 @@ class Rolldice extends BaseCommand {
       output = '```Total: ' + total + '```'
     }
 
-    msg.channel.createMessage(output)
-      .catch(error => Logger.error('Unable to respond with dice roll result', error))
+    msg.channel.createMessage(output).catch((error) => {
+      Logger.error('Unable to respond with dice roll result', error)
+    })
   }
 }
 

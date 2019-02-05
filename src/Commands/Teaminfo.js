@@ -51,67 +51,55 @@ class Teaminfo extends BaseCommand {
       ]
     }
 
-    FileHandler.readJSONFile(path.join(__dirname, '../Data/Teamdata.json'))
-      .then((teams) => {
-        const selectedTeam = teams.find((team) => {
-          return team.slug.toLowerCase() === args.join(' ').toLowerCase()
-        })
-
-        if (!selectedTeam) return null
-
-        return heroesloungeApi.getTeam(selectedTeam.id)
-          .catch((error) => {
-            throw error
-          })
+    FileHandler.readJSONFile(path.join(__dirname, '../Data/Teamdata.json')).then((teams) => {
+      const selectedTeam = teams.find((team) => {
+        return team.slug.toLowerCase() === args.join(' ').toLowerCase()
       })
-      .then(async (team) => {
-        if (!team) return null
 
-        const teamSloths = await heroesloungeApi.getTeamSloths(team.id).catch((error) => {
-          Logger.warn(`Unable to get team sloths for ${team.title}`, error)
-        })
+      if (!selectedTeam) return null
 
-        const teamLogo = await heroesloungeApi.getTeamLogo(team.id).catch((error) => {
-          Logger.warn(`Unable to get team logo for ${team.title}`, error)
-        })
+      return heroesloungeApi.getTeam(selectedTeam.id)
+    }).then(async (team) => {
+      if (!team) return null
 
-        let creationDate = team.created_at.slice(0, 10).split('-')
-        creationDate = `${creationDate[2]}-${creationDate[1]}-${creationDate[0]}`
-        embed.title = team.title
-        embed.description = `${team.short_description.replace(/<(.|\n)*?>/g, '')}\n\nCreated on: ${creationDate}`
-        embed.url = `https://heroeslounge.gg/team/view/${team.slug.replace(' ', '%20')}`
-        embed.thumbnail = {
-          'url': teamLogo.path || 'https://heroeslounge.gg/plugins/rikki/heroeslounge/assets/img/bg_75.png'
-        }
-
-        for (let sloth of teamSloths) {
-          embed.fields[0].value += `${sloth.title}\n`
-          embed.fields[1].value += `${sloth.battle_tag}\n`
-        }
-
-        for (let field in embed.fields) {
-          if (embed.fields[field].value.length === 0) embed.fields[field].value += '-None'
-        }
-
-        return embed
+      const teamSloths = await heroesloungeApi.getTeamSloths(team.id).catch((error) => {
+        Logger.warn(`Unable to get team sloths for ${team.title}`, error)
       })
-      .then((embed) => {
-        if (embed) {
-          return msg.channel.createMessage({ embed: embed })
-            .catch((error) => {
-              throw error
-            })
-        } else {
-          return this.bot.getDMChannel(msg.author.id)
-            .then((channel) => {
-              return channel.createMessage(`Team with SLUG ${args} does not exist`).catch((error) => {
-                throw error
-              })
-            }).catch((error) => {
-              throw error
-            })
-        }
-      }).catch(error => Logger.error('Unable to provide team info', error))
+
+      const teamLogo = await heroesloungeApi.getTeamLogo(team.id).catch((error) => {
+        Logger.warn(`Unable to get team logo for ${team.title}`, error)
+      })
+
+      let creationDate = team.created_at.slice(0, 10).split('-')
+      creationDate = `${creationDate[2]}-${creationDate[1]}-${creationDate[0]}`
+      embed.title = team.title
+      embed.description = `${team.short_description.replace(/<(.|\n)*?>/g, '')}\n\nCreated on: ${creationDate}`
+      embed.url = `https://heroeslounge.gg/team/view/${team.slug.replace(' ', '%20')}`
+      embed.thumbnail = {
+        'url': teamLogo.path || 'https://heroeslounge.gg/plugins/rikki/heroeslounge/assets/img/bg_75.png'
+      }
+
+      for (let sloth of teamSloths) {
+        embed.fields[0].value += `${sloth.title}\n`
+        embed.fields[1].value += `${sloth.battle_tag}\n`
+      }
+
+      for (let field in embed.fields) {
+        if (embed.fields[field].value.length === 0) embed.fields[field].value += '-None'
+      }
+
+      return embed
+    }).then((embed) => {
+      if (embed) {
+        return msg.channel.createMessage({ embed: embed })
+      } else {
+        return this.bot.getDMChannel(msg.author.id).then((channel) => {
+          return channel.createMessage(`Team with SLUG ${args} does not exist`)
+        })
+      }
+    }).catch((error) => {
+      Logger.error('Unable to provide team info', error)
+    })
   }
 }
 

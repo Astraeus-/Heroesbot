@@ -52,23 +52,25 @@ class EditMessage extends BaseCommand {
         update.embed = null
       }
 
-      editMessageChannel.getMessage(updateMessageId)
-        .then((message) => {
-          if (message.author.id !== this.bot.user.id) {
-            return this.bot.getDMChannel(msg.author.id)
-              .then(channel => channel.createMessage('The message specified does not belong to Heroesbot'))
-              .catch(error => Logger.warn('Could not inform invalid message specified', error))
-          } else {
-            return message.edit(update)
-              .catch((error) => {
-                throw error
-              })
-          }
-        }).catch(error => Logger.error('Could not edit message', error))
+      editMessageChannel.getMessage(updateMessageId).then((message) => {
+        if (message.author.id !== this.bot.user.id) {
+          return this.bot.getDMChannel(msg.author.id).then((channel) => {
+            return channel.createMessage('The message specified does not belong to Heroesbot')
+          }).catch((error) => {
+            Logger.warn(`Could not notify invalid editMessage message specified`, error)
+          })
+        } else {
+          return message.edit(update)
+        }
+      }).catch((error) => {
+        Logger.error('Could not edit message', error)
+      })
     } else {
-      this.bot.getDMChannel(msg.author.id)
-        .then(channel => channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`))
-        .catch(error => Logger.warn('Could not inform invalid syntax', error))
+      this.bot.getDMChannel(msg.author.id).then((channel) => {
+        return channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`)
+      }).catch((error) => {
+        Logger.warn(`Could not notify invalid editMessage syntax`, error)
+      })
     }
   }
 }

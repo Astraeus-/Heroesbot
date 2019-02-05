@@ -17,8 +17,9 @@ module.exports = (bot) => {
           return role.name === 'Muted'
         })
 
-        bot.addGuildMemberRole(guild.id, member.user.id, mutedRole.id, 'Attempted to circumvent mute')
-          .catch(error => Logger.error(`Unable to reassign muted role to ${member.user.username}`, error))
+        bot.addGuildMemberRole(guild.id, member.user.id, mutedRole.id, 'Attempted to circumvent mute').catch((error) => {
+          Logger.error(`Unable to reassign muted role to ${member.user.username}`, error)
+        })
         webhook.send({
           title: 'Attempt at avoiding mute',
           color: bot.embed.color,
@@ -40,9 +41,12 @@ module.exports = (bot) => {
           regionRoleId = '494535033722372106' // NA
         }
 
-        bot.addGuildMemberRole(guild.id, member.user.id, regionRoleId)
-          .catch(error => Logger.error(`Unable to reassign region role to ${member.user.username}`, error))
+        bot.addGuildMemberRole(guild.id, member.user.id, regionRoleId).catch((error) => {
+          Logger.error(`Unable to reassign region role to ${member.user.username}`, error)
+        })
       }
-    }).catch(error => Logger.error('Unable to verify sloth on website', error))
+    }).catch((error) => {
+      Logger.error('Unable to verify sloth on website', error)
+    })
   })
 }

@@ -27,16 +27,14 @@ class AssignRegion extends BaseCommand {
 
   exec (msg) {
     syncRegionRoles(this.bot).then((response) => {
-      return this.bot.getDMChannel(msg.author.id)
-        .then((channel) => {
-          return channel.createMessage(response)
-            .catch((error) => {
-              throw error
-            })
-        }).catch((error) => {
-          throw error
-        })
-    }).catch(error => Logger.error('Unable to sync region roles', error))
+      this.bot.getDMChannel(msg.author.id).then((channel) => {
+        return channel.createMessage(response)
+      }).catch((error) => {
+        Logger.warn(`Could not notify region syncing`, error)
+      })
+    }).catch((error) => {
+      Logger.error('Unable to sync region roles', error)
+    })
   }
 }
 

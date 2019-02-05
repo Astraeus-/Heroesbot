@@ -66,9 +66,11 @@ class Draft extends BaseCommand {
 
     // Check that the map input actually exists.
     if (!checkMap(map)) {
-      return this.bot.getDMChannel(msg.author.id)
-        .then(channel => channel.createMessage(`Channel with abbreviation: ${map} does not exist`))
-        .catch(error => Logger.warn('Could not inform about invalid map syntax', error))
+      return this.bot.getDMChannel(msg.author.id).then((channel) => {
+        return channel.createMessage(`Channel with abbreviation: ${map} does not exist`)
+      }).catch((error) => {
+        Logger.warn('Could not inform about invalid map syntax', error)
+      })
     }
 
     createDraft(map, teamA, teamB, timerOff)
@@ -88,10 +90,9 @@ class Draft extends BaseCommand {
       })
       .then((embed) => {
         return msg.channel.createMessage({ embed: embed })
-          .catch((error) => {
-            throw error
-          })
-      }).catch(error => Logger.error('Unable to create mockdraft', error))
+      }).catch((error) => {
+        Logger.error('Unable to create mockdraft', error)
+      })
   }
 }
 

@@ -55,54 +55,48 @@ class CurrentBans extends BaseCommand {
 
     msg.channel.sendTyping()
 
-    heroesloungeApi.getBans()
-      .then(async (bans) => {
-        if (bans.length === 0) return null
+    heroesloungeApi.getBans().then(async (bans) => {
+      if (bans.length === 0) return null
 
-        for (let ban of bans) {
-          if (ban.literal) {
-            embed.fields[1].value += `-${ban.literal}\n`
+      for (let ban of bans) {
+        if (ban.literal) {
+          embed.fields[1].value += `-${ban.literal}\n`
+        } else {
+          if (ban.talent_id) {
+            const talent = await heroesloungeApi.getTalent(ban.talent_id).catch((error) => {
+              Logger.warn('Unable to get talent info', error)
+            })
+            const hero = await heroesloungeApi.getHero(ban.hero_id).catch((error) => {
+              Logger.warn('Unable to get hero info', error)
+            })
+            embed.fields[2].value += `-${hero.title}- ${talent.title}\n`
           } else {
-            if (ban.talent_id) {
-              const talent = await heroesloungeApi.getTalent(ban.talent_id).catch((error) => {
-                Logger.warn('Unable to get talent info', error)
-              })
-              const hero = await heroesloungeApi.getHero(ban.hero_id).catch((error) => {
-                Logger.warn('Unable to get hero info', error)
-              })
-              embed.fields[2].value += `-${hero.title}- ${talent.title}\n`
-            } else {
-              const hero = await heroesloungeApi.getHero(ban.hero_id).catch((error) => {
-                Logger.warn('Unable to get hero info', error)
-              })
+            const hero = await heroesloungeApi.getHero(ban.hero_id).catch((error) => {
+              Logger.warn('Unable to get hero info', error)
+            })
 
-              const roundStart = ban.round_start ? ban.round_start : ''
-              const roundEnd = ban.round_length ? parseInt(roundStart) + parseInt(ban.round_length) : ''
-              const roundInfo = roundStart && roundEnd ? `Rounds[${roundStart}-${roundEnd}]` : ''
-              embed.fields[0].value += `-${hero.title} ${roundInfo}\n`
-            }
+            const roundStart = ban.round_start ? ban.round_start : ''
+            const roundEnd = ban.round_length ? parseInt(roundStart) + parseInt(ban.round_length) : ''
+            const roundInfo = roundStart && roundEnd ? `Rounds[${roundStart}-${roundEnd}]` : ''
+            embed.fields[0].value += `-${hero.title} ${roundInfo}\n`
           }
         }
+      }
 
-        for (let field in embed.fields) {
-          if (embed.fields[field].value.length === 0) embed.fields[field].value += '-None'
-        }
+      for (let field in embed.fields) {
+        if (embed.fields[field].value.length === 0) embed.fields[field].value += '-None'
+      }
 
-        return embed
-      })
-      .then((embed) => {
-        if (!embed) {
-          return msg.channel.createMessage('There are currently no additional bans')
-            .catch((error) => {
-              throw error
-            })
-        } else {
-          return msg.channel.createMessage({ embed: embed })
-            .catch((error) => {
-              throw error
-            })
-        }
-      }).catch(error => Logger.error('Unable to list current bans', error))
+      return embed
+    }).then((embed) => {
+      if (!embed) {
+        return msg.channel.createMessage('There are currently no additional bans')
+      } else {
+        return msg.channel.createMessage({ embed: embed })
+      }
+    }).catch((error) => {
+      Logger.error('Unable to list current bans', error)
+    })
   }
 }
 

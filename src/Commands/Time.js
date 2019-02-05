@@ -31,10 +31,9 @@ class Time extends BaseCommand {
 
   exec (msg) {
     const timestamp = dateformat(msg.timestamp, 'hh:MM:ss TT')
-    msg.channel.createMessage(`The current time is ${timestamp}`)
-      .catch((error) => {
-        Logger.error('Could not respond with timestamp', error)
-      })
+    msg.channel.createMessage(`The current time is ${timestamp}`).catch((error) => {
+      Logger.error('Could not respond with timestamp', error)
+    })
   }
 }
 

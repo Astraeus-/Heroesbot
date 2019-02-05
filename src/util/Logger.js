@@ -5,11 +5,9 @@ module.exports.info = (msg) => {
 }
 
 module.exports.warn = (msg, warning) => {
-  console.warn(`${dateformat(Date.now(), 'dd/mm/yyyy hh:MM:ss TT')}| ${msg}`)
-  console.warn(warning)
+  console.warn(`${dateformat(Date.now(), 'dd/mm/yyyy hh:MM:ss TT')}| ${msg}`, warning)
 }
 
 module.exports.error = (msg, error) => {
-  console.error(`${dateformat(Date.now(), 'dd/mm/yyyy hh:MM:ss TT')}| ${msg}`)
-  console.error(error)
+  console.error(`${dateformat(Date.now(), 'dd/mm/yyyy hh:MM:ss TT')}| ${msg}`, error)
 }

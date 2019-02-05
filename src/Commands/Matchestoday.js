@@ -63,94 +63,90 @@ class MatchesToday extends BaseCommand {
     Embeds[embedCounter] = JSON.parse(JSON.stringify(embed))
 
     if (msg.channel.guild) {
-      this.bot.getDMChannel(msg.author.id)
-        .then(channel => channel.sendTyping())
+      this.bot.getDMChannel(msg.author.id).then((channel) => {
+        return channel.sendTyping()
+      }).catch((error) => {
+        Logger.warn(`Unable to sendTyping to ${msg.author.username}`, error)
+      })
     } else {
-      msg.channel.sendTyping()
+      msg.channel.sendTyping().catch((error) => {
+        Logger.warn(`Unable to sendTyping to ${msg.channel.name}`, error)
+      })
     }
 
-    FileHandler.readJSONFile(path.join(__dirname, '../Data/MatchesToday.json'))
-      .then(async (matches) => {
-        if (matches.length === 0) return null
+    FileHandler.readJSONFile(path.join(__dirname, '../Data/MatchesToday.json')).then(async (matches) => {
+      if (matches.length === 0) return null
 
-        matches.sort((a, b) => {
-          return parseInt(a.wbp.slice(-8, -3).replace(':', '')) - parseInt(b.wbp.slice(-8, -3).replace(':', ''))
+      matches.sort((a, b) => {
+        return parseInt(a.wbp.slice(-8, -3).replace(':', '')) - parseInt(b.wbp.slice(-8, -3).replace(':', ''))
+      })
+
+      let matchDivisions = []
+      let matchTeams = []
+
+      for (let match in matches) {
+        matchDivisions[match] = matches[match].div_id ? heroesloungeApi.getDivision(matches[match].div_id).catch((error) => {
+          Logger.warn('Unable to get division info', error)
+        }) : ''
+
+        matchTeams[match] = heroesloungeApi.getMatchTeams(matches[match].id).catch((error) => {
+          Logger.warn('Unable to get match team info', error)
         })
+      }
 
-        let matchDivisions = []
-        let matchTeams = []
+      for (let match in matches) {
+        const teams = await matchTeams[match]
+        const division = await matchDivisions[match]
+        const matchURL = 'https://heroeslounge.gg/match/view/' + matches[match].id
 
-        for (let match in matches) {
-          matchDivisions[match] = matches[match].div_id ? heroesloungeApi.getDivision(matches[match].div_id).catch((error) => {
-            Logger.warn('Unable to get division info', error)
+        let twitchChannel
+
+        // Attach a division name or tournament + group.
+        let fixture = ''
+
+        if (division.playoff_id || matches[match].playoff_id) {
+          const playoff = matches[match].playoff_id ? await heroesloungeApi.getPlayoff(matches[match].playoff_id).catch((error) => {
+            Logger.warn('Unable to get playoff info', error)
+          }) : division.playoff_id ? await heroesloungeApi.getPlayoff(division.playoff_id).catch((error) => {
+            Logger.warn('Unable to get playoff info', error)
           }) : ''
 
-          matchTeams[match] = heroesloungeApi.getMatchTeams(matches[match].id).catch((error) => {
-            Logger.warn('Unable to get match team info', error)
+          fixture = `${playoff.title}${division ? ` ${division.title}` : ''}`
+        } else {
+          fixture = division.title
+        }
+
+        if (matches[match].channel_id) {
+          twitchChannel = await heroesloungeApi.getTwitchChannel(matches[match].channel_id).catch((error) => {
+            Logger.warn('Unable to get Twitch channel info', error)
           })
         }
 
-        for (let match in matches) {
-          const teams = await matchTeams[match]
-          const division = await matchDivisions[match]
-          const matchURL = 'https://heroeslounge.gg/match/view/' + matches[match].id
-
-          let twitchChannel
-
-          // Attach a division name or tournament + group.
-          let fixture = ''
-
-          if (division.playoff_id || matches[match].playoff_id) {
-            const playoff = matches[match].playoff_id ? await heroesloungeApi.getPlayoff(matches[match].playoff_id).catch((error) => {
-              Logger.warn('Unable to get playoff info', error)
-            }) : division.playoff_id ? await heroesloungeApi.getPlayoff(division.playoff_id).catch((error) => {
-              Logger.warn('Unable to get playoff info', error)
-            }) : ''
-
-            fixture = `${playoff.title}${division ? ` ${division.title}` : ''}`
-          } else {
-            fixture = division.title
-          }
-
-          if (matches[match].channel_id) {
-            twitchChannel = await heroesloungeApi.getTwitchChannel(matches[match].channel_id).catch((error) => {
-              Logger.warn('Unable to get Twitch channel info', error)
-            })
-          }
-
-          if (Embeds[embedCounter].fields[1].value.length >= 950) {
-            embedCounter++
-            Embeds = addEmbed(embed, Embeds, embedCounter)
-          }
-
-          const leftTeamSlug = teams[0] ? teams[0].slug : 'TBD'
-          const rightTeamSlug = teams[1] ? teams[1].slug : 'TBD'
-
-          Embeds[embedCounter].fields[0].value += `${matches[match].wbp.slice(-8, -3)} ${fixture}\n`
-          Embeds[embedCounter].fields[1].value += `[${leftTeamSlug} Vs ${rightTeamSlug}](${matchURL})\n`
-          Embeds[embedCounter].fields[2].value += `${twitchChannel ? `[Channel](${twitchChannel.url})` : 'No'}\n`
+        if (Embeds[embedCounter].fields[1].value.length >= 950) {
+          embedCounter++
+          Embeds = addEmbed(embed, Embeds, embedCounter)
         }
 
-        return Embeds
+        const leftTeamSlug = teams[0] ? teams[0].slug : 'TBD'
+        const rightTeamSlug = teams[1] ? teams[1].slug : 'TBD'
+
+        Embeds[embedCounter].fields[0].value += `${matches[match].wbp.slice(-8, -3)} ${fixture}\n`
+        Embeds[embedCounter].fields[1].value += `[${leftTeamSlug} Vs ${rightTeamSlug}](${matchURL})\n`
+        Embeds[embedCounter].fields[2].value += `${twitchChannel ? `[Channel](${twitchChannel.url})` : 'No'}\n`
+      }
+
+      return Embeds
+    }).then((Embeds) => {
+      return this.bot.getDMChannel(msg.author.id).then((channel) => {
+        if (!Embeds) {
+          return channel.createMessage('There are no upcoming matches')
+        } else {
+          return sendMatchesTodayResponse(channel, Embeds)
+        }
       })
-      .then((Embeds) => {
-        return this.bot.getDMChannel(msg.author.id)
-          .then((channel) => {
-            if (!Embeds) {
-              return channel.createMessage('There are no upcoming matches')
-                .catch((error) => {
-                  throw error
-                })
-            } else {
-              return sendMatchesTodayResponse(channel, Embeds)
-                .catch((error) => {
-                  throw error
-                })
-            }
-          }).catch((error) => {
-            throw error
-          })
-      }).catch(error => Logger.error('Unable to list upcoming matches', error))
+    }).catch((error) => {
+      Logger.error('Unable to list upcoming matches', error)
+    })
   }
 }
 
@@ -165,10 +161,9 @@ let sendMatchesTodayResponse = (channel, Embeds) => {
 
   for (let embed in Embeds) {
     response.push(
-      channel.createMessage({ 'embed': Embeds[embed] })
-        .catch((error) => {
-          throw error
-        }))
+      channel.createMessage({ 'embed': Embeds[embed] }).catch((error) => {
+        throw error
+      }))
   }
   return Promise.all(response)
 }
