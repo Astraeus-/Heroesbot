@@ -5,10 +5,14 @@ const Logger = require('./Logger.js')
 
 module.exports.allTeamData = () => {
   return heroesloungeApi.getTeams().then((teams) => {
-    Logger.info('Updating Teamdata cache')
-    return FileHandler.writeJSONFile(path.join(__dirname, '../Data/Teamdata.json'), teams)
+    let cacheData = {
+      prev_timestamp: Date.now(),
+      expiration_time: 24 * 60 * 60 * 1000,
+      data: teams
+    }
+    return FileHandler.writeJSONFile(path.join(__dirname, '../Data/Teamdata.json'), cacheData)
   }).then(() => {
-    Logger.info('Updating Teamdata cache complete')
+    Logger.info('Updated Teamdata cache')
   }).catch((error) => {
     Logger.warn('Could not update Teamdata cache', error)
   })
@@ -16,10 +20,14 @@ module.exports.allTeamData = () => {
 
 module.exports.matchesToday = () => {
   return heroesloungeApi.getMatchesToday().then((matches) => {
-    Logger.info('Updating MatchesToday cache')
-    return FileHandler.writeJSONFile(path.join(__dirname, '../Data/MatchesToday.json'), matches)
+    let cacheData = {
+      prev_timestamp: Date.now(),
+      expiration_time: 15 * 60 * 1000,
+      data: matches
+    }
+    return FileHandler.writeJSONFile(path.join(__dirname, '../Data/MatchesToday.json'), cacheData)
   }).then(() => {
-    Logger.info('Updating MatchesToday cache complete')
+    Logger.info('Updated MatchesToday cache')
   }).catch((error) => {
     Logger.warn('Could not update MatchesToday cache', error)
   })

@@ -2,6 +2,7 @@ const BaseCommand = require('../Classes/BaseCommand.js')
 const Logger = require('../util/Logger.js')
 const heroesloungeApi = require('heroeslounge-api')
 
+const DataFetcher = require('../util/DataFetcher.js')
 const FileHandler = require('../util/FileHandler.js')
 const path = require('path')
 
@@ -51,7 +52,18 @@ class Teaminfo extends BaseCommand {
       ]
     }
 
-    FileHandler.readJSONFile(path.join(__dirname, '../Data/Teamdata.json')).then((teams) => {
+    FileHandler.readJSONFile(path.join(__dirname, '../Data/Teamdata.json')).then(async (cache) => {
+      if (Date.now() - cache.expiration_time > cache.prev_timestamp) {
+        await DataFetcher.allTeamData().catch((error) => {
+          throw error
+        })
+
+        cache = await FileHandler.readJSONFile(path.join(__dirname, '../Data/Teamdata.json')).catch((error) => {
+          throw error
+        })
+      }
+
+      const teams = cache.data
       const selectedTeam = teams.find((team) => {
         return team.slug.toLowerCase() === args.join(' ').toLowerCase()
       })
