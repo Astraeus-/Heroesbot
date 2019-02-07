@@ -123,7 +123,23 @@ class MatchesToday extends BaseCommand {
             Logger.warn('Unable to get playoff info', error)
           }) : ''
 
-          fixture = `${playoff.title}${division ? ` ${division.title}` : ''}`
+          switch (playoff.type) {
+            case 'playoffv1':
+              fixture = `${playoff.title} ${division.title}`
+              break
+            case 'playoffv2':
+            case 'playoffv3':
+              fixture = `${playoff.title.split(' ')[0]} ${division.title}`
+              break
+            case 'se16':
+            case 'se32':
+            case 'se64':
+            case 'se128':
+              fixture = `${playoff.title}${division ? ` ${division.title}` : ''}`
+              break
+            default:
+              fixture = `${playoff.title}${division ? ` ${division.title}` : ''}`
+          }
         } else {
           fixture = division.title
         }
