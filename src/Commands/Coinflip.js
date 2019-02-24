@@ -40,7 +40,7 @@ class Coinflip extends BaseCommand {
   }
 
   exec (msg) {
-    const output = Math.round(Math.random() >= 0.5) ? 'heads' : 'tails'
+    const output = Math.random() >= 0.5 ? 'heads' : 'tails'
     fs.readFile(path.join(__dirname, `../Data/Images/${output}.png`)).then((file) => {
       return msg.channel.createMessage({
         content: 'Amateur series rules: https://heroeslounge.gg/general/ruleset \nDivision S rules: https://heroeslounge.gg/divisionS/ruleset',
