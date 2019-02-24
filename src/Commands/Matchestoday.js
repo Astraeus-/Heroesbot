@@ -125,11 +125,11 @@ class MatchesToday extends BaseCommand {
 
           switch (playoff.type) {
             case 'playoffv1':
-              fixture = `${playoff.title} ${division.title}`
+              fixture = `${playoff.title} ${divison ? division.title : ''}`
               break
             case 'playoffv2':
             case 'playoffv3':
-              fixture = `${playoff.title.split(' ')[0]} ${division.title}`
+              fixture = `${playoff.title.split(' ')[0]} ${division ? division.title : ''}`
               break
             case 'se16':
             case 'se32':
