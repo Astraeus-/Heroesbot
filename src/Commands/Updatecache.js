@@ -15,29 +15,54 @@ class UpdateCache extends BaseCommand {
     const options = {
       prefix: '!',
       command: 'updatecache',
-      description: 'Updates the Heroesbot cache files.',
-      ignoreInHelp: true
+      description: 'Updates the specified cache.',
+      syntax: 'updatecache <option>\nOptions are: teams, matches, all',
+      ignoreInHelp: true,
+      min_args: 1
     }
 
     super(permissions, options)
     this.bot = bot
   }
 
-  exec (msg) {
-    const TeamData = DataFetcher.allTeamData()
-    const MatchesToday = DataFetcher.matchesToday()
+  exec (msg, args) {
+    const type = args[0]
+    const cacheData = []
 
-    Promise.all([TeamData, MatchesToday]).then(() => {
+    switch (type) {
+      case 'teams':
+        cacheData.push(DataFetcher.allTeamData())
+        break
+
+      case 'matches':
+        cacheData.push(DataFetcher.matchesToday())
+        break
+
+      case 'all':
+        cacheData.push(DataFetcher.allTeamData())
+        cacheData.push(DataFetcher.matchesToday())
+        break
+
+      default:
+    }
+
+    if (cacheData.length === 0) {
+      return this.bot.getDMChannel(msg.author.id).then((channel) => {
+        return channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`)
+      })
+    }
+
+    Promise.all(cacheData).then(() => {
       this.bot.getDMChannel(msg.author.id).then((channel) => {
-        return channel.createMessage('Updated cache files!')
+        return channel.createMessage(`Updated ${type} cache!`)
       }).catch((error) => {
-        Logger.warn(`Could not notify about updating cache files`, error)
+        Logger.warn(`Could not notify about updating ${type} cache`, error)
       })
     }).catch((error) => {
       this.bot.getDMChannel(msg.author.id).then((channel) => {
-        return channel.createMessage(`Could not update cache files\n\`\`\`js\n${error}\n\`\`\``)
+        return channel.createMessage(`Could not update ${type} cache \n\`\`\`js\n${error}\n\`\`\``)
       }).catch((error) => {
-        Logger.warn(`Could not notify about failing to update cache files`, error)
+        Logger.warn(`Could not notify about failing to update ${type} cache`, error)
       })
     })
   }
