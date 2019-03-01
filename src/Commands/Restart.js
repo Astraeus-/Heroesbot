@@ -9,17 +9,18 @@ class Restart extends BaseCommand {
       'Test-Server': {
         channels: ['robotchannel'],
         roles: ['Admin'],
-        users: ['108153813143126016', '202174629245222912']
+        users: ['108153813143126016']
       }
     }
 
     const options = {
       prefix: '!',
       command: 'restart',
-      description: 'Restarts elements of thee host OS.',
+      description: 'Restarts elements of the host OS.',
       syntax: 'restart <option>\nOptions are: network, all',
       ignoreInHelp: true,
-      min_args: 1
+      min_args: 1,
+      enabled: false
     }
 
     super(permissions, options)
