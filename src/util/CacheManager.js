@@ -5,14 +5,31 @@ const fs = require('fs').promises
 const path = require('path')
 
 class CacheManager {
+  constructor () {
+    this.caches = {
+      'matchesToday': {
+        isUpdating: false,
+        loc: path.join(__dirname, '../Data/MatchesToday.json'),
+        update: heroesloungeApi.getMatchesToday,
+        updateResponse: {}
+      },
+      'teams': {
+        isUpdating: false,
+        loc: path.join(__dirname, '../Data/Teamdata.json'),
+        update: heroesloungeApi.getTeams,
+        updateResponse: {}
+      }
+    }
+  }
+
   cacheExpired (lastUpdated, expirationTime) {
     return Date.now() - expirationTime > lastUpdated
   }
 
   fetchCache (type, expirationTime) {
-    const cacheDetails = this.resolveCacheDetails(type)
+    const cache = this.caches[type]
 
-    return this.readCacheFile(cacheDetails.loc).then(async (cache) => {
+    return this.readCacheFile(cache.loc).then(async (cache) => {
       if (this.cacheExpired(cache.lastUpdatedAt, expirationTime)) {
         cache = await this.updateCache(type)
       }
@@ -31,46 +48,34 @@ class CacheManager {
       }
       return parsedData
     }).catch((error) => {
-      Logger.error(`Could not read file ${loc}`, error)
+      throw error
     })
   }
 
-  resolveCacheDetails (type) {
-    let cacheDetails = {}
-
-    switch (type) {
-      case 'matchesToday':
-        cacheDetails.loc = path.join(__dirname, '../Data/MatchesToday.json')
-        cacheDetails.update = heroesloungeApi.getMatchesToday
-        break
-      case 'teams':
-        cacheDetails.loc = path.join(__dirname, '../Data/Teamdata.json')
-        cacheDetails.update = heroesloungeApi.getTeams
-        break
-      default:
-        break
-    }
-    return cacheDetails
-  }
-
   updateCache (type) {
-    const cacheDetails = this.resolveCacheDetails(type)
+    const cache = this.caches[type]
 
-    return cacheDetails.update().then((data) => {
-      let cache = {
+    if (cache.isUpdating) return cache.updateResponse
+    cache.isUpdating = true
+
+    let updatedCache = cache.update().then((data) => {
+      let newCache = {
         lastUpdatedAt: Date.now(),
         data: data
       }
 
-      return cache
-    }).then(async (cache) => {
-      await this.writeCacheFile(cacheDetails.loc, cache).catch((error) => {
+      return newCache
+    }).then(async (newCache) => {
+      await this.writeCacheFile(cache.loc, newCache).catch((error) => {
         throw error
       })
 
       Logger.info(`Updated ${type} cache`)
-      return cache
+      cache.isUpdating = false
+      return newCache
     })
+    cache.updateResponse = updatedCache
+    return updatedCache
   }
 
   writeCacheFile (loc, data) {
@@ -82,7 +87,7 @@ class CacheManager {
     }
 
     return fs.writeFile(loc, jsonData).catch((error) => {
-      Logger.error(`Could not write file ${loc}`, error)
+      throw error
     })
   }
 }
