@@ -1,16 +1,16 @@
-const FileHandler = require('../util/FileHandler.js')
-const path = require('path')
 const { webhooks } = require('../config.json')
 const WebhookClient = require('../Classes/WebhookClient.js')
 const webhook = new WebhookClient(webhooks.id, webhooks.token)
-
 const heroesloungeApi = require('heroeslounge-api')
 const Logger = require('../util/Logger.js')
+
+const fs = require('fs').promises
+const path = require('path')
 
 module.exports = (bot) => {
   bot.on('guildMemberAdd', (guild, member) => {
     // Check if the member is not trying to circumvent their mute.
-    FileHandler.readJSONFile(path.join(__dirname, '../Data/Muted.json')).then((data) => {
+    fs.readFile(path.join(__dirname, '../Data/Muted.json'), { encoding: 'utf8' }).then((data) => {
       const isMutedMember = Object.keys(data).some((d) => d === member.user.id)
       if (isMutedMember) {
         const mutedRole = guild.roles.find((role) => {

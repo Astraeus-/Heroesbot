@@ -1,6 +1,7 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
 const Logger = require('../util/Logger.js')
-const DataFetcher = require('../util/DataFetcher.js')
+
+const CacheManager = require('../util/CacheManager.js')
 
 class UpdateCache extends BaseCommand {
   constructor (bot) {
@@ -31,16 +32,16 @@ class UpdateCache extends BaseCommand {
 
     switch (type) {
       case 'teams':
-        cacheData.push(DataFetcher.allTeamData())
+        cacheData.push(CacheManager.updateCache('teams'))
         break
 
       case 'matches':
-        cacheData.push(DataFetcher.matchesToday())
+        cacheData.push(CacheManager.updateCache('matchesToday'))
         break
 
       case 'all':
-        cacheData.push(DataFetcher.allTeamData())
-        cacheData.push(DataFetcher.matchesToday())
+        cacheData.push(CacheManager.updateCache('matchesToday'))
+        cacheData.push(CacheManager.updateCache('teams'))
         break
 
       default:

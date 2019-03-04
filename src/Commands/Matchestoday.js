@@ -2,9 +2,7 @@ const BaseCommand = require('../Classes/BaseCommand.js')
 const Logger = require('../util/Logger.js')
 const heroesloungeApi = require('heroeslounge-api')
 
-const DataFetcher = require('../util/DataFetcher.js')
-const FileHandler = require('../util/FileHandler.js')
-const path = require('path')
+const CacheManager = require('../util/CacheManager.js')
 
 class MatchesToday extends BaseCommand {
   constructor (bot) {
@@ -75,17 +73,7 @@ class MatchesToday extends BaseCommand {
       })
     }
 
-    FileHandler.readJSONFile(path.join(__dirname, '../Data/MatchesToday.json')).then(async (cache) => {
-      if (Date.now() - cache.expiration_time > cache.prev_timestamp) {
-        await DataFetcher.matchesToday().catch((error) => {
-          throw error
-        })
-
-        cache = await FileHandler.readJSONFile(path.join(__dirname, '../Data/MatchesToday.json')).catch((error) => {
-          throw error
-        })
-      }
-
+    CacheManager.fetchCache('matchesToday', 5000).then(async (cache) => {
       const matches = cache.data
       if (matches.length === 0) return null
 

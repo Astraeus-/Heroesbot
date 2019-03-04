@@ -1,8 +1,8 @@
-const FileHandler = require('../util/FileHandler.js')
-const path = require('path')
 const { vip } = require('../config.json')
-
 const Logger = require('../util/Logger.js')
+
+const fs = require('fs').promises
+const path = require('path')
 
 module.exports = (bot) => {
   bot.on('guildMemberUpdate', (guild, member, oldMember) => {
@@ -19,30 +19,26 @@ module.exports = (bot) => {
 
     switch (changedRole.name) {
       case 'Muted':
-        if (addedRole) {
-          const mutedMember = {
-            username: member.user.username,
-            startDate: new Date(Date.now())
-          }
-          FileHandler.readJSONFile(path.join(__dirname, '../Data/Muted.json')).then((data) => {
+        fs.readFile(path.join(__dirname, '../Data/Muted.json'), { encoding: 'utf8' }).then((data) => {
+          if (addedRole) {
+            const mutedMember = {
+              username: member.user.username,
+              startDate: new Date(Date.now())
+            }
+
             if (!data[guild.id]) {
               data[guild.id] = {
                 guildName: guild.name
               }
             }
             data[guild.id][member.user.id] = mutedMember
-            return FileHandler.writeJSONFile(path.join(__dirname, '../Data/Muted.json'), data)
-          }).catch((error) => {
-            Logger.warn('Unable to update muted list', error)
-          })
-        } else {
-          FileHandler.readJSONFile(path.join(__dirname, '../Data/Muted.json')).then((data) => {
+          } else {
             delete data[guild.id][member.user.id]
-            return FileHandler.writeJSONFile(path.join(__dirname, '../Data/Muted.json'), data)
-          }).catch((error) => {
-            Logger.error('Unable to updated muted list', error)
-          })
-        }
+          }
+          return fs.writeFile(path.join(__dirname, '../Data/Muted.json'), data)
+        }).catch((error) => {
+          Logger.warn('Unable to update muted list', error)
+        })
         break
       case 'Patreon VIP':
       case 'Twitch Subscriber':
