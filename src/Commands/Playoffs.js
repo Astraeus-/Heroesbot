@@ -54,7 +54,7 @@ class Playoffs extends BaseCommand {
         let playoffSeason
 
         for (let i = seasonsArray.length - 1; i >= 0; i--) {
-          if (seasonsArray[i].region_id === region && seasonsArray[i].current_round === seasonsArray[i].round_length) {
+          if (seasonsArray[i].type === '1' && seasonsArray[i].region_id === region && seasonsArray[i].current_round === seasonsArray[i].round_length) {
             playoffSeason = seasonsArray[i]
             break
           }
