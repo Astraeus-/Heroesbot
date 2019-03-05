@@ -40,6 +40,7 @@ module.exports = (bot) => {
           Logger.warn('Unable to update muted list', error)
         })
         break
+      case 'Patreon Superhero':
       case 'Patreon VIP':
       case 'Twitch Subscriber':
       case 'Honorary Sloth':
