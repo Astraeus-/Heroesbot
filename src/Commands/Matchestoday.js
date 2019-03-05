@@ -72,7 +72,7 @@ class MatchesToday extends BaseCommand {
       })
     }
 
-    CacheManager.fetchCache('matchesToday', 5000).then(async (cache) => {
+    CacheManager.fetchCache('matchesToday', 15 * 60 * 1000).then(async (cache) => {
       const matches = cache.data
       if (matches.length === 0) return null
 
