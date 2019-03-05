@@ -4,19 +4,41 @@ const Logger = require('./Logger.js')
 
 module.exports.syncCaptains = async (bot) => {
   Logger.info('Synchronising captain roles')
-  const currentSeasonEUTeams = await heroesloungeApi.getSeasonTeams(6).catch((error) => {
-    throw error
-  })
-  const currentSeasonNATeams = await heroesloungeApi.getSeasonTeams(5).catch((error) => {
+
+  const seasons = await heroesloungeApi.getSeasons().catch((error) => {
     throw error
   })
 
-  let currentTeams = []
-  currentTeams = [...currentTeams, ...currentSeasonEUTeams, ...currentSeasonNATeams]
+  let teamsByRegion = []
+  let seasonCounter = 0
 
-  let teamDetails = []
-  for (let team of currentTeams) {
-    let teamInfo = new Promise((resolve, reject) => {
+  for (let i = seasons.length - 1; i >= 0; i--) {
+    if (seasonCounter >= 2) break
+    if (seasons[i].type === '2') continue // Ignore Division S seasons
+
+    if (seasons[i].is_active === '1') {
+      if (seasons[i].region_id === '1') {
+        teamsByRegion = [...teamsByRegion, heroesloungeApi.getSeasonTeams(seasons[i].id)]
+        seasonCounter++
+      } else if (seasons[i].region_id === '2') {
+        teamsByRegion = [...teamsByRegion, heroesloungeApi.getSeasonTeams(seasons[i].id)]
+        seasonCounter++
+      }
+    }
+  }
+
+  let teams = []
+  await Promise.all(teamsByRegion).then((regionTeams) => {
+    for (let i = 0; i < regionTeams.length; i++) {
+      teams = [...teams, ...regionTeams[i]]
+    }
+  }).catch((error) => {
+    throw error
+  })
+
+  let teamsWithDetails = []
+  for (let team of teams) {
+    const teamDetails = new Promise((resolve, reject) => {
       heroesloungeApi.getTeamSloths(team.id).then((sloths) => {
         let fullTeam = team
         fullTeam['sloths'] = sloths
@@ -24,15 +46,15 @@ module.exports.syncCaptains = async (bot) => {
       }).catch((error) => {
         Logger.warn(`Unable to get team sloths for team ${team.title}`, error)
         let fullTeam = team
-        fullTeam['sloths'] = {}
+        fullTeam['sloths'] = []
         resolve(fullTeam)
       })
     })
 
-    teamDetails = [...teamDetails, teamInfo]
+    teamsWithDetails = [...teamsWithDetails, teamDetails]
   }
 
-  return Promise.all(teamDetails).then((teamDetails) => {
+  return Promise.all(teamsWithDetails).then((teamsWithDetails) => {
     let errorMessage = ''
     let syncedSloths = []
 
@@ -41,7 +63,7 @@ module.exports.syncCaptains = async (bot) => {
       return role.name === 'Captains'
     })
 
-    for (let team of teamDetails) {
+    for (let team of teamsWithDetails) {
       if (team.sloths && team.sloths.length > 0 && team.disbanded === '0') {
         if (team.sloths[0].is_captain === '1') {
           if (team.sloths[0].discord_id.length > 0) {
@@ -49,16 +71,13 @@ module.exports.syncCaptains = async (bot) => {
 
             const member = guild.members.get(captainSloth.discord_id)
             if (member) {
-              const roles = member.roles
-              // If the user already has the captain role, skip over them.
-              if (roles.includes(captainRole.id)) continue
+              if (member.roles.includes(captainRole.id)) continue
 
               syncedSloths.push(
-                bot.addGuildMemberRole(defaultServer, captainSloth.discord_id, captainRole.id)
-                  .catch((error) => {
-                    Logger.warn(`Unable to assign captain for team ${team.title} user ${captainSloth.title}`, error)
-                    errorMessage += `Unable to assign captain for team ${team.title} user ${captainSloth.title}\n`
-                  })
+                bot.addGuildMemberRole(defaultServer, captainSloth.discord_id, captainRole.id).catch((error) => {
+                  Logger.warn(`Unable to assign captain for team ${team.title} user ${captainSloth.title}`, error)
+                  errorMessage += `Unable to assign captain for team ${team.title} user ${captainSloth.title}\n`
+                })
               )
             } else {
               errorMessage += `Captain not on discord for ${team.title} member ${captainSloth.title}\n`
@@ -89,6 +108,16 @@ module.exports.syncCaptains = async (bot) => {
 module.exports.syncRegionRoles = async (bot) => {
   Logger.info('Synchronising region roles')
   return heroesloungeApi.getSloths().then((sloths) => {
+    const regionIds = {
+      EU: '1',
+      NA: '2'
+    }
+
+    const regionRoleIds = {
+      EU: '494534903547822105',
+      NA: '494535033722372106'
+    }
+
     let syncedSloths = []
 
     for (let sloth in sloths) {
@@ -101,25 +130,23 @@ module.exports.syncRegionRoles = async (bot) => {
       const roles = member.roles
       let regionRoleId
       if (currentSloth.region_id === '1') {
-        regionRoleId = '494534903547822105' // EU
+        regionRoleId = regionRoleIds['EU']
       } else if (currentSloth.region_id === '2') {
-        regionRoleId = '494535033722372106' // NA
+        regionRoleId = regionRoleIds['NA']
       } else {
         continue
       }
 
-      // User already has regionRole trying to assign.
       if (roles.includes(regionRoleId)) continue
 
-      // Remove NA region role if region changed to EU.
-      if (currentSloth.region_id === '1' && roles.includes('494535033722372106')) {
-        bot.removeGuildMemberRole(defaultServer, currentSloth.discord_id, '494535033722372106').catch((error) => {
+      if (currentSloth.region_id === regionIds['EU'] && roles.includes(regionRoleIds['NA'])) {
+        bot.removeGuildMemberRole(defaultServer, currentSloth.discord_id, regionRoleIds['NA']).catch((error) => {
           Logger.error(`Error removing old region role from ${currentSloth.discord_tag}`, error)
         })
       }
-      // Remove EU region role if region changed to NA.
-      if (currentSloth.region_id === '2' && roles.includes('494534903547822105')) {
-        bot.removeGuildMemberRole(defaultServer, currentSloth.discord_id, '494534903547822105').catch((error) => {
+
+      if (currentSloth.region_id === regionIds['NA'] && roles.includes(regionRoleIds['EU'])) {
+        bot.removeGuildMemberRole(defaultServer, currentSloth.discord_id, regionRoleIds['EU']).catch((error) => {
           Logger.error(`Error removing old region role from ${currentSloth.discord_tag}`, error)
         })
       }
