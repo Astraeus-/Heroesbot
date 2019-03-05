@@ -1,8 +1,7 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
+const CacheManager = require('../Classes/CacheManager.js')
 const Logger = require('../util/Logger.js')
 const heroesloungeApi = require('heroeslounge-api')
-
-const CacheManager = require('../util/CacheManager.js')
 
 class MatchesToday extends BaseCommand {
   constructor (bot) {

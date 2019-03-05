@@ -1,5 +1,5 @@
 const heroesloungeApi = require('heroeslounge-api')
-const Logger = require('./Logger.js')
+const Logger = require('../util/Logger.js')
 
 const fs = require('fs').promises
 const path = require('path')

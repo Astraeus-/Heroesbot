@@ -1,7 +1,6 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
+const CacheManager = require('../Classes/CacheManager.js')
 const Logger = require('../util/Logger.js')
-
-const CacheManager = require('../util/CacheManager.js')
 
 class UpdateCache extends BaseCommand {
   constructor (bot) {
