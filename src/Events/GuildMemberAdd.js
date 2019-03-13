@@ -31,19 +31,31 @@ module.exports = (bot) => {
     })
 
     // Assign the EU or NA role for returning Discord members.
-    heroesloungeApi.getSlothByDiscordId(member.user.id).then((sloth) => {
-      if (sloth.length > 0) {
-        let returningSloth = sloth[0]
-        let regionRoleId
-        if (returningSloth.region_id === '1') {
-          regionRoleId = '494534903547822105' // EU
-        } else if (returningSloth.region_id === '2') {
-          regionRoleId = '494535033722372106' // NA
+    heroesloungeApi.getSlothByDiscordId(member.user.id).then((sloths) => {
+      if (sloths.length > 0) {
+        const returningSloth = sloths[0]
+        const regionRoleIds = {
+          1: 'EU',
+          2: 'NA'
         }
 
-        bot.addGuildMemberRole(guild.id, member.user.id, regionRoleId).catch((error) => {
-          Logger.error(`Unable to reassign region role to ${member.user.username}`, error)
+        const regionRole = guild.roles.find((role) => {
+          return role.name === regionRoleIds[returningSloth.region_id]
         })
+
+        bot.addGuildMemberRole(guild.id, member.user.id, regionRole.id).catch((error) => {
+          Logger.warn(`Unable to reassign region role to ${member.user.username}`, error)
+        })
+
+        if (returningSloth.is_captain === '1' || returningSloth.is_divs_captain === '1') {
+          const captainRole = guild.roles.find((role) => {
+            return role.name === 'Captains'
+          })
+
+          bot.addGuildMemberRole(guild.id, member.user.id, captainRole.id).catch((error) => {
+            Logger.warn(`Unable to reassign captain role to ${member.user.username}`, error)
+          })
+        }
       }
     }).catch((error) => {
       Logger.error('Unable to verify sloth on website', error)
