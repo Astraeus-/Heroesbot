@@ -16,14 +16,11 @@ module.exports.syncCaptains = async (bot) => {
     if (seasonCounter >= 2) break
     if (seasons[i].type === '2') continue // Ignore Division S seasons
 
-    if (seasons[i].is_active === '1') {
-      if (seasons[i].region_id === '1') {
-        teamsByRegion = [...teamsByRegion, heroesloungeApi.getSeasonTeams(seasons[i].id)]
-        seasonCounter++
-      } else if (seasons[i].region_id === '2') {
-        teamsByRegion = [...teamsByRegion, heroesloungeApi.getSeasonTeams(seasons[i].id)]
-        seasonCounter++
-      }
+    if (seasons[i].is_active === '1' && seasons[i].reg_open === '0') {
+      teamsByRegion = [...teamsByRegion, heroesloungeApi.getSeasonTeams(seasons[i].id)]
+      seasonCounter++
+    } else if (season.is_active === '1' && seasons[i].reg_open === '1') {
+      seasonCounter++
     }
   }
 
