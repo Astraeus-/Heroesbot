@@ -80,7 +80,7 @@ module.exports.syncCaptains = async (bot) => {
               errorMessage += `Captain not on discord for ${team.title} member ${captainSloth.title}\n`
             }
           } else {
-            errorMessage += `No discord id for ${team.title}\n`
+            errorMessage += `No discord id for ${team.sloths[0].title} from ${team.title}\n`
           }
         } else {
           errorMessage += `No captain for ${team.title}\n`
