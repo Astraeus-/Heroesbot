@@ -30,7 +30,7 @@ module.exports = (bot) => {
       Logger.warn(`Unable to check mute ${member.user.username}#${member.user.discriminator}`, error)
     })
 
-    // Assign the EU or NA role for returning Discord members.
+    // Check if the user was already registered at Heroes Lounge.
     heroesloungeApi.getSlothByDiscordId(member.user.id).then((sloths) => {
       if (sloths.length > 0) {
         const returningSloth = sloths[0]
@@ -47,15 +47,15 @@ module.exports = (bot) => {
           Logger.warn(`Unable to reassign region role to ${member.user.username}`, error)
         })
 
-        if (returningSloth.is_captain === '1' || returningSloth.is_divs_captain === '1') {
-          const captainRole = guild.roles.find((role) => {
-            return role.name === 'Captains'
-          })
+        // if (returningSloth.is_captain === '1' || returningSloth.is_divs_captain === '1') {
+        //   const captainRole = guild.roles.find((role) => {
+        //     return role.name === 'Captains'
+        //   })
 
-          bot.addGuildMemberRole(guild.id, member.user.id, captainRole.id).catch((error) => {
-            Logger.warn(`Unable to reassign captain role to ${member.user.username}`, error)
-          })
-        }
+        //   bot.addGuildMemberRole(guild.id, member.user.id, captainRole.id).catch((error) => {
+        //     Logger.warn(`Unable to reassign captain role to ${member.user.username}`, error)
+        //   })
+        // }
       }
     }).catch((error) => {
       Logger.error('Unable to verify sloth on website', error)

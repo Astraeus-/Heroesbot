@@ -19,7 +19,7 @@ module.exports.syncCaptains = async (bot) => {
     if (seasons[i].is_active === '1' && seasons[i].reg_open === '0') {
       teamsByRegion = [...teamsByRegion, heroesloungeApi.getSeasonTeams(seasons[i].id)]
       seasonCounter++
-    } else if (season.is_active === '1' && seasons[i].reg_open === '1') {
+    } else if (seasons[i].is_active === '1' && seasons[i].reg_open === '1') {
       seasonCounter++
     }
   }
