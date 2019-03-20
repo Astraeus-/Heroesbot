@@ -12,7 +12,7 @@ class Draft extends BaseCommand {
         users: []
       },
       'Heroes Lounge': {
-        channels: ['mockdrafts'],
+        channels: ['hots-experiences'],
         roles: [],
         users: []
       },

@@ -11,7 +11,7 @@ class Fa extends BaseCommand {
         users: []
       },
       'Heroes Lounge': {
-        channels: ['role_requests'],
+        channels: ['lfg'],
         roles: [],
         users: []
       }
@@ -21,7 +21,8 @@ class Fa extends BaseCommand {
       prefix: '!',
       command: 'freeagent',
       aliases: ['fa'],
-      description: 'Add or remove yourself from the free agent role group'
+      description: 'Add or remove yourself from the free agent role group',
+      enabled: false
     }
 
     super(permissions, options)

@@ -11,7 +11,7 @@ class Aram extends BaseCommand {
         users: []
       },
       'Heroes Lounge': {
-        channels: ['role_requests'],
+        channels: ['lfg'],
         roles: [],
         users: []
       }

@@ -10,7 +10,7 @@ class EditMessage extends BaseCommand {
         users: []
       },
       'Heroes Lounge': {
-        channels: ['devops', 'bot_commands'],
+        channels: ['devops'],
         roles: ['Lounge Master', 'Board', 'Managers', 'Moderators'],
         users: []
       }
