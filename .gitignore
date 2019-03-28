@@ -1,6 +1,5 @@
 node_modules/
 Data/
-package-lock.json
 config.json
 test.js
 TODO

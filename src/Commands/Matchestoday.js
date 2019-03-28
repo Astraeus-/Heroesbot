@@ -3,6 +3,8 @@ const CacheManager = require('../Classes/CacheManager.js')
 const Logger = require('../util/Logger.js')
 const heroesloungeApi = require('heroeslounge-api')
 
+const dateformat = require('date-fns/format')
+
 class MatchesToday extends BaseCommand {
   constructor (bot) {
     const permissions = {
@@ -142,10 +144,11 @@ class MatchesToday extends BaseCommand {
           Embeds = addEmbed(embed, Embeds, embedCounter)
         }
 
+        const time = dateformat(new Date(matches[match].wbp), 'HH:mm')
         const leftTeamSlug = teams[0] ? teams[0].slug : 'TBD'
         const rightTeamSlug = teams[1] ? teams[1].slug : 'TBD'
 
-        Embeds[embedCounter].fields[0].value += `${matches[match].wbp.slice(-8, -3)} ${fixture}\n`
+        Embeds[embedCounter].fields[0].value += `${time} ${fixture}\n`
         Embeds[embedCounter].fields[1].value += `[${leftTeamSlug} Vs ${rightTeamSlug}](${matchURL})\n`
         Embeds[embedCounter].fields[2].value += `${twitchChannel ? `[Channel](${twitchChannel.url})` : 'No'}\n`
       }

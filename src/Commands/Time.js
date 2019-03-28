@@ -1,6 +1,6 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
 const Logger = require('../util/Logger.js')
-const dateformat = require('dateformat')
+const dateformat = require('date-fns/format')
 
 class Time extends BaseCommand {
   constructor (bot) {
@@ -30,7 +30,7 @@ class Time extends BaseCommand {
   }
 
   exec (msg) {
-    const timestamp = dateformat(msg.timestamp, 'hh:MM:ss TT')
+    const timestamp = dateformat(msg.timestamp, 'hh:mm:ss A')
     msg.channel.createMessage(`The current time is ${timestamp}`).catch((error) => {
       Logger.error('Could not respond with timestamp', error)
     })

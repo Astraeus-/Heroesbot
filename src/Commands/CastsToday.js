@@ -2,6 +2,8 @@ const BaseCommand = require('../Classes/BaseCommand.js')
 const Logger = require('../util/Logger.js')
 const heroesloungeApi = require('heroeslounge-api')
 
+const dateformat = require('date-fns/format')
+
 class CastsToday extends BaseCommand {
   constructor (bot) {
     const permissions = {
@@ -93,7 +95,7 @@ class CastsToday extends BaseCommand {
           fixture = division.title
         }
 
-        const time = castedMatches[match].wbp.slice(-8, -3)
+        const time = dateformat(new Date(castedMatches[match].wbp), 'HH:mm')
         let twitchChannel
 
         if (castedMatches[match].channel_id) {
