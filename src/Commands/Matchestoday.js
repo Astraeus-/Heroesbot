@@ -37,7 +37,7 @@ class MatchesToday extends BaseCommand {
     const embed = {
       color: this.bot.embed.color,
       footer: this.bot.embed.footer,
-      description: '[Matches Today](https://heroeslounge.gg/calendar)',
+      description: '[Matches Today](https://heroeslounge.gg/calendar) in UTC',
       fields: [
         {
           name: 'Fixture',
@@ -79,11 +79,12 @@ class MatchesToday extends BaseCommand {
       if (matches.length === 0) return null
 
       matches.sort((a, b) => {
-        return parseInt(a.wbp.slice(-8, -3).replace(':', '')) - parseInt(b.wbp.slice(-8, -3).replace(':', ''))
+        return a.wbp > b.wbp
       })
 
       let matchDivisions = []
       let matchTeams = []
+      let matchChannels = []
 
       for (let match in matches) {
         matchDivisions[match] = matches[match].div_id ? heroesloungeApi.getDivision(matches[match].div_id).catch((error) => {
@@ -93,14 +94,17 @@ class MatchesToday extends BaseCommand {
         matchTeams[match] = heroesloungeApi.getMatchTeams(matches[match].id).catch((error) => {
           Logger.warn('Unable to get match team info', error)
         })
+
+        matchChannels[match] = heroesloungeApi.getMatchChannels(matches[match].id).catch((error) => {
+          Logger.warn('Unable to get match channel info', error)
+        })
       }
 
       for (let match in matches) {
         const teams = await matchTeams[match]
         const division = await matchDivisions[match]
+        const channels = await matchChannels[match]
         const matchURL = 'https://heroeslounge.gg/match/view/' + matches[match].id
-
-        let twitchChannel
 
         // Attach a division name or tournament + group.
         let fixture = ''
@@ -133,12 +137,6 @@ class MatchesToday extends BaseCommand {
           fixture = division.title
         }
 
-        if (matches[match].channel_id) {
-          twitchChannel = await heroesloungeApi.getTwitchChannel(matches[match].channel_id).catch((error) => {
-            Logger.warn('Unable to get Twitch channel info', error)
-          })
-        }
-
         if (Embeds[embedCounter].fields[1].value.length >= 950) {
           embedCounter++
           Embeds = addEmbed(embed, Embeds, embedCounter)
@@ -150,7 +148,15 @@ class MatchesToday extends BaseCommand {
 
         Embeds[embedCounter].fields[0].value += `${time} ${fixture}\n`
         Embeds[embedCounter].fields[1].value += `[${leftTeamSlug} Vs ${rightTeamSlug}](${matchURL})\n`
-        Embeds[embedCounter].fields[2].value += `${twitchChannel ? `[Channel](${twitchChannel.url})` : 'No'}\n`
+
+        if (channels.length > 0) {
+          for (let i = 0; i < channels.length; i++) {
+            Embeds[embedCounter].fields[2].value += `[[${i + 1}]](${channels[i].url})`
+          }
+        } else {
+          Embeds[embedCounter].fields[2].value += 'No'
+        }
+        Embeds[embedCounter].fields[2].value += '\n'
       }
 
       return Embeds
