@@ -134,11 +134,12 @@ let getParticipatingTeams = async () => {
     }
   }
 
-  let teams = []
   return Promise.all(teamsByRegion).then((regionTeams) => {
+    let teams = []
     for (let i = 0; i < regionTeams.length; i++) {
       teams = [...teams, ...regionTeams[i]]
     }
+    return teams
   })
 }
 
