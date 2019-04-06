@@ -1,7 +1,7 @@
 const dateformat = require('date-fns/format')
 
 module.exports.info = (msg) => {
-  console.log(`${dateformat(Date.now(), 'DD/MM/YYYY hh:mm:ss A')}| ${msg}`)
+  console.log(`${dateformat(Date.now(), 'DD/MM/YYYY hh:mm:ss A')}|`, msg)
 }
 
 module.exports.warn = (msg, warning) => {

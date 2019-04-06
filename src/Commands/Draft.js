@@ -73,26 +73,24 @@ class Draft extends BaseCommand {
       })
     }
 
-    createDraft(map, teamA, teamB, timerOff)
-      .then((draft) => {
-        const battleground = draft.map.toLowerCase().replace(/\s/g, '-')
+    createDraft(map, teamA, teamB, timerOff).then((draft) => {
+      const battleground = draft.map.toLowerCase().replace(/\s/g, '-')
 
-        embed.title += `${draft.map}`
-        embed.description = timerOff ? 'Pick timer disabled' : 'Pick timer enabled'
-        embed.fields[0].value = `[${draft.teams[0].name}](${draft.teams[0].url})`
-        embed.fields[1].value = `[${draft.teams[1].name}](${draft.teams[1].url})`
-        embed.fields[2].value = `[Observer](${draft.viewer.url})`
-        embed.thumbnail = {
-          'url': `https://heroeslounge.gg/themes/HeroesLounge-Theme/assets/img/maps/bg_${battleground}.jpg`
-        }
+      embed.title += `${draft.map}`
+      embed.description = timerOff ? 'Pick timer disabled' : 'Pick timer enabled'
+      embed.fields[0].value = `[${draft.teams[0].name}](${draft.teams[0].url})`
+      embed.fields[1].value = `[${draft.teams[1].name}](${draft.teams[1].url})`
+      embed.fields[2].value = `[Observer](${draft.viewer.url})`
+      embed.thumbnail = {
+        'url': `https://heroeslounge.gg/themes/HeroesLounge-Theme/assets/img/maps/bg_${battleground}.jpg`
+      }
 
-        return embed
-      })
-      .then((embed) => {
-        return msg.channel.createMessage({ embed: embed })
-      }).catch((error) => {
-        Logger.error('Unable to create mockdraft', error)
-      })
+      return embed
+    }).then((embed) => {
+      return msg.channel.createMessage({ embed: embed })
+    }).catch((error) => {
+      Logger.error('Unable to create mockdraft', error)
+    })
   }
 }
 
