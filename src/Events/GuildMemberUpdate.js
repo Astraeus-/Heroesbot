@@ -47,9 +47,17 @@ module.exports = (bot) => {
         if (addedRole) {
           bot.addGuildMemberRole(guild.id, member.user.id, vip[guild.id].roleID)
         } else {
+          const guildRewardRoles = vip[guild.id].rewardRoles
           const stillDeserving = member.roles.some((roleID) => {
             return guild.roles.find((guildRole) => {
-              if (roleID === guildRole.id) return vip[guild.id].rewardRoles.includes(guildRole.name)
+              if (roleID === guildRole.id) {
+                if (!guildRewardRoles) {
+                  Logger.warn(`${guild.name} has no reward roles for ${member.user.username}`)
+                  return false
+                } else {
+                  return guildRewardRoles.includes(guildRole.name)
+                }
+              }
             })
           })
           if (!stillDeserving) bot.removeGuildMemberRole(guild.id, member.user.id, vip[guild.id].roleID)
