@@ -23,7 +23,8 @@ class CheckBattleTag extends BaseCommand {
       command: 'checkbattletag',
       aliases: ['cbt'],
       description: 'Queries the HotsLogs Api for data on a Battletag.',
-      syntax: 'checkbattletag <region> <name#12345>'
+      syntax: 'checkbattletag <region> <name#12345>',
+      min_args: 2,
     }
 
     super(permissions, options)

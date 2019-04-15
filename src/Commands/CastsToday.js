@@ -14,7 +14,7 @@ class CastsToday extends BaseCommand {
       },
       'Heroes Lounge': {
         channels: ['casters_lounge'],
-        roles: ['Lounge Master', 'Board', 'Managers', 'Moderators', 'Casters', 'CoCasters', 'External Casters', 'Trial Casters'],
+        roles: ['Lounge Master', 'Board', 'Managers', 'Moderators', 'Casters-EU', 'Casters-NA', 'CoCasters', 'External Casters', 'Trial Casters'],
         users: []
       }
     }
@@ -25,6 +25,7 @@ class CastsToday extends BaseCommand {
       aliases: ['casts'],
       description: 'Lists all of today\'s upcoming casts for the given region.',
       syntax: 'caststoday <Region>',
+      min_args: 1,
       cooldown: 15000,
       ignoreInHelp: true
     }
