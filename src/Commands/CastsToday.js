@@ -52,7 +52,7 @@ class CastsToday extends BaseCommand {
       if (matches.length === 0) return null
 
       matches.sort((a, b) => {
-        return a.wbp > b.wbp
+        return new Date(a.wbp) - new Date(b.wbp)
       })
 
       let matchDivisions = []
