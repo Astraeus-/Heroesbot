@@ -1,5 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
-const CacheManager = require('../Classes/CacheManager.js')
+const CacheManager = require('../Caches/MatchesToday.js')
 const Logger = require('../util/Logger.js')
 const heroesloungeApi = require('heroeslounge-api')
 
@@ -25,7 +25,8 @@ class MatchesToday extends BaseCommand {
       command: 'matchestoday',
       aliases: ['upcomingmatches', 'today', 'todaymatches'],
       description: 'Lists all of today\'s upcoming matches',
-      syntax: 'matchestoday',
+      syntax: 'matchestoday <Region>',
+      min_args: 1,
       cooldown: 10000
     }
 
@@ -33,11 +34,11 @@ class MatchesToday extends BaseCommand {
     this.bot = bot
   }
 
-  exec (msg) {
+  exec (msg, args) {
     const embed = {
       color: this.bot.embed.color,
       footer: this.bot.embed.footer,
-      description: '[Matches Today](https://heroeslounge.gg/calendar) in UTC',
+      description: '[Matches Today](https://heroeslounge.gg/calendar)',
       fields: [
         {
           name: 'Fixture',
@@ -74,12 +75,18 @@ class MatchesToday extends BaseCommand {
       })
     }
 
-    CacheManager.fetchCache('matchesToday', 15 * 60 * 1000).then(async (cache) => {
+    const region = args[0].toLowerCase()
+    const regions = {
+      'eu': 'Europe/Berlin',
+      'na': 'America/Los_Angeles'
+    }
+
+    CacheManager.fetchCache(region, 15 * 60 * 1000).then(async (cache) => {
       const matches = cache.data
       if (matches.length === 0) return null
 
       matches.sort((a, b) => {
-        return a.wbp > b.wbp
+        return new Date(a.wbp) - new Date(b.wbp)
       })
 
       let matchDivisions = []
@@ -142,7 +149,10 @@ class MatchesToday extends BaseCommand {
           Embeds = addEmbed(embed, Embeds, embedCounter)
         }
 
-        const time = dateformat(new Date(matches[match].wbp), 'HH:mm')
+        const dateElements = matches[match].wbp.match(/\d+/g)
+        let localMatchTime = new Date(Date.UTC(dateElements[0], dateElements[1], dateElements[2], dateElements[3], dateElements[4], dateElements[5]))
+        let time = region === 'na' ? dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: regions[region] })), 'hh:mm A') : dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: regions[region] })), 'HH:mm:')
+
         const leftTeamSlug = teams[0] ? teams[0].slug : 'TBD'
         const rightTeamSlug = teams[1] ? teams[1].slug : 'TBD'
 
