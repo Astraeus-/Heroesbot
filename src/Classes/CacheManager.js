@@ -1,37 +1,25 @@
-const heroesloungeApi = require('heroeslounge-api')
 const Logger = require('../util/Logger.js')
-
 const fs = require('fs').promises
-const path = require('path')
 
 class CacheManager {
-  constructor () {
-    this.caches = {
-      'matchesToday': {
-        isUpdating: false,
-        loc: path.join(__dirname, '../Data/MatchesToday.json'),
-        update: heroesloungeApi.getMatchesToday,
-        updateResponse: {}
-      },
-      'teams': {
-        isUpdating: false,
-        loc: path.join(__dirname, '../Data/Teamdata.json'),
-        update: heroesloungeApi.getTeams,
-        updateResponse: {}
-      }
-    }
+  constructor (settings) {
+    /* eslint-disable */
+    this.type           = typeof settings.type            != 'undefined' ? settings.type            : null
+    this.loc            = typeof settings.loc             != 'undefined' ? settings.loc             : null
+    this.update         = typeof settings.update          != 'undefined' ? settings.update          : null
+    this.isUpdating     = typeof settings.isUpdating      != 'undefined' ? settings.isUpdating      : false
+    this.updateResponse = typeof settings.updateResponse  != 'undefined' ? settings.updateResponse  : {}
+    /* eslint-enable */
   }
 
   cacheExpired (lastUpdated, expirationTime) {
     return Date.now() - expirationTime > lastUpdated
   }
 
-  fetchCache (type, expirationTime) {
-    const cache = this.caches[type]
-
-    return this.readCacheFile(cache.loc).then(async (cache) => {
+  fetchCache (loc, expirationTime) {
+    return this.readCacheFile(loc).then(async (cache) => {
       if (this.cacheExpired(cache.lastUpdatedAt, expirationTime)) {
-        cache = await this.updateCache(type)
+        cache = await this.updateCache(loc)
       }
 
       return cache
@@ -52,13 +40,11 @@ class CacheManager {
     })
   }
 
-  updateCache (type) {
-    const cache = this.caches[type]
+  updateCache (loc) {
+    if (this.isUpdating) return this.updateResponse
+    this.isUpdating = true
 
-    if (cache.isUpdating) return cache.updateResponse
-    cache.isUpdating = true
-
-    let updatedCache = cache.update().then((data) => {
+    let updatedCache = this.update().then((data) => {
       let newCache = {
         lastUpdatedAt: Date.now(),
         data: data
@@ -66,15 +52,15 @@ class CacheManager {
 
       return newCache
     }).then(async (newCache) => {
-      await this.writeCacheFile(cache.loc, newCache).catch((error) => {
+      await this.writeCacheFile(loc, newCache).catch((error) => {
         throw error
       })
 
-      Logger.info(`Updated ${type} cache`)
-      cache.isUpdating = false
+      Logger.info(`Updated ${this.type} cache`)
+      this.isUpdating = false
       return newCache
     })
-    cache.updateResponse = updatedCache
+    this.updateResponse = updatedCache
     return updatedCache
   }
 
@@ -92,4 +78,4 @@ class CacheManager {
   }
 }
 
-module.exports = new CacheManager()
+module.exports = CacheManager

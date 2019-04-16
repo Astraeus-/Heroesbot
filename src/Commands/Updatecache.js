@@ -1,5 +1,6 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
-const CacheManager = require('../Classes/CacheManager.js')
+const MatchesTodayCacheManager = require('../Caches/MatchesToday.js')
+const TeamsCacheManager = require('../Caches/Teams.js')
 const Logger = require('../util/Logger.js')
 
 class UpdateCache extends BaseCommand {
@@ -18,7 +19,8 @@ class UpdateCache extends BaseCommand {
       description: 'Updates the specified cache.',
       syntax: 'updatecache <option>\nOptions are: teams, matches, all',
       ignoreInHelp: true,
-      min_args: 1
+      min_args: 1,
+      diasbled: true
     }
 
     super(permissions, options)
@@ -31,16 +33,18 @@ class UpdateCache extends BaseCommand {
 
     switch (type) {
       case 'teams':
-        cacheData.push(CacheManager.updateCache('teams'))
+        cacheData.push(TeamsCacheManager.updateCache())
         break
 
       case 'matches':
-        cacheData.push(CacheManager.updateCache('matchesToday'))
+        cacheData.push(MatchesTodayCacheManager.updateCache('eu'))
+        cacheData.push(MatchesTodayCacheManager.updateCache('na'))
         break
 
       case 'all':
-        cacheData.push(CacheManager.updateCache('matchesToday'))
-        cacheData.push(CacheManager.updateCache('teams'))
+        cacheData.push(MatchesTodayCacheManager.updateCache('eu'))
+        cacheData.push(MatchesTodayCacheManager.updateCache('na'))
+        cacheData.push(TeamsCacheManager.updateCache())
         break
 
       default:

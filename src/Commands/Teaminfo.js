@@ -1,5 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
-const CacheManager = require('../Classes/CacheManager.js')
+const CacheManager = require('../Caches/Teams.js')
 const Logger = require('../util/Logger.js')
 const heroesloungeApi = require('heroeslounge-api')
 
@@ -49,7 +49,7 @@ class Teaminfo extends BaseCommand {
       ]
     }
 
-    CacheManager.fetchCache('teams', 24 * 60 * 60 * 1000).then(async (cache) => {
+    CacheManager.fetchCache(24 * 60 * 60 * 1000).then(async (cache) => {
       const teams = cache.data
       const selectedTeam = teams.find((team) => {
         return team.slug.toLowerCase() === args.join(' ').toLowerCase()
