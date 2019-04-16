@@ -36,7 +36,6 @@ class CastsToday extends BaseCommand {
 
   exec (msg, args) {
     const region = args[0].toLowerCase()
-
     const regions = {
       'eu': 'Europe/Berlin',
       'na': 'America/Los_Angeles'
@@ -45,6 +44,18 @@ class CastsToday extends BaseCommand {
     if (!regions[region]) {
       return this.bot.getDMChannel(msg.author.id).then((channel) => {
         return channel.createMessage(`The region ${args[0]} is not permitted`)
+      })
+    }
+
+    if (msg.channel.guild) {
+      this.bot.getDMChannel(msg.author.id).then((channel) => {
+        return channel.sendTyping()
+      }).catch((error) => {
+        Logger.warn(`Unable to sendTyping to ${msg.author.username}`, error)
+      })
+    } else {
+      msg.channel.sendTyping().catch((error) => {
+        Logger.warn(`Unable to sendTyping to ${msg.channel.name}`, error)
       })
     }
 
@@ -121,7 +132,7 @@ class CastsToday extends BaseCommand {
 
         const dateElements = matches[match].wbp.match(/\d+/g)
         let localMatchTime = new Date(Date.UTC(dateElements[0], dateElements[1], dateElements[2], dateElements[3], dateElements[4], dateElements[5]))
-        let time = region === 'na' ? dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: regions[region] })), 'hh:mm:A') : dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: regions[region] })), 'HH:mm:')
+        let time = region === 'na' ? dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: regions[region] })), 'hh:mm A') : dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: regions[region] })), 'HH:mm:')
 
         // Group all match statement with the same time together.
         if (match > 0 && matches[match].wbp > matches[match - 1].wbp) {
