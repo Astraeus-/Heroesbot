@@ -3,6 +3,7 @@ const Logger = require('../util/Logger.js')
 const heroesloungeApi = require('heroeslounge-api')
 
 const dateformat = require('date-fns/format')
+const regions = require('../util/Regions.js').timezone
 
 class CastsToday extends BaseCommand {
   constructor (bot) {
@@ -24,7 +25,7 @@ class CastsToday extends BaseCommand {
       command: 'caststoday',
       aliases: ['casts'],
       description: 'Lists all of today\'s upcoming casts for the given region.',
-      syntax: 'caststoday <Region>',
+      syntax: 'caststoday <region>',
       min_args: 1,
       cooldown: 15000,
       ignoreInHelp: true
@@ -35,15 +36,13 @@ class CastsToday extends BaseCommand {
   }
 
   exec (msg, args) {
-    const region = args[0].toLowerCase()
-    const regions = {
-      'eu': 'Europe/Berlin',
-      'na': 'America/Los_Angeles'
-    }
+    const specifiedRegion = args[0].toLowerCase()
+    const region = regions.find(region => region.name === specifiedRegion)
+    const timezone = region && region.timezone ? region.timezone : null
 
-    if (!regions[region]) {
+    if (!timezone) {
       return this.bot.getDMChannel(msg.author.id).then((channel) => {
-        return channel.createMessage(`The region ${args[0]} is not permitted`)
+        return channel.createMessage(`The region ${args[0]} is not available`)
       })
     }
 
@@ -59,7 +58,7 @@ class CastsToday extends BaseCommand {
       })
     }
 
-    heroesloungeApi.getMatchesToday(regions[region]).then(async (matches) => {
+    heroesloungeApi.getMatchesToday(timezone).then(async (matches) => {
       if (matches.length === 0) return null
 
       matches.sort((a, b) => {
@@ -132,7 +131,7 @@ class CastsToday extends BaseCommand {
 
         const dateElements = matches[match].wbp.match(/\d+/g)
         let localMatchTime = new Date(Date.UTC(dateElements[0], dateElements[1], dateElements[2], dateElements[3], dateElements[4], dateElements[5]))
-        let time = region === 'na' ? dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: regions[region] })), 'hh:mm A') : dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: regions[region] })), 'HH:mm:')
+        let time = specifiedRegion === 'na' ? dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'hh:mm A') : dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'HH:mm:')
 
         // Group all match statement with the same time together.
         if (match > 0 && matches[match].wbp > matches[match - 1].wbp) {
@@ -152,7 +151,7 @@ class CastsToday extends BaseCommand {
         if (!response) {
           return channel.createMessage('There are no casted matches')
         } else {
-          return channel.createMessage(`Region time of: ${regions[region]}\n\n ${response}`)
+          return channel.createMessage(`Region time of: ${timezone}\n\n ${response}`)
         }
       })
     }).catch((error) => {

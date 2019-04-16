@@ -2,7 +2,7 @@ const BaseCommand = require('../Classes/BaseCommand.js')
 const heroesloungeApi = require('heroeslounge-api')
 const Logger = require('../util/Logger.js')
 
-// @todo Define the season id with a variable.
+const regions = require('../util/Regions.js').heroesloungeId
 
 class Playoffs extends BaseCommand {
   constructor (bot) {
@@ -34,12 +34,10 @@ class Playoffs extends BaseCommand {
   }
 
   exec (msg, args) {
-    const seasonEnum = {
-      'eu': '1',
-      'na': '2'
-    }
+    const specifiedRegion = args[0].toLowerCase()
+    const regionSearch = regions.find(region => region.name === specifiedRegion)
+    const region = region && regionSearch.heroesloungeId ? regionSearch.heroesloungeId : null
     const guild = msg.channel.guild
-    const region = seasonEnum[args[0].toLowerCase()]
     const modRole = guild.roles.find((role) => {
       return role.name === 'Moderators'
     })

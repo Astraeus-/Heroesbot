@@ -2,6 +2,7 @@ const BaseCommand = require('../Classes/BaseCommand.js')
 const Logger = require('../util/Logger.js')
 
 const https = require('https')
+const regions = require('../util/Regions.js').hotslogsId
 
 class CheckBattleTag extends BaseCommand {
   constructor (bot) {
@@ -40,17 +41,12 @@ class CheckBattleTag extends BaseCommand {
       ]
     }
 
-    const regions = {
-      'US': 1,
-      'EU': 2,
-      'KR': 3,
-      'CN': 5
-    }
-
-    const region = args[0]
+    const specifiedRegion = args[0]
+    const region = regions.find(region => region.name === specifiedRegion)
+    const hotslogsRegionId = region && region.hotslogsId ? region.hotslogsId : null
     const battletag = args[1]
 
-    if (!regions[region] || !battletag.match(/[a-zA-Z0-9]{2,11}#[0-9]{1,6}/g)) {
+    if (!hotslogsRegionId || !battletag.match(/[a-zA-Z0-9]{2,11}#[0-9]{1,6}/g)) {
       return this.bot.getDMChannel(msg.author.id).then((channel) => {
         return channel.createMessage(`Unable to retrieve data: Invalid region or battletag specified`)
       })
@@ -58,11 +54,11 @@ class CheckBattleTag extends BaseCommand {
 
     const formattedBattletag = battletag.replace('#', '_')
 
-    getHotsLogsDetails(regions[region], formattedBattletag).then((HotsLogsInfo) => {
+    getHotsLogsDetails(hotslogsRegionId, formattedBattletag).then((HotsLogsInfo) => {
       return this.bot.getDMChannel(msg.author.id).then((channel) => {
         if (HotsLogsInfo) {
           const leaderboardData = HotsLogsInfo.LeaderboardRankings
-          embed.title = `${battletag}\nRegion: ${region}`
+          embed.title = `${battletag}\nRegion: ${specifiedRegion}`
           for (let i = 0; i < leaderboardData.length; i++) {
             embed.fields[i] = {
               name: leaderboardData[i].GameMode,
@@ -72,7 +68,7 @@ class CheckBattleTag extends BaseCommand {
           }
           return channel.createMessage({ 'embed': embed })
         } else {
-          return channel.createMessage(`No data for battletag: ${battletag} in region ${region}`)
+          return channel.createMessage(`No data for battletag: ${battletag} in region ${specifiedRegion}`)
         }
       })
     }).catch((error) => {

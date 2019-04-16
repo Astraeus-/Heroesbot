@@ -27,7 +27,7 @@ module.exports = (bot) => {
         if (!msg.channel.guild && !command.invokeDM) return msg.channel.createMessage(`The command ${command.prefix + command.command} is disabled for use in DM's`)
         if (args.length < command.min_args) {
           return bot.getDMChannel(msg.author.id).then((channel) => {
-            channel.createMessage('Invalid number of arguments')
+            channel.createMessage(`**Invalid number of arguments**\n\nCommand usage: ${command.prefix}${command.syntax}`)
           }).catch((error) => {
             Logger.warn(`Could not inform invalid number of arguments for ${command.command}`, error)
           })

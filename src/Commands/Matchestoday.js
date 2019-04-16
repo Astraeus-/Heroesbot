@@ -4,6 +4,7 @@ const Logger = require('../util/Logger.js')
 const heroesloungeApi = require('heroeslounge-api')
 
 const dateformat = require('date-fns/format')
+const regions = require('../util/Regions.js').timezone
 
 class MatchesToday extends BaseCommand {
   constructor (bot) {
@@ -24,8 +25,8 @@ class MatchesToday extends BaseCommand {
       prefix: '!',
       command: 'matchestoday',
       aliases: ['upcomingmatches', 'today', 'todaymatches'],
-      description: 'Lists all of today\'s upcoming matches',
-      syntax: 'matchestoday <Region>',
+      description: 'Lists all of today\'s upcoming matches for the specified region',
+      syntax: 'matchestoday <region>',
       min_args: 1,
       cooldown: 10000
     }
@@ -63,6 +64,16 @@ class MatchesToday extends BaseCommand {
 
     Embeds[embedCounter] = JSON.parse(JSON.stringify(embed))
 
+    const specifiedRegion = args[0].toLowerCase()
+    const region = regions.find(region => region.name === specifiedRegion)
+    const timezone = region && region.timezone ? region.timezone : null
+
+    if (!timezone) {
+      return this.bot.getDMChannel(msg.author.id).then((channel) => {
+        return channel.createMessage(`The region ${args[0]} is not available`)
+      })
+    }
+
     if (msg.channel.guild) {
       this.bot.getDMChannel(msg.author.id).then((channel) => {
         return channel.sendTyping()
@@ -75,13 +86,7 @@ class MatchesToday extends BaseCommand {
       })
     }
 
-    const region = args[0].toLowerCase()
-    const regions = {
-      'eu': 'Europe/Berlin',
-      'na': 'America/Los_Angeles'
-    }
-
-    CacheManager.fetchCache(region, 15 * 60 * 1000).then(async (cache) => {
+    CacheManager.fetchCache(specifiedRegion, 15 * 60 * 1000).then(async (cache) => {
       const matches = cache.data
       if (matches.length === 0) return null
 
@@ -151,7 +156,7 @@ class MatchesToday extends BaseCommand {
 
         const dateElements = matches[match].wbp.match(/\d+/g)
         let localMatchTime = new Date(Date.UTC(dateElements[0], dateElements[1], dateElements[2], dateElements[3], dateElements[4], dateElements[5]))
-        let time = region === 'na' ? dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: regions[region] })), 'hh:mm A') : dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: regions[region] })), 'HH:mm:')
+        let time = specifiedRegion === 'na' ? dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'hh:mm A') : dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'HH:mm:')
 
         const leftTeamSlug = teams[0] ? teams[0].slug : 'TBD'
         const rightTeamSlug = teams[1] ? teams[1].slug : 'TBD'
