@@ -10,12 +10,18 @@ module.exports.syncRegionRoles = async (bot) => {
     const regionIds = {}
     const regionDiscordRoleIds = {}
 
-    regions.forEach((region) => {
+    for (region of regions) {
       if (region.heroesloungeId) {
         regionIds[region.name] = region.heroesloungeId
-        regionDiscordRoleIds[region.name] = bot.guilds.get(defaultServer).roles.find(role => role.name === region.name)
+        const regionRole = bot.guilds.get(defaultServer).roles.find((role) => {
+          return role.name.toLowerCase() === region.name
+        })
+
+        if (regionRole) {
+          regionDiscordRoleIds[region.name] = regionRole.id
+        }
       }
-    })
+    }
 
     let syncedSloths = []
 
@@ -29,23 +35,23 @@ module.exports.syncRegionRoles = async (bot) => {
       const roles = member.roles
       let regionRoleId
       if (currentSloth.region_id === '1') {
-        regionRoleId = regionDiscordRoleIds['EU']
+        regionRoleId = regionDiscordRoleIds['eu']
       } else if (currentSloth.region_id === '2') {
-        regionRoleId = regionDiscordRoleIds['NA']
+        regionRoleId = regionDiscordRoleIds['na']
       } else {
         continue
       }
 
       if (roles.includes(regionRoleId)) continue
 
-      if (currentSloth.region_id === regionIds['EU'] && roles.includes(regionDiscordRoleIds['NA'])) {
-        bot.removeGuildMemberRole(defaultServer, currentSloth.discord_id, regionDiscordRoleIds['NA']).catch((error) => {
+      if (currentSloth.region_id === regionIds['eu'] && roles.includes(regionDiscordRoleIds['na'])) {
+        bot.removeGuildMemberRole(defaultServer, currentSloth.discord_id, regionDiscordRoleIds['na']).catch((error) => {
           Logger.error(`Error removing old region role from ${currentSloth.discord_tag}`, error)
         })
       }
 
-      if (currentSloth.region_id === regionIds['NA'] && roles.includes(regionDiscordRoleIds['EU'])) {
-        bot.removeGuildMemberRole(defaultServer, currentSloth.discord_id, regionDiscordRoleIds['EU']).catch((error) => {
+      if (currentSloth.region_id === regionIds['na'] && roles.includes(regionDiscordRoleIds['eu'])) {
+        bot.removeGuildMemberRole(defaultServer, currentSloth.discord_id, regionDiscordRoleIds['eu']).catch((error) => {
           Logger.error(`Error removing old region role from ${currentSloth.discord_tag}`, error)
         })
       }
