@@ -1,5 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
-const Logger = require('../util/Logger.js')
+const { Logger } = require('../util.js')
 
 class Help extends BaseCommand {
   constructor (bot) {

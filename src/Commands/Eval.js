@@ -1,5 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
-const Logger = require('../util/Logger.js')
+const { Logger } = require('../util.js')
 const util = require('util')
 
 class Eval extends BaseCommand {

@@ -1,4 +1,4 @@
-const Logger = require('../util/Logger.js')
+const { Logger } = require('../util.js')
 
 module.exports = (bot) => {
   bot.on('disconnect', (error) => {

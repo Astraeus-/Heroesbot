@@ -1,6 +1,6 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
 const { memeCooldown } = require('../config.json')
-const Logger = require('../util/Logger.js')
+const { Logger } = require('../util.js')
 
 class Blametinyowl extends BaseCommand {
   constructor (bot) {

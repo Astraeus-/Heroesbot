@@ -1,5 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand')
-const Logger = require('../util/Logger.js')
+const { Logger } = require('../util.js')
 
 const http = require('http')
 

@@ -1,5 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
-const Logger = require('../util/Logger.js')
+const { Logger } = require('../util.js')
 const { defaultServer } = require('../config.json')
 
 class Aram extends BaseCommand {

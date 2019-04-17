@@ -1,5 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
-const Logger = require('../util/Logger.js')
+const { Logger } = require('../util.js')
 const dateformat = require('date-fns/format')
 
 class Time extends BaseCommand {

@@ -1,10 +1,10 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
 const CacheManager = require('../Caches/MatchesToday.js')
-const Logger = require('../util/Logger.js')
+const { Logger } = require('../util.js')
 const heroesloungeApi = require('heroeslounge-api')
 
 const dateformat = require('date-fns/format')
-const regions = require('../util/Regions.js').timezone
+const regions = require('../util.js').timezone
 
 class MatchesToday extends BaseCommand {
   constructor (bot) {

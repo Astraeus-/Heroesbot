@@ -1,7 +1,7 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
 const MatchesTodayCacheManager = require('../Caches/MatchesToday.js')
 const TeamsCacheManager = require('../Caches/Teams.js')
-const Logger = require('../util/Logger.js')
+const { Logger } = require('../util.js')
 
 class UpdateCache extends BaseCommand {
   constructor (bot) {

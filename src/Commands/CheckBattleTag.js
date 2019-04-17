@@ -1,8 +1,8 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
-const Logger = require('../util/Logger.js')
+const { Logger } = require('../util.js')
 
 const https = require('https')
-const regions = require('../util/Regions.js').hotslogsId
+const regions = require('../util.js').hotslogsId
 
 class CheckBattleTag extends BaseCommand {
   constructor (bot) {

@@ -2,7 +2,7 @@ const { webhooks } = require('../config.json')
 const WebhookClient = require('../Classes/WebhookClient.js')
 const webhook = new WebhookClient(webhooks.id, webhooks.token)
 const heroesloungeApi = require('heroeslounge-api')
-const Logger = require('../util/Logger.js')
+const { Logger } = require('../util.js')
 
 const fs = require('fs').promises
 const path = require('path')

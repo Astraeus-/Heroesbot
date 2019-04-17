@@ -1,3 +1,17 @@
+const dateformat = require('date-fns/format')
+
+const Logger = {
+  info: (msg) => {
+    console.log(`${dateformat(Date.now(), 'DD/MM/YYYY hh:mm:ss A')}|`, msg)
+  },
+  warn: (msg, warning) => {
+    console.warn(`${dateformat(Date.now(), 'DD/MM/YYYY hh:mm:ss A')}| ${msg}`, warning)
+  },
+  error: (msg, error) => {
+    console.error(`${dateformat(Date.now(), 'DD/MM/YYYY hh:mm:ss A')}| ${msg}`, error)
+  }
+}
+
 const regions = [
   {
     name: 'eu',
@@ -37,4 +51,4 @@ const hotslogsId = regions.filter((region) => {
   return region.hotslogsId !== null
 })
 
-module.exports = { timezone, heroesloungeId, hotslogsId, regions }
+module.exports = { Logger, timezone, heroesloungeId, hotslogsId, regions }

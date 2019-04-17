@@ -1,9 +1,9 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
-const Logger = require('../util/Logger.js')
+const { Logger } = require('../util.js')
 const heroesloungeApi = require('heroeslounge-api')
 
 const dateformat = require('date-fns/format')
-const regions = require('../util/Regions.js').timezone
+const regions = require('../util.js').timezone
 
 class CastsToday extends BaseCommand {
   constructor (bot) {

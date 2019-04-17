@@ -1,6 +1,6 @@
 const CacheManager = require('../Classes/CacheManager')
 const heroesloungeApi = require('heroeslounge-api')
-const Logger = require('../util/Logger.js')
+const { Logger } = require('../util.js')
 
 const path = require('path')
 
