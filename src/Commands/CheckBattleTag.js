@@ -58,11 +58,20 @@ class CheckBattleTag extends BaseCommand {
       return this.bot.getDMChannel(msg.author.id).then((channel) => {
         if (HotsLogsInfo) {
           const leaderboardData = HotsLogsInfo.LeaderboardRankings
+          const averageMMR = calculateAverage(leaderboardData)
           embed.title = `${battletag}\nRegion: ${specifiedRegion}`
           for (let i = 0; i < leaderboardData.length; i++) {
             embed.fields[i] = {
               name: leaderboardData[i].GameMode,
-              value: leaderboardData[i].CurrentMMR,
+              value: leaderboardData[i].LeagueRank !== null ? `__***${leaderboardData[i].CurrentMMR}***__` : `_${leaderboardData[i].CurrentMMR}_`,
+              inline: true
+            }
+          }
+
+          if (averageMMR) {
+            embed.fields[leaderboardData.length] = {
+              name: 'Average MMR',
+              value: `__***${averageMMR}***__`,
               inline: true
             }
           }
@@ -113,6 +122,52 @@ let getHotsLogsDetails = (regionId, formattedBattletag) => {
 
     req.end()
   })
+}
+
+let calculateAverage = (LeaderBoardInfo) => {
+  const ratings = getModes(LeaderBoardInfo)
+
+  if (ratings.size === 0) return null
+
+  let totalMMR = 0
+  let divider = 0
+
+  ratings.forEach((rating, key) => {
+    switch (key) {
+      case 'HeroLeague':
+        totalMMR += rating * 0.5
+        divider += 0.5
+        break
+      case 'TeamLeague':
+        totalMMR += rating * 0.3
+        divider += 0.3
+        break
+      case 'UnrankedDraft':
+        totalMMR += rating * 0.2
+        divider += 0.2
+        break
+    }
+  })
+
+  return Math.floor(totalMMR / divider)
+}
+
+let getModes = (LeaderBoardInfo) => {
+  let ratings = new Map()
+
+  for (let i = 0; i < LeaderBoardInfo.length; i++) {
+    if (LeaderBoardInfo[i].LeagueRank !== null) {
+      ratings.set(LeaderBoardInfo[i].GameMode, LeaderBoardInfo[i].CurrentMMR)
+    }
+  }
+
+  if (ratings.size === 0) {
+    for (let i = 0; i < LeaderBoardInfo.length; i++) {
+      ratings.set(LeaderBoardInfo[i].GameMode, LeaderBoardInfo[i].CurrentMMR)
+    }
+  }
+
+  return ratings
 }
 
 module.exports = CheckBattleTag
