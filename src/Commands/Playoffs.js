@@ -36,7 +36,7 @@ class Playoffs extends BaseCommand {
   exec (msg, args) {
     const specifiedRegion = args[0].toLowerCase()
     const regionSearch = regions.find(region => region.name === specifiedRegion)
-    const region = region && regionSearch.heroesloungeId ? regionSearch.heroesloungeId : null
+    const region = regionSearch && regionSearch.heroesloungeId ? regionSearch.heroesloungeId : null
     const guild = msg.channel.guild
     const modRole = guild.roles.find((role) => {
       return role.name === 'Moderators'

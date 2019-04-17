@@ -10,7 +10,7 @@ module.exports.syncRegionRoles = async (bot) => {
     const regionIds = {}
     const regionDiscordRoleIds = {}
 
-    for (region of regions) {
+    for (let region of regions) {
       if (region.heroesloungeId) {
         regionIds[region.name] = region.heroesloungeId
         const regionRole = bot.guilds.get(defaultServer).roles.find((role) => {
