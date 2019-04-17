@@ -60,6 +60,7 @@ class CheckBattleTag extends BaseCommand {
           const leaderboardData = HotsLogsInfo.LeaderboardRankings
           const averageMMR = calculateAverage(leaderboardData)
           embed.title = `${battletag}\nRegion: ${specifiedRegion}`
+          embed.description = `[HotsLogs](https://www.hotslogs.com/Player/Profile?PlayerID=${HotsLogsInfo.PlayerID})`
           for (let i = 0; i < leaderboardData.length; i++) {
             embed.fields[i] = {
               name: leaderboardData[i].GameMode,
