@@ -10,5 +10,5 @@ const client = new Client(token, {
 client.launch()
 
 cron.schedule('0 0 * * *', () => {
-  syncRegionRoles(client.bot)
+  client.bot.commands.get('assignregion').exec()
 })
