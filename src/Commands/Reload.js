@@ -28,27 +28,61 @@ class Reload extends BaseCommand {
   }
 
   exec (msg) {
-    const dir = path.join(__dirname, '../Commands')
-    this.bot.commands.clear()
+    let warnings = ''
 
-    fs.readdir(dir).then((commands) => {
-      for (let i = 0; i < commands.length; i++) {
-        delete require.cache[require.resolve(path.join(__dirname, commands[i]))]
-
-        const Command = require(path.join(__dirname, commands[i]))
-        const command = new Command(this.bot)
-        this.bot.commands.set(command.command, command)
-      }
-
+    Promise.all(
+      [
+        reloadCommands(this.bot, path.join(__dirname, '../Commands')).catch((error) => {
+          const warningMessage = 'Unable to reload commands'
+          warnings += warningMessage + '\n'
+          Logger.warn(warningMessage, error)
+        }),
+        reloadEvents(this.bot, path.join(__dirname, '../Events')).catch((error) => {
+          const warningMessage = 'Unable to reload events'
+          warnings += warningMessage + '\n'
+          Logger.warn(warningMessage, error)
+        })
+      ]
+    ).then(() => {
       this.bot.getDMChannel(msg.author.id).then((channel) => {
-        return channel.createMessage('Command reloading complete')
+        if (warnings.length > 0) {
+          return channel.createMessage(warnings)
+        }
+        return channel.createMessage('Command and event reloading complete')
       }).catch((error) => {
         Logger.warn('Unable to inform about command reload', error)
       })
-    }).catch((error) => {
-      Logger.error('Unable to reload commands', error)
     })
   }
 }
 
 module.exports = Reload
+
+let reloadCommands = (bot, dir) => {
+  bot.commands.clear()
+  return fs.readdir(dir).then((commands) => {
+    for (let i = 0; i < commands.length; i++) {
+      delete require.cache[require.resolve(path.join(dir, commands[i]))]
+
+      const Command = require(path.join(dir, commands[i]))
+      const command = new Command(bot)
+      bot.commands.set(command.command, command)
+    }
+  }).catch((error) => {
+    throw error
+  })
+}
+
+let reloadEvents = (bot, dir) => {
+  bot.removeAllListeners()
+  return fs.readdir(dir).then((events) => {
+    for (let i = 0; i < events.length; i++) {
+      delete require.cache[require.resolve(path.join(dir, events[i]))]
+
+      const event = require(path.join(dir, events[i]))
+      event(bot)
+    }
+  }).catch((error) => {
+    throw error
+  })
+}
