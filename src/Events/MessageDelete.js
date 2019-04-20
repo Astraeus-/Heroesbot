@@ -13,7 +13,7 @@ module.exports = (bot) => {
           webhook.send({
             title: 'Message Deleted',
             color: 16711680,
-            description: `${invoker.username} deleted:\n${msg.cleanContent}`
+            description: `${invoker.username} deleted:\n${msg.cleanContent}\n from: ${msg.author.username}#${msg.author.discriminator}`
           })
         }
       }).catch((error) => {
