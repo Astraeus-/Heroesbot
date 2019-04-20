@@ -57,9 +57,7 @@ class UpdateCache extends BaseCommand {
     }
 
     Promise.all(cacheData).then(() => {
-      this.bot.getDMChannel(msg.author.id).then((channel) => {
-        return channel.createMessage(`Updated ${type} cache!`)
-      }).catch((error) => {
+      return msg.addReaction('✅').catch((error) => {
         Logger.warn(`Could not notify about updating ${type} cache`, error)
       })
     }).catch((error) => {

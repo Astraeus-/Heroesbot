@@ -31,9 +31,7 @@ class AssignRegion extends BaseCommand {
   exec (msg) {
     syncRegionRoles(this.bot).then((response) => {
       if (msg) {
-        return this.bot.getDMChannel(msg.author.id).then((channel) => {
-          return channel.createMessage(response)
-        }).catch((error) => {
+        return msg.addReaction('✅').catch((error) => {
           Logger.warn(`Could not notify region syncing`, error)
         })
       }
