@@ -47,7 +47,7 @@ module.exports = (bot) => {
           Logger.warn(`Unable to reassign region role to ${member.user.username}`, error)
         })
 
-        // if (returningSloth.is_captain === '1' || returningSloth.is_divs_captain === '1') {
+        // if (returningSloth.is_captain === 1 || returningSloth.is_divs_captain === 1) {
         //   const captainRole = guild.roles.find((role) => {
         //     return role.name === 'Captains'
         //   })

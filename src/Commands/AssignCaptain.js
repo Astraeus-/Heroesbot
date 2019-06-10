@@ -73,8 +73,8 @@ let syncCaptains = (bot) => {
     })
 
     for (let team of teamsWithDetails) {
-      if (team.sloths && team.sloths.length > 0 && team.disbanded === '0') {
-        if (team.sloths[0].is_captain === '1') {
+      if (team.sloths && team.sloths.length > 0 && team.disbanded === 0) {
+        if (team.sloths[0].is_captain === 1) {
           if (team.sloths[0].discord_id.length > 0) {
             let captainSloth = team.sloths[0]
 
@@ -124,12 +124,12 @@ let getParticipatingTeams = async () => {
 
   for (let i = seasons.length - 1; i >= 0; i--) {
     if (seasonCounter >= 2) break
-    if (seasons[i].type === '2') continue // Ignore Division S seasons
+    if (seasons[i].type === 2) continue // Ignore Division S seasons
 
-    if (seasons[i].is_active === '1' && seasons[i].reg_open === '0') {
+    if (seasons[i].is_active === 1 && seasons[i].reg_open === 0) {
       teamsByRegion = [...teamsByRegion, heroesloungeApi.getSeasonTeams(seasons[i].id)]
       seasonCounter++
-    } else if (seasons[i].is_active === '1' && seasons[i].reg_open === '1') {
+    } else if (seasons[i].is_active === 1 && seasons[i].reg_open === 1) {
       seasonCounter++
     }
   }

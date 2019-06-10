@@ -52,7 +52,7 @@ class Playoffs extends BaseCommand {
         let playoffSeason
 
         for (let i = seasonsArray.length - 1; i >= 0; i--) {
-          if (seasonsArray[i].type === '1' && seasonsArray[i].region_id === region && seasonsArray[i].current_round === seasonsArray[i].round_length) {
+          if (seasonsArray[i].type === 1 && seasonsArray[i].region_id === region && seasonsArray[i].current_round === seasonsArray[i].round_length) {
             playoffSeason = seasonsArray[i]
             break
           }
@@ -118,7 +118,7 @@ class Playoffs extends BaseCommand {
               })
 
               for (let sloth of divisionTeamSloths) {
-                if (sloth.is_captain === '1') {
+                if (sloth.is_captain === 1) {
                   if (!sloth.discord_id) {
                     const msg = `Unable to add ${sloth.title} of ${team.title} to ${channel.name}`
                     errorMessage.push(msg)

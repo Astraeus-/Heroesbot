@@ -71,9 +71,9 @@ let syncRegionRoles = async (bot) => {
 
       const roles = member.roles
       let regionRoleId
-      if (currentSloth.region_id === '1') {
+      if (currentSloth.region_id === 1) {
         regionRoleId = regionDiscordRoleIds['eu']
-      } else if (currentSloth.region_id === '2') {
+      } else if (currentSloth.region_id === 2) {
         regionRoleId = regionDiscordRoleIds['na']
       } else {
         continue

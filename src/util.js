@@ -16,13 +16,13 @@ const regions = [
   {
     name: 'eu',
     timezone: 'Europe/Berlin',
-    heroesloungeId: '1',
+    heroesloungeId: 1,
     hotslogsId: '2'
   },
   {
     name: 'na',
     timezone: 'America/Los_Angeles',
-    heroesloungeId: '2',
+    heroesloungeId: 2,
     hotslogsId: '1'
   },
   {
