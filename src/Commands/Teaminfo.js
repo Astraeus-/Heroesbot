@@ -61,10 +61,6 @@ class Teaminfo extends BaseCommand {
     }).then(async (team) => {
       if (!team) return null
 
-      const teamSloths = await heroesloungeApi.getTeamSloths(team.id).catch((error) => {
-        Logger.warn(`Unable to get team sloths for ${team.title}`, error)
-      })
-
       const teamLogo = await heroesloungeApi.getTeamLogo(team.id).catch((error) => {
         Logger.warn(`Unable to get team logo for ${team.title}`, error)
       })
@@ -78,7 +74,7 @@ class Teaminfo extends BaseCommand {
         'url': teamLogo.path || 'https://heroeslounge.gg/plugins/rikki/heroeslounge/assets/img/bg_75.png'
       }
 
-      for (let sloth of teamSloths) {
+      for (let sloth of team.sloths) {
         embed.fields[0].value += `${sloth.title}\n`
         embed.fields[1].value += `${sloth.battle_tag}\n`
       }

@@ -44,26 +44,6 @@ let syncCaptains = (bot) => {
   Logger.info('Synchronising captain roles')
 
   return getParticipatingTeams().then((teams) => {
-    let teamsWithDetails = []
-
-    for (let team of teams) {
-      const teamDetails = new Promise((resolve, reject) => {
-        heroesloungeApi.getTeamSloths(team.id).then((sloths) => {
-          let fullTeam = team
-          fullTeam['sloths'] = sloths
-          resolve(fullTeam)
-        }).catch((error) => {
-          Logger.warn(`Unable to get team sloths for team ${team.title}`, error)
-          let fullTeam = team
-          fullTeam['sloths'] = []
-          resolve(fullTeam)
-        })
-      })
-
-      teamsWithDetails = [...teamsWithDetails, teamDetails]
-    }
-    return Promise.all(teamsWithDetails)
-  }).then((teamsWithDetails) => {
     let errorMessage = ''
     let syncedSloths = []
 
@@ -72,30 +52,39 @@ let syncCaptains = (bot) => {
       return role.name === 'Captains'
     })
 
-    for (let team of teamsWithDetails) {
+    for (let team of teams) {
       if (team.sloths && team.sloths.length > 0 && team.disbanded === 0) {
-        if (team.sloths[0].is_captain === 1) {
-          if (team.sloths[0].discord_id.length > 0) {
-            let captainSloth = team.sloths[0]
+        let captainSloth
 
-            const member = guild.members.get(captainSloth.discord_id)
-            if (member) {
-              if (member.roles.includes(captainRole.id)) continue
+        for (let sloth of team.sloths) {
+          if (sloth.pivot.is_captain === 1) {
+            captainSloth = sloth
+            break
+          }
+        }
 
-              syncedSloths.push(
-                bot.addGuildMemberRole(defaultServer, captainSloth.discord_id, captainRole.id).catch((error) => {
-                  Logger.warn(`Unable to assign captain for team ${team.title} user ${captainSloth.title}`, error)
-                  errorMessage += `Unable to assign captain for team ${team.title} user ${captainSloth.title}\n`
-                })
-              )
-            } else {
-              errorMessage += `Captain not on discord for ${team.title} member ${captainSloth.title}\n`
-            }
+        if (!captainSloth) {
+          errorMessage += `No captain for ${team.title}\n`
+          continue
+        }
+
+        if (captainSloth.discord_id.length > 0) {
+          const member = guild.members.get(captainSloth.discord_id)
+
+          if (member) {
+            if (member.roles.includes(captainRole.id)) continue
+
+            syncedSloths.push(
+              bot.addGuildMemberRole(defaultServer, captainSloth.discord_id, captainRole.id).catch((error) => {
+                Logger.warn(`Unable to assign captain for team ${team.title} user ${captainSloth.title}`, error)
+                errorMessage += `Unable to assign captain for team ${team.title} user ${captainSloth.title}\n`
+              })
+            )
           } else {
-            errorMessage += `No discord id for ${team.sloths[0].title} from ${team.title}\n`
+            errorMessage += `Captain not on discord for ${team.title} member ${captainSloth.title}\n`
           }
         } else {
-          errorMessage += `No captain for ${team.title}\n`
+          errorMessage += `No discord id for ${team.sloths[0].title} from ${team.title}\n`
         }
       } else {
         errorMessage += `No sloths for ${team.title}\n`

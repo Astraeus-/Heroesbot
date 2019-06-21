@@ -46,16 +46,6 @@ module.exports = (bot) => {
         bot.addGuildMemberRole(guild.id, member.user.id, regionRole.id).catch((error) => {
           Logger.warn(`Unable to reassign region role to ${member.user.username}`, error)
         })
-
-        // if (returningSloth.is_captain === 1 || returningSloth.is_divs_captain === 1) {
-        //   const captainRole = guild.roles.find((role) => {
-        //     return role.name === 'Captains'
-        //   })
-
-        //   bot.addGuildMemberRole(guild.id, member.user.id, captainRole.id).catch((error) => {
-        //     Logger.warn(`Unable to reassign captain role to ${member.user.username}`, error)
-        //   })
-        // }
       }
     }).catch((error) => {
       Logger.error('Unable to verify sloth on website', error)
