@@ -113,12 +113,10 @@ class Playoffs extends BaseCommand {
 
             /* Grants access to the playoff channel to the team's captain */
             for (let team of divisionTeams) {
-              const divisionTeamSloths = await heroesloungeApi.getTeamSloths(team.id).catch((error) => {
-                Logger.error(`Unable to get team sloths for team with id: ${team.id}`, error)
-              })
+              const divisionTeamSloths = team.sloths
 
               for (let sloth of divisionTeamSloths) {
-                if (sloth.is_captain === 1) {
+                if (sloth.pivot.is_captain === 1) {
                   if (!sloth.discord_id) {
                     const msg = `Unable to add ${sloth.title} of ${team.title} to ${channel.name}`
                     errorMessage.push(msg)
