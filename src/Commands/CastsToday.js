@@ -27,8 +27,7 @@ class CastsToday extends BaseCommand {
       description: 'Lists all of today\'s upcoming casts for the given region.',
       syntax: 'caststoday <region>',
       min_args: 1,
-      cooldown: 15000,
-      ignoreInHelp: true
+      cooldown: 15000
     }
 
     super(permissions, options)

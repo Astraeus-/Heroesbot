@@ -20,7 +20,7 @@ class Help extends BaseCommand {
       prefix: '!',
       command: 'help',
       description: 'Lists all of Heroesbot\'s commands. Specify a command for additional info.',
-      syntax: 'help [!command]'
+      syntax: 'help <command>'
     }
 
     super(permissions, options)
@@ -37,10 +37,10 @@ class Help extends BaseCommand {
 
     let helpCommand
 
-    if (args[0] && args[0].startsWith('!')) {
-      const command = args[0].toLowerCase().slice(1)
+    if (args[0]) {
+      const helpArg = args[0].toLowerCase()
       let commands = Array.from(this.bot.commands.values())
-      helpCommand = commands.find((c) => c.command === command || c.aliases.includes(command))
+      helpCommand = commands.find((c) => c.command === helpArg || c.aliases.includes(helpArg))
     }
 
     if (helpCommand) {

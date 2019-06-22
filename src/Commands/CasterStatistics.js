@@ -24,8 +24,7 @@ class CasterStatistics extends BaseCommand {
       description: 'Provides you with the casting statistics of the specified season.',
       syntax: 'casterstats <season>',
       enabled: false,
-      min_args: 1,
-      ignoreInHelp: true
+      min_args: 1
     }
 
     super(permissions, options)
