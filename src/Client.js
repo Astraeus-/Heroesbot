@@ -15,7 +15,7 @@ class Client {
     this.loadCommands(path.join(__dirname, 'Commands'))
     this.loadEvents(path.join(__dirname, 'Events'))
 
-    this.bot.connect()
+    return this.bot.connect()
   }
 
   loadCommands (dir) {
