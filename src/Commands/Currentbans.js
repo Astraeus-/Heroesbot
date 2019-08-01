@@ -58,7 +58,7 @@ class CurrentBans extends BaseCommand {
     heroesloungeApi.getBans().then(async (bans) => {
       if (bans.length === 0) return null
 
-      for (let ban of bans) {
+      for (const ban of bans) {
         if (ban.literal) {
           embed.fields[1].value += `-${ban.literal}\n`
         } else {
@@ -83,7 +83,7 @@ class CurrentBans extends BaseCommand {
         }
       }
 
-      for (let field in embed.fields) {
+      for (const field in embed.fields) {
         if (embed.fields[field].value.length === 0) embed.fields[field].value += '-None'
       }
 

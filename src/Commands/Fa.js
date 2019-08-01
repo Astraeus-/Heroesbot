@@ -56,7 +56,7 @@ class Fa extends BaseCommand {
   }
 }
 
-let updateMember = async (member, role) => {
+const updateMember = async (member, role) => {
   if (!member.roles.includes(role.id)) {
     return member.addRole(role.id).then(() => {
       return `Welcome to the ${member.guild.name} Free Agent group.`

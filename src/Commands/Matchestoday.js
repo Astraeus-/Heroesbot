@@ -94,11 +94,11 @@ class MatchesToday extends BaseCommand {
         return new Date(a.wbp) - new Date(b.wbp)
       })
 
-      let matchDivisions = []
-      let matchTeams = []
-      let matchChannels = []
+      const matchDivisions = []
+      const matchTeams = []
+      const matchChannels = []
 
-      for (let match in matches) {
+      for (const match in matches) {
         matchDivisions[match] = matches[match].div_id ? heroesloungeApi.getDivision(matches[match].div_id).catch((error) => {
           Logger.warn('Unable to get division info', error)
         }) : ''
@@ -112,7 +112,7 @@ class MatchesToday extends BaseCommand {
         })
       }
 
-      for (let match in matches) {
+      for (const match in matches) {
         const teams = await matchTeams[match]
         const division = await matchDivisions[match]
         const channels = await matchChannels[match]
@@ -155,8 +155,8 @@ class MatchesToday extends BaseCommand {
         }
 
         const dateElements = matches[match].wbp.match(/\d+/g)
-        let localMatchTime = new Date(Date.UTC(dateElements[0], dateElements[1], dateElements[2], dateElements[3], dateElements[4], dateElements[5]))
-        let time = specifiedRegion === 'na' ? dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'hh:mm A') : dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'HH:mm:')
+        const localMatchTime = new Date(Date.UTC(dateElements[0], dateElements[1], dateElements[2], dateElements[3], dateElements[4], dateElements[5]))
+        const time = specifiedRegion === 'na' ? dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'hh:mm A') : dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'HH:mm:')
 
         const leftTeamSlug = teams[0] ? teams[0].slug : 'TBD'
         const rightTeamSlug = teams[1] ? teams[1].slug : 'TBD'
@@ -189,18 +189,18 @@ class MatchesToday extends BaseCommand {
   }
 }
 
-let addEmbed = (embed, Embeds, embedCounter) => {
+const addEmbed = (embed, Embeds, embedCounter) => {
   Embeds[embedCounter] = JSON.parse(JSON.stringify(embed))
   delete Embeds[embedCounter].description
   return Embeds
 }
 
-let sendMatchesTodayResponse = (channel, Embeds) => {
-  let response = []
+const sendMatchesTodayResponse = (channel, Embeds) => {
+  const response = []
 
-  for (let embed in Embeds) {
+  for (const embed in Embeds) {
     response.push(
-      channel.createMessage({ 'embed': Embeds[embed] }).catch((error) => {
+      channel.createMessage({ embed: Embeds[embed] }).catch((error) => {
         throw error
       }))
   }

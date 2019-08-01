@@ -161,7 +161,7 @@ const getModes = (LeaderBoardInfo) => {
   const ratings = new Map()
 
   for (let i = 0; i < LeaderBoardInfo.length; i++) {
-    if (LeaderBoardInfo[i].GameMode === "UnrankedDraft" || LeaderBoardInfo[i].GameMode === "StormLeague") {
+    if (LeaderBoardInfo[i].GameMode === 'UnrankedDraft' || LeaderBoardInfo[i].GameMode === 'StormLeague') {
       if (LeaderBoardInfo[i].LeagueRank !== null) {
         ratings.set(LeaderBoardInfo[i].GameMode, LeaderBoardInfo[i].CurrentMMR)
       }

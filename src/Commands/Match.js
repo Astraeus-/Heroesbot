@@ -54,7 +54,7 @@ class Match extends BaseCommand {
     embed.description += '[Amateur series rules](https://heroeslounge.gg/general/ruleset)\n[Division S rules](https://heroeslounge.gg/divisionS/ruleset)\nAmateur Series teams ban two maps each, as according to their ruleset\n\n'
     embed.description += base + output
 
-    return msg.channel.createMessage({ 'embed': embed }).catch((error) => {
+    return msg.channel.createMessage({ embed: embed }).catch((error) => {
       Logger.error('Unable to respond with coinflip result', error)
     })
   }

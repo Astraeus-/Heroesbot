@@ -41,7 +41,7 @@ class Petman extends BaseCommand {
       ':Petman:438477216108773396'
     ]
 
-    for (let emoji of emojisArray) {
+    for (const emoji of emojisArray) {
       msg.addReaction(emoji).catch((error) => {
         Logger.warn(`Could not add emoji ${emoji}`, error)
       })

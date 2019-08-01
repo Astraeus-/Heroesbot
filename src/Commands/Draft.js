@@ -82,7 +82,7 @@ class Draft extends BaseCommand {
       embed.fields[1].value = `[${draft.teams[1].name}](${draft.teams[1].url})`
       embed.fields[2].value = `[Observer](${draft.viewer.url})`
       embed.thumbnail = {
-        'url': `https://heroeslounge.gg/themes/HeroesLounge-Theme/assets/img/maps/bg_${battleground}.jpg`
+        url: `https://heroeslounge.gg/themes/HeroesLounge-Theme/assets/img/maps/bg_${battleground}.jpg`
       }
 
       return embed
@@ -94,7 +94,7 @@ class Draft extends BaseCommand {
   }
 }
 
-let checkMap = (map) => {
+const checkMap = (map) => {
   // Heroes of the Storm map list.
   /* eslint-disable */
   const maps = [
@@ -119,7 +119,7 @@ let checkMap = (map) => {
   return maps.includes(map)
 }
 
-let createDraft = (map, teamA, teamB, timerOff) => {
+const createDraft = (map, teamA, teamB, timerOff) => {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'nexus-brawls.com',
@@ -132,10 +132,10 @@ let createDraft = (map, teamA, teamB, timerOff) => {
     }
 
     const requestData = {
-      'team1': teamA,
-      'team2': teamB,
-      'map': map,
-      'timerOff': timerOff
+      team1: teamA,
+      team2: teamB,
+      map: map,
+      timerOff: timerOff
     }
 
     const req = http.request(options, (res) => {
@@ -149,7 +149,7 @@ let createDraft = (map, teamA, teamB, timerOff) => {
       res.on('end', () => {
         if (res.statusCode === 200) {
           try {
-            let response = JSON.parse(rawResponse)
+            const response = JSON.parse(rawResponse)
             resolve(response)
           } catch (err) {
             reject(Error('Parse JSON response'))

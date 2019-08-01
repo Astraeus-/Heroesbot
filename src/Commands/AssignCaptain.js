@@ -40,23 +40,23 @@ class AssignCaptain extends BaseCommand {
   }
 }
 
-let syncCaptains = (bot) => {
+const syncCaptains = (bot) => {
   Logger.info('Synchronising captain roles')
 
   return getParticipatingTeams().then((teams) => {
     let errorMessage = ''
-    let syncedSloths = []
+    const syncedSloths = []
 
     const guild = bot.guilds.get(defaultServer)
     const captainRole = guild.roles.find((role) => {
       return role.name === 'Captains'
     })
 
-    for (let team of teams) {
+    for (const team of teams) {
       if (team.sloths && team.sloths.length > 0 && team.disbanded === 0) {
         let captainSloth
 
-        for (let sloth of team.sloths) {
+        for (const sloth of team.sloths) {
           if (sloth.pivot.is_captain === 1) {
             captainSloth = sloth
             break
@@ -94,8 +94,8 @@ let syncCaptains = (bot) => {
     return Promise.all(syncedSloths).then(() => {
       Logger.info(`Captain role synchronisation complete, updated ${syncedSloths.length} users`)
       return {
-        'updatedCaptainCounter': syncedSloths.length,
-        'errorMessage': errorMessage
+        updatedCaptainCounter: syncedSloths.length,
+        errorMessage: errorMessage
       }
     })
   }).catch((error) => {
@@ -103,7 +103,7 @@ let syncCaptains = (bot) => {
   })
 }
 
-let getParticipatingTeams = async () => {
+const getParticipatingTeams = async () => {
   const seasons = await heroesloungeApi.getSeasons().catch((error) => {
     throw error
   })

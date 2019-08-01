@@ -7,13 +7,13 @@ const client = new Client(token, {
   disableEveryone: false
 })
 
-let regionTask = cron.schedule('0 0 * * *', () => {
+const regionTask = cron.schedule('0 0 * * *', () => {
   client.bot.commands.get('assignregion').exec()
 }, {
   scheduled: false
 })
 
-let remindTask = cron.schedule('* * * * *', () => {
+const remindTask = cron.schedule('* * * * *', () => {
   client.bot.commands.get('remind').remind()
 }, {
   scheduled: false

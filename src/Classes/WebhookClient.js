@@ -8,21 +8,21 @@ class WebhookClient {
 
   send (content, embeds = []) {
     const options = {
-      'hostname': 'discordapp.com',
-      'path': `/api/webhooks/${this.id}/${this.token}`,
-      'method': 'POST',
-      'headers': {
+      hostname: 'discordapp.com',
+      path: `/api/webhooks/${this.id}/${this.token}`,
+      method: 'POST',
+      headers: {
         'Content-Type': 'application/json'
       }
     }
 
-    let postData = {
+    const postData = {
       embeds: [
         content
       ]
     }
 
-    for (let embed of embeds) {
+    for (const embed of embeds) {
       postData.embeds.push(embed)
     }
 

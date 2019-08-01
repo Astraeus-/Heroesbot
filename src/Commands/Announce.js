@@ -36,14 +36,14 @@ class Announce extends BaseCommand {
     const announcementChannel = msg.channel.guild.channels.get(channelMention)
 
     if (announcementChannel && announcementMessage) {
-      let announcement = {
+      const announcement = {
         content: announcementMessage
       }
 
       if (msg.attachments.length > 0) {
         const attachment = {
-          'image': {
-            'url': msg.attachments[0].url
+          image: {
+            url: msg.attachments[0].url
           }
         }
         announcement.embed = attachment

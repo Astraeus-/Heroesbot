@@ -64,12 +64,12 @@ class CastsToday extends BaseCommand {
         return new Date(a.wbp) - new Date(b.wbp)
       })
 
-      let matchDivisions = []
-      let matchTeams = []
-      let matchChannels = []
-      let matchCasters = []
+      const matchDivisions = []
+      const matchTeams = []
+      const matchChannels = []
+      const matchCasters = []
 
-      for (let match in matches) {
+      for (const match in matches) {
         matchDivisions[match] = matches[match].div_id ? heroesloungeApi.getDivision(matches[match].div_id).catch((error) => {
           Logger.warn('Unable to get division info', error)
         }) : ''
@@ -89,7 +89,7 @@ class CastsToday extends BaseCommand {
 
       let response = ``
 
-      for (let match in matches) {
+      for (const match in matches) {
         const division = await matchDivisions[match]
         const teams = await matchTeams[match]
         const casters = await matchCasters[match]
@@ -129,8 +129,8 @@ class CastsToday extends BaseCommand {
         }
 
         const dateElements = matches[match].wbp.match(/\d+/g)
-        let localMatchTime = new Date(Date.UTC(dateElements[0], dateElements[1], dateElements[2], dateElements[3], dateElements[4], dateElements[5]))
-        let time = specifiedRegion === 'na' ? dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'hh:mm A') : dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'HH:mm:')
+        const localMatchTime = new Date(Date.UTC(dateElements[0], dateElements[1], dateElements[2], dateElements[3], dateElements[4], dateElements[5]))
+        const time = specifiedRegion === 'na' ? dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'hh:mm A') : dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'HH:mm:')
 
         // Group all match statement with the same time together.
         if (match > 0 && matches[match].wbp > matches[match - 1].wbp) {

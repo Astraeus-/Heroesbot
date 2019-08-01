@@ -8,13 +8,13 @@ module.exports = (bot) => {
   const CommandHandler = new Handler(bot)
   bot.on('messageCreate', (msg) => {
     if (!bot.ready || !msg.author || msg.author.bot) return // Ignore webhooks and bot users.
-    let commands = msg.content.match(/(?:!|#)(\S+)/gim) // regular expression to get anything starting with ! or # and any following characters except the white space.
+    const commands = msg.content.match(/(?:!|#)(\S+)/gim) // regular expression to get anything starting with ! or # and any following characters except the white space.
     let args
 
     if (commands) {
       let command
       for (let i = 0; i < commands.length; i++) {
-        let curr = CommandHandler.findCommand(commands[i].slice(1))
+        const curr = CommandHandler.findCommand(commands[i].slice(1))
         if (curr) {
           command = curr
           args = CommandHandler.listArguments(commands[i], msg)

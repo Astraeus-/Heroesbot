@@ -62,7 +62,7 @@ class CasterStatistics extends BaseCommand {
       embed.description += season
       const roundData = stats.dataByRound
 
-      for (let entry in roundData) {
+      for (const entry in roundData) {
         if (parseInt(entry) > 0) {
           embed.fields[0].value += `Round ${entry}: ${roundData[entry].matches} matches\n`
           embed.fields[1].value += `${roundData[entry].casts}\n`

@@ -114,21 +114,21 @@ class Remind extends BaseCommand {
 
           embed.title = 'Current reminders'
           embed.fields.push({
-            'name': 'ID',
-            'value': '',
-            'inline': true
+            name: 'ID',
+            value: '',
+            inline: true
           }, {
-            'name': 'Channel',
-            'value': '',
-            'inline': true
+            name: 'Channel',
+            value: '',
+            inline: true
           },
           {
-            'name': 'Datetime',
-            'value': '',
-            'inline': true
+            name: 'Datetime',
+            value: '',
+            inline: true
           }, {
-            'name': 'Message',
-            'value': ''
+            name: 'Message',
+            value: ''
           })
 
           let remindersToList = []
@@ -141,7 +141,7 @@ class Remind extends BaseCommand {
             })
           }
 
-          for (let reminder of remindersToList) {
+          for (const reminder of remindersToList) {
             embed.fields[0].value += `${reminder.Id}\n`
             embed.fields[1].value += `${this.getChannelName(reminder.channelId)}\n`
             embed.fields[2].value += `${dateformat(new Date(reminder.time), 'D/M/YYYY HH:mm Z')}\n`

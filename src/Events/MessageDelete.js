@@ -17,7 +17,7 @@ module.exports = (bot) => {
             description: `Deleted by: ${entry.user.username}\nChannel: ${entry.channel.name}`
           }
 
-          let embeds = [
+          const embeds = [
             {
               title: 'Message',
               color: 16711680,
@@ -30,7 +30,7 @@ module.exports = (bot) => {
           ]
 
           if (msg.attachments.length > 0) {
-            for (let attachment of msg.attachments) {
+            for (const attachment of msg.attachments) {
               embeds.push({
                 title: 'Attachment',
                 color: 16711680,

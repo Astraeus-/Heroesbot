@@ -7,16 +7,16 @@ class CommandHandler {
 
   findCommand (command) {
     command = command.toLowerCase()
-    let commands = Array.from(this.bot.commands.values())
+    const commands = Array.from(this.bot.commands.values())
     return commands.find((c) => c.command === command || c.aliases.includes(command))
   }
 
   addCooldown (command, channelID, cooldown) {
     if (cooldown === 0) return // Do not need to add cooldowns for 0 cooldown commands.
     this.commandCooldowns.push({
-      'command': command.command,
-      'channelID': channelID,
-      'cooldown': new Date(Date.now() + cooldown)
+      command: command.command,
+      channelID: channelID,
+      cooldown: new Date(Date.now() + cooldown)
     })
   }
 
@@ -53,10 +53,10 @@ class CommandHandler {
     })
 
     const permits = {
-      'server': Object.keys(permissions).includes(guildName),
-      'channel': channels.includes(msg.channel.name) || channels.length === 0,
-      'role': roles.some((r) => memberRoles.includes(r)) || roles.length === 0,
-      'user': users.includes(msg.author.id) || users.length === 0
+      server: Object.keys(permissions).includes(guildName),
+      channel: channels.includes(msg.channel.name) || channels.length === 0,
+      role: roles.some((r) => memberRoles.includes(r)) || roles.length === 0,
+      user: users.includes(msg.author.id) || users.length === 0
     }
     const memberPermits = roles.length > 0 && users.length > 0 ? permits.role || permits.user : permits.role && permits.user
     const hasPermission = permits.server && permits.channel && memberPermits
@@ -70,7 +70,7 @@ class CommandHandler {
     let usersArray = []
     let hasPermission = false
 
-    for (let server in permissions) {
+    for (const server in permissions) {
       usersArray = usersArray.concat(permissions[server].users)
     }
 

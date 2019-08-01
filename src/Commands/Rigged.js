@@ -40,7 +40,7 @@ class Rigged extends BaseCommand {
       ':BabyRage:438477910899163157'
     ]
 
-    for (let emoji of emojisArray) {
+    for (const emoji of emojisArray) {
       msg.addReaction(emoji).catch((error) => {
         Logger.warn(`Could not add emoji ${emoji}`, error)
       })

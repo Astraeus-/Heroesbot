@@ -42,7 +42,7 @@ class Robbgate extends BaseCommand {
       '🇪'
     ]
 
-    for (let emoji of emojisArray) {
+    for (const emoji of emojisArray) {
       msg.addReaction(emoji).catch((error) => {
         Logger.warn(`Could not add emoji ${emoji}`, error)
       })

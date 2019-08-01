@@ -44,8 +44,8 @@ class CacheManager {
     if (this.isUpdating) return this.updateResponse
     this.isUpdating = true
 
-    let updatedCache = this.update().then((data) => {
-      let newCache = {
+    const updatedCache = this.update().then((data) => {
+      const newCache = {
         lastUpdatedAt: Date.now(),
         data: data
       }

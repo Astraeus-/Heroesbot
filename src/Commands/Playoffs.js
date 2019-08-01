@@ -42,13 +42,13 @@ class Playoffs extends BaseCommand {
       return role.name === 'Moderators'
     })
 
-    let errorMessage = []
+    const errorMessage = []
 
     const manageChannelPermission = guild.members.get(this.bot.user.id).permission.has('manageChannels')
 
     if (manageChannelPermission) {
       heroesloungeApi.getSeasons().then((seasons) => {
-        let seasonsArray = seasons
+        const seasonsArray = seasons
         let playoffSeason
 
         for (let i = seasonsArray.length - 1; i >= 0; i--) {
@@ -65,9 +65,9 @@ class Playoffs extends BaseCommand {
         return heroesloungeApi.getSeasonPlayoffs(playoffSeason.id)
       }).then(async (seasonPlayoffs) => {
         const seasonTournaments = seasonPlayoffs
-        let tournaments = []
+        const tournaments = []
 
-        for (let tournament in seasonTournaments) {
+        for (const tournament in seasonTournaments) {
           const tournamentDivisions = await heroesloungeApi.getPlayoffDivisions(seasonTournaments[tournament].id)
             .catch((error) => {
               Logger.error(`Unable to get playoff details for playoff with id: ${seasonTournaments[tournament].id}`, error)
@@ -97,25 +97,25 @@ class Playoffs extends BaseCommand {
       }).then(async (playoffs) => {
         const tournaments = playoffs.tournaments
         const category = playoffs.playoffCategory
-        let captainPermissionUpdates = []
+        const captainPermissionUpdates = []
 
-        for (let tournament in tournaments) {
-          for (let division of tournaments[tournament].divisions) {
+        for (const tournament in tournaments) {
+          for (const division of tournaments[tournament].divisions) {
             const divisionTeams = await heroesloungeApi.getDivisionTeams(division.id).catch((error) => {
               Logger.error(`Unable to get division teams for division with id: ${division.id}`, error)
             })
 
-            let channel = await this.bot.createChannel(guild.id, `${tournaments[tournament].title}-${division.slug}`, 0, '', category.id).catch((error) => {
+            const channel = await this.bot.createChannel(guild.id, `${tournaments[tournament].title}-${division.slug}`, 0, '', category.id).catch((error) => {
               const msg = `Unable to create channel ${tournaments[tournament].title}-${division.slug}`
               errorMessage.push(msg)
               Logger.warn(msg, error)
             })
 
             /* Grants access to the playoff channel to the team's captain */
-            for (let team of divisionTeams) {
+            for (const team of divisionTeams) {
               const divisionTeamSloths = team.sloths
 
-              for (let sloth of divisionTeamSloths) {
+              for (const sloth of divisionTeamSloths) {
                 if (sloth.pivot.is_captain === 1) {
                   if (!sloth.discord_id) {
                     const msg = `Unable to add ${sloth.title} of ${team.title} to ${channel.name}`
@@ -156,9 +156,9 @@ class Playoffs extends BaseCommand {
   }
 }
 
-let sendErrorResponse = (channel, errorMessage) => {
+const sendErrorResponse = (channel, errorMessage) => {
   let errorResponse = 'Finished Playoffs creations with errors:\n'
-  for (let error of errorMessage) {
+  for (const error of errorMessage) {
     errorResponse += `${error}\n`
 
     if (errorResponse.length >= 1750) {

@@ -9,12 +9,12 @@ class MatchesTodayCache extends CacheManager {
     const settings = {
       update: heroesloungeApi.getMatchesToday,
       isUpdating: {
-        'eu': false,
-        'na': false
+        eu: false,
+        na: false
       },
       updateResponse: {
-        'eu': {},
-        'na': {}
+        eu: {},
+        na: {}
       }
     }
 
@@ -47,8 +47,8 @@ class MatchesTodayCache extends CacheManager {
     if (this.isUpdating[region]) return this.updateResponse[region]
     this.isUpdating[region] = true
 
-    let updatedCache = this.update(timezone).then((data) => {
-      let newCache = {
+    const updatedCache = this.update(timezone).then((data) => {
+      const newCache = {
         lastUpdatedAt: Date.now(),
         data: data
       }

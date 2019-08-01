@@ -37,14 +37,14 @@ class EditMessage extends BaseCommand {
     const editMessageChannel = msg.channel.guild.channels.get(channelMention)
 
     if (editMessageChannel) {
-      let update = {
+      const update = {
         content: updateMessage
       }
 
       if (msg.attachments.length > 0) {
         const attachment = {
-          'image': {
-            'url': msg.attachments[0].url
+          image: {
+            url: msg.attachments[0].url
           }
         }
         update.embed = attachment

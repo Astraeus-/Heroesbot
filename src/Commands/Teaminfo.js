@@ -71,15 +71,15 @@ class Teaminfo extends BaseCommand {
       embed.description = `${team.short_description.replace(/<(.|\n)*?>/g, '')}\n\nCreated on: ${creationDate}`
       embed.url = `https://heroeslounge.gg/team/view/${team.slug.replace(' ', '%20')}`
       embed.thumbnail = {
-        'url': teamLogo.path || 'https://heroeslounge.gg/plugins/rikki/heroeslounge/assets/img/bg_75.png'
+        url: teamLogo.path || 'https://heroeslounge.gg/plugins/rikki/heroeslounge/assets/img/bg_75.png'
       }
 
-      for (let sloth of team.sloths) {
+      for (const sloth of team.sloths) {
         embed.fields[0].value += `${sloth.title}\n`
         embed.fields[1].value += `${sloth.battle_tag}\n`
       }
 
-      for (let field in embed.fields) {
+      for (const field in embed.fields) {
         if (embed.fields[field].value.length === 0) embed.fields[field].value += '-None'
       }
 

@@ -39,7 +39,7 @@ class Help extends BaseCommand {
 
     if (args[0]) {
       const helpArg = args[0].toLowerCase()
-      let commands = Array.from(this.bot.commands.values())
+      const commands = Array.from(this.bot.commands.values())
       helpCommand = commands.find((c) => c.command === helpArg || c.aliases.includes(helpArg))
     }
 
@@ -48,20 +48,20 @@ class Help extends BaseCommand {
       if (aliases.length === 0) aliases = 'No command aliases'
       embed.title = `📖 ${helpCommand.prefix + helpCommand.command} help 📖`
       embed.fields.push({
-        'name': 'Aliases',
-        'value': aliases
+        name: 'Aliases',
+        value: aliases
       }, {
-        'name': 'Description',
-        'value': helpCommand.description
+        name: 'Description',
+        value: helpCommand.description
       }, {
-        'name': 'Syntax',
-        'value': helpCommand.prefix + helpCommand.syntax
+        name: 'Syntax',
+        value: helpCommand.prefix + helpCommand.syntax
       }, {
-        'name': 'Cooldown',
-        'value': `${helpCommand.cooldown}ms`
+        name: 'Cooldown',
+        value: `${helpCommand.cooldown}ms`
       }, {
-        'name': 'DM Invokable',
-        'value': helpCommand.invokeDM
+        name: 'DM Invokable',
+        value: helpCommand.invokeDM
       })
     } else {
       embed.title = '📖 Heroesbot command list 📖'
@@ -69,8 +69,8 @@ class Help extends BaseCommand {
         if (command.ignoreInHelp) return
         if (!command.enabled) return
         embed.fields.push({
-          'name': command.prefix + command.command,
-          'value': command.description
+          name: command.prefix + command.command,
+          value: command.description
         })
       })
     }

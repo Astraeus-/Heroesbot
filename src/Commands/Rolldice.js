@@ -32,7 +32,7 @@ class Rolldice extends BaseCommand {
     const nFaces = (msg.content.match(/[d]\d+/i) ? parseInt(msg.content.match(/[d]\d+/i)[0].substr(1)) : 6)
 
     const roll = rollDice(nDice, nFaces)
-    let total = roll.reduce((total, num) => {
+    const total = roll.reduce((total, num) => {
       return total + num
     })
 
@@ -47,8 +47,8 @@ class Rolldice extends BaseCommand {
   }
 }
 
-let rollDice = (nDice, nFaces) => {
-  let outcomes = []
+const rollDice = (nDice, nFaces) => {
+  const outcomes = []
 
   for (let i = 0; i < nDice; i++) {
     const roll = Math.floor((Math.random() * nFaces) + 1)

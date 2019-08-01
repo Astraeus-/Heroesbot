@@ -41,13 +41,13 @@ class AssignRegion extends BaseCommand {
   }
 }
 
-let syncRegionRoles = async (bot) => {
+const syncRegionRoles = async (bot) => {
   Logger.info('Synchronising region roles')
   return heroesloungeApi.getSloths().then((sloths) => {
     const regionIds = {}
     const regionDiscordRoleIds = {}
 
-    for (let region of regions) {
+    for (const region of regions) {
       if (region.heroesloungeId) {
         regionIds[region.name] = region.heroesloungeId
         const regionRole = bot.guilds.get(defaultServer).roles.find((role) => {
@@ -60,9 +60,9 @@ let syncRegionRoles = async (bot) => {
       }
     }
 
-    let syncedSloths = []
+    const syncedSloths = []
 
-    for (let sloth in sloths) {
+    for (const sloth in sloths) {
       const currentSloth = sloths[sloth]
       if (currentSloth.discord_id.length === 0) continue
 

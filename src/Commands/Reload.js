@@ -58,7 +58,7 @@ class Reload extends BaseCommand {
 
 module.exports = Reload
 
-let reloadCommands = (bot, dir) => {
+const reloadCommands = (bot, dir) => {
   bot.commands.clear()
   return fs.readdir(dir).then((commands) => {
     for (let i = 0; i < commands.length; i++) {
@@ -73,7 +73,7 @@ let reloadCommands = (bot, dir) => {
   })
 }
 
-let reloadEvents = (bot, dir) => {
+const reloadEvents = (bot, dir) => {
   bot.removeAllListeners()
   return fs.readdir(dir).then((events) => {
     for (let i = 0; i < events.length; i++) {
