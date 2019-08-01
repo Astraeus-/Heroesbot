@@ -76,7 +76,7 @@ class CheckBattleTag extends BaseCommand {
               inline: true
             }
           }
-          return channel.createMessage({ 'embed': embed })
+          return channel.createMessage({ embed: embed })
         } else {
           return channel.createMessage(`No data for battletag: ${battletag} in region ${specifiedRegion}`)
         }
@@ -87,7 +87,7 @@ class CheckBattleTag extends BaseCommand {
   }
 }
 
-let getHotsLogsDetails = (regionId, formattedBattletag) => {
+const getHotsLogsDetails = (regionId, formattedBattletag) => {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'api.hotslogs.com',
@@ -106,7 +106,7 @@ let getHotsLogsDetails = (regionId, formattedBattletag) => {
       res.on('end', () => {
         if (res.statusCode === 200) {
           try {
-            let response = JSON.parse(rawResponse)
+            const response = JSON.parse(rawResponse)
             resolve(response)
           } catch (err) {
             reject(Error('Parse JSON response'))
@@ -125,7 +125,7 @@ let getHotsLogsDetails = (regionId, formattedBattletag) => {
   })
 }
 
-let calculateAverage = (LeaderBoardInfo) => {
+const calculateAverage = (LeaderBoardInfo) => {
   const ratings = getModes(LeaderBoardInfo)
 
   if (ratings.size === 0) return null
@@ -135,17 +135,21 @@ let calculateAverage = (LeaderBoardInfo) => {
 
   ratings.forEach((rating, key) => {
     switch (key) {
-      case 'HeroLeague':
-        totalMMR += rating * 0.5
-        divider += 0.5
+      case 'StormLeague':
+        totalMMR += rating * 0.7
+        divider += 0.7
         break
-      case 'TeamLeague':
+      // case 'HeroLeague':
+      //   totalMMR += rating * 0.5
+      //   divider += 0.5
+      //   break
+      // case 'TeamLeague':
+      //   totalMMR += rating * 0.3
+      //   divider += 0.3
+      //   break
+      case 'UnrankedDraft':
         totalMMR += rating * 0.3
         divider += 0.3
-        break
-      case 'UnrankedDraft':
-        totalMMR += rating * 0.2
-        divider += 0.2
         break
     }
   })
@@ -153,12 +157,14 @@ let calculateAverage = (LeaderBoardInfo) => {
   return Math.floor(totalMMR / divider)
 }
 
-let getModes = (LeaderBoardInfo) => {
-  let ratings = new Map()
+const getModes = (LeaderBoardInfo) => {
+  const ratings = new Map()
 
   for (let i = 0; i < LeaderBoardInfo.length; i++) {
-    if (LeaderBoardInfo[i].LeagueRank !== null) {
-      ratings.set(LeaderBoardInfo[i].GameMode, LeaderBoardInfo[i].CurrentMMR)
+    if (LeaderBoardInfo[i].GameMode === "UnrankedDraft" || LeaderBoardInfo[i].GameMode === "StormLeague") {
+      if (LeaderBoardInfo[i].LeagueRank !== null) {
+        ratings.set(LeaderBoardInfo[i].GameMode, LeaderBoardInfo[i].CurrentMMR)
+      }
     }
   }
 
