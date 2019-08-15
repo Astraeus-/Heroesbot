@@ -2,7 +2,7 @@ const BaseCommand = require('../Classes/BaseCommand.js')
 const { Logger } = require('../util.js')
 
 const heroesloungeApi = require('heroeslounge-api')
-const { defaultServer } = require('../config.json')
+const { defaultServer } = require('../config.js')
 
 class AssignCaptain extends BaseCommand {
   constructor (bot) {

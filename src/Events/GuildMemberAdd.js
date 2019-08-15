@@ -1,4 +1,4 @@
-const { webhooks } = require('../config.json')
+const { webhooks } = require('../config.js')
 const WebhookClient = require('../Classes/WebhookClient.js')
 const webhook = new WebhookClient(webhooks.moderatorLogs.id, webhooks.moderatorLogs.token)
 const heroesloungeApi = require('heroeslounge-api')

@@ -1,4 +1,4 @@
-const { defaultServer, webhooks } = require('../config.json')
+const { defaultServer, webhooks, environment } = require('../config.js')
 const WebhookClient = require('../Classes/WebhookClient.js')
 const webhook = new WebhookClient(webhooks.moderatorLogs.id, webhooks.moderatorLogs.token)
 const { Logger } = require('../util.js')
@@ -39,7 +39,9 @@ module.exports = (bot) => {
             }
           }
 
-          webhook.send(webhookResponse, embeds)
+          if (environment === 'production') {
+            webhook.send(webhookResponse, embeds)
+          }
         }
       }).catch((error) => {
         Logger.warn(`Unable to retrieve audit logs for guild: ${msg.channel.guild.name}`, error)

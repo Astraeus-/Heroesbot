@@ -1,4 +1,4 @@
-const { vip } = require('../config.json')
+const { vip } = require('../config.js')
 const { Logger } = require('../util.js')
 
 const fs = require('fs').promises

@@ -1,6 +1,6 @@
 const Handler = require('../Classes/CommandHandler.js')
 const { Logger } = require('../util.js')
-const { webhooks } = require('../config.json')
+const { webhooks, environment } = require('../config.js')
 const WebhookClient = require('../Classes/WebhookClient.js')
 const webhook = new WebhookClient(webhooks.commandLogs.id, webhooks.commandLogs.token)
 
@@ -59,8 +59,7 @@ module.exports = (bot) => {
         }
 
         try {
-          // Do not send webhook notifications for messages in Test-Server.
-          if (!msg.channel.guild || msg.channel.guild.id !== '321640682840391680') {
+          if (environment === 'production') {
             webhook.send({
               title: 'A command was used',
               color: bot.embed.color,

@@ -1,5 +1,5 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
-const { memeCooldown } = require('../config.json')
+const { memeCooldown } = require('../config.js')
 const { Logger } = require('../util.js')
 
 class Petman extends BaseCommand {

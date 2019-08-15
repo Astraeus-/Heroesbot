@@ -1,6 +1,6 @@
 const BaseCommand = require('../Classes/BaseCommand.js')
 const { Logger } = require('../util.js')
-const { defaultServer } = require('../config.json')
+const { defaultServer } = require('../config.js')
 
 class Fa extends BaseCommand {
   constructor (bot) {

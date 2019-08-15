@@ -2,7 +2,7 @@ const BaseCommand = require('../Classes/BaseCommand.js')
 const { Logger } = require('../util.js')
 const heroesloungeApi = require('heroeslounge-api')
 
-const { defaultServer } = require('../config.json')
+const { defaultServer } = require('../config.js')
 const { regions } = require('../util.js')
 
 class AssignRegion extends BaseCommand {
