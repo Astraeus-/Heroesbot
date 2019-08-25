@@ -41,7 +41,7 @@ class CheckBattleTag extends BaseCommand {
       ]
     };
 
-    const specifiedRegion = args[0];
+    const specifiedRegion = args[0].toLowerCase();
     const region = regions.find(region => region.name === specifiedRegion);
     const hotslogsRegionId = region && region.hotslogsId ? region.hotslogsId : null;
     const battletag = args[1];
