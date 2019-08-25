@@ -1,6 +1,6 @@
-const BaseCommand = require('../Classes/BaseCommand.js')
-const { Logger } = require('../util.js')
-const dateformat = require('date-fns/format')
+const BaseCommand = require('../Classes/BaseCommand.js');
+const { Logger } = require('../util.js');
+const dateformat = require('date-fns/format');
 
 class Time extends BaseCommand {
   constructor (bot) {
@@ -15,7 +15,7 @@ class Time extends BaseCommand {
         roles: [],
         users: []
       }
-    }
+    };
 
     const options = {
       prefix: '!',
@@ -24,17 +24,17 @@ class Time extends BaseCommand {
       description: 'Outputs the time of the invokers message.',
       syntax: 'time'
 
-    }
+    };
 
-    super(permissions, options)
+    super(permissions, options);
   }
 
   exec (msg) {
-    const timestamp = dateformat(msg.timestamp, 'hh:mm:ss A')
+    const timestamp = dateformat(msg.timestamp, 'hh:mm:ss A');
     msg.channel.createMessage(`The current time is ${timestamp}`).catch((error) => {
-      Logger.error('Could not respond with timestamp', error)
-    })
+      Logger.error('Could not respond with timestamp', error);
+    });
   }
 }
 
-module.exports = Time
+module.exports = Time;

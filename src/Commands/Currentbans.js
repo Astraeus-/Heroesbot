@@ -1,6 +1,6 @@
-const BaseCommand = require('../Classes/BaseCommand.js')
-const { Logger } = require('../util.js')
-const heroesloungeApi = require('heroeslounge-api')
+const BaseCommand = require('../Classes/BaseCommand.js');
+const { Logger } = require('../util.js');
+const heroesloungeApi = require('heroeslounge-api');
 
 class CurrentBans extends BaseCommand {
   constructor (bot) {
@@ -15,7 +15,7 @@ class CurrentBans extends BaseCommand {
         roles: [],
         users: []
       }
-    }
+    };
 
     const options = {
       prefix: '!',
@@ -23,10 +23,10 @@ class CurrentBans extends BaseCommand {
       aliases: ['bans'],
       description: 'Lists all of the current bans and bugs.',
       syntax: 'currentbans'
-    }
+    };
 
-    super(permissions, options)
-    this.bot = bot
+    super(permissions, options);
+    this.bot = bot;
   }
 
   exec (msg) {
@@ -51,53 +51,53 @@ class CurrentBans extends BaseCommand {
           inline: true
         }
       ]
-    }
+    };
 
-    msg.channel.sendTyping()
+    msg.channel.sendTyping();
 
     heroesloungeApi.getBans().then(async (bans) => {
-      if (bans.length === 0) return null
+      if (bans.length === 0) return null;
 
       for (const ban of bans) {
         if (ban.literal) {
-          embed.fields[1].value += `-${ban.literal}\n`
+          embed.fields[1].value += `-${ban.literal}\n`;
         } else {
           if (ban.talent_id) {
             const talent = await heroesloungeApi.getTalent(ban.talent_id).catch((error) => {
-              Logger.warn('Unable to get talent info', error)
-            })
+              Logger.warn('Unable to get talent info', error);
+            });
             const hero = await heroesloungeApi.getHero(ban.hero_id).catch((error) => {
-              Logger.warn('Unable to get hero info', error)
-            })
-            embed.fields[2].value += `-${hero.title}- ${talent.title}\n`
+              Logger.warn('Unable to get hero info', error);
+            });
+            embed.fields[2].value += `-${hero.title}- ${talent.title}\n`;
           } else {
             const hero = await heroesloungeApi.getHero(ban.hero_id).catch((error) => {
-              Logger.warn('Unable to get hero info', error)
-            })
+              Logger.warn('Unable to get hero info', error);
+            });
 
-            const roundStart = ban.round_start ? ban.round_start : ''
-            const roundEnd = ban.round_length ? parseInt(roundStart) + parseInt(ban.round_length) : ''
-            const roundInfo = roundStart && roundEnd ? `Rounds[${roundStart}-${roundEnd}]` : ''
-            embed.fields[0].value += `-${hero.title} ${roundInfo}\n`
+            const roundStart = ban.round_start ? ban.round_start : '';
+            const roundEnd = ban.round_length ? parseInt(roundStart) + parseInt(ban.round_length) : '';
+            const roundInfo = roundStart && roundEnd ? `Rounds[${roundStart}-${roundEnd}]` : '';
+            embed.fields[0].value += `-${hero.title} ${roundInfo}\n`;
           }
         }
       }
 
       for (const field in embed.fields) {
-        if (embed.fields[field].value.length === 0) embed.fields[field].value += '-None'
+        if (embed.fields[field].value.length === 0) embed.fields[field].value += '-None';
       }
 
-      return embed
+      return embed;
     }).then((embed) => {
       if (!embed) {
-        return msg.channel.createMessage('There are currently no additional bans')
+        return msg.channel.createMessage('There are currently no additional bans');
       } else {
-        return msg.channel.createMessage({ embed: embed })
+        return msg.channel.createMessage({ embed: embed });
       }
     }).catch((error) => {
-      Logger.error('Unable to list current bans', error)
-    })
+      Logger.error('Unable to list current bans', error);
+    });
   }
 }
 
-module.exports = CurrentBans
+module.exports = CurrentBans;

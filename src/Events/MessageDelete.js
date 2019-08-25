@@ -1,13 +1,13 @@
-const { defaultServer, webhooks, environment } = require('../config.js')
-const WebhookClient = require('../Classes/WebhookClient.js')
-const webhook = new WebhookClient(webhooks.moderatorLogs.id, webhooks.moderatorLogs.token)
-const { Logger } = require('../util.js')
+const { defaultServer, webhooks, environment } = require('../config.js');
+const WebhookClient = require('../Classes/WebhookClient.js');
+const webhook = new WebhookClient(webhooks.moderatorLogs.id, webhooks.moderatorLogs.token);
+const { Logger } = require('../util.js');
 
 module.exports = (bot) => {
   bot.on('messageDelete', (msg) => {
     if (msg.channel.guild && msg.channel.guild.id === defaultServer) {
       msg.channel.guild.getAuditLogs(1, null, 72).then((auditlogs) => {
-        const entry = auditlogs.entries[0]
+        const entry = auditlogs.entries[0];
 
         // Checks that the last entry is deleting from the same user that deleted this message
         if (msg.author && msg.author.id === entry.targetID) {
@@ -15,7 +15,7 @@ module.exports = (bot) => {
             title: 'Message Delete',
             color: 16711680,
             description: `Deleted by: ${entry.user.username}\nChannel: ${entry.channel.name}`
-          }
+          };
 
           const embeds = [
             {
@@ -27,7 +27,7 @@ module.exports = (bot) => {
                 text: `${msg.author.username}#${msg.author.discriminator}`
               }
             }
-          ]
+          ];
 
           if (msg.attachments.length > 0) {
             for (const attachment of msg.attachments) {
@@ -35,17 +35,17 @@ module.exports = (bot) => {
                 title: 'Attachment',
                 color: 16711680,
                 description: `Name: ${attachment.filename}\nURL: ${attachment.proxy_url}`
-              })
+              });
             }
           }
 
           if (environment === 'production') {
-            webhook.send(webhookResponse, embeds)
+            webhook.send(webhookResponse, embeds);
           }
         }
       }).catch((error) => {
-        Logger.warn(`Unable to retrieve audit logs for guild: ${msg.channel.guild.name}`, error)
-      })
+        Logger.warn(`Unable to retrieve audit logs for guild: ${msg.channel.guild.name}`, error);
+      });
     }
-  })
-}
+  });
+};

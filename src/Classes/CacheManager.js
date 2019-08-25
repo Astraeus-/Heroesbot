@@ -1,5 +1,5 @@
-const { Logger } = require('../util.js')
-const fs = require('fs').promises
+const { Logger } = require('../util.js');
+const fs = require('fs').promises;
 
 class CacheManager {
   constructor (settings) {
@@ -13,69 +13,69 @@ class CacheManager {
   }
 
   cacheExpired (lastUpdated, expirationTime) {
-    return Date.now() - expirationTime > lastUpdated
+    return Date.now() - expirationTime > lastUpdated;
   }
 
   fetchCache (loc, expirationTime) {
     return this.readCacheFile(loc).then(async (cache) => {
       if (this.cacheExpired(cache.lastUpdatedAt, expirationTime)) {
-        cache = await this.updateCache(loc)
+        cache = await this.updateCache(loc);
       }
 
-      return cache
-    })
+      return cache;
+    });
   }
 
   readCacheFile (loc) {
     return fs.readFile(loc, { encoding: 'utf8' }).then((data) => {
-      let parsedData
+      let parsedData;
       try {
-        parsedData = JSON.parse(data)
+        parsedData = JSON.parse(data);
       } catch (error) {
-        throw Error('Unable to parse JSON object')
+        throw Error('Unable to parse JSON object');
       }
-      return parsedData
+      return parsedData;
     }).catch((error) => {
-      throw error
-    })
+      throw error;
+    });
   }
 
   updateCache (loc) {
-    if (this.isUpdating) return this.updateResponse
-    this.isUpdating = true
+    if (this.isUpdating) return this.updateResponse;
+    this.isUpdating = true;
 
     const updatedCache = this.update().then((data) => {
       const newCache = {
         lastUpdatedAt: Date.now(),
         data: data
-      }
+      };
 
-      return newCache
+      return newCache;
     }).then(async (newCache) => {
       await this.writeCacheFile(loc, newCache).catch((error) => {
-        throw error
-      })
+        throw error;
+      });
 
-      Logger.info(`Updated ${this.type} cache`)
-      this.isUpdating = false
-      return newCache
-    })
-    this.updateResponse = updatedCache
-    return updatedCache
+      Logger.info(`Updated ${this.type} cache`);
+      this.isUpdating = false;
+      return newCache;
+    });
+    this.updateResponse = updatedCache;
+    return updatedCache;
   }
 
   writeCacheFile (loc, data) {
-    let jsonData
+    let jsonData;
     try {
-      jsonData = JSON.stringify(data, null, 2)
+      jsonData = JSON.stringify(data, null, 2);
     } catch (error) {
-      throw Error('Unable to create JSON object')
+      throw Error('Unable to create JSON object');
     }
 
     return fs.writeFile(loc, jsonData).catch((error) => {
-      throw error
-    })
+      throw error;
+    });
   }
 }
 
-module.exports = CacheManager
+module.exports = CacheManager;

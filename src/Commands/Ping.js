@@ -1,5 +1,5 @@
-const BaseCommand = require('../Classes/BaseCommand.js')
-const { Logger } = require('../util.js')
+const BaseCommand = require('../Classes/BaseCommand.js');
+const { Logger } = require('../util.js');
 
 class Ping extends BaseCommand {
   constructor (bot) {
@@ -14,23 +14,23 @@ class Ping extends BaseCommand {
         roles: ['Lounge Master', 'Board', 'Managers', 'Moderators'],
         users: []
       }
-    }
+    };
 
     const options = {
       prefix: '!',
       command: 'ping',
       description: 'Pings Heroesbot',
       syntax: 'ping'
-    }
+    };
 
-    super(permissions, options)
+    super(permissions, options);
   }
 
   exec (msg) {
     msg.channel.createMessage('Pong').catch((error) => {
-      Logger.error('Unable to respond to ping', error)
-    })
+      Logger.error('Unable to respond to ping', error);
+    });
   }
 }
 
-module.exports = Ping
+module.exports = Ping;

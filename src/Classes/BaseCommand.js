@@ -18,4 +18,4 @@ class BaseCommand {
   }
 }
 
-module.exports = BaseCommand
+module.exports = BaseCommand;

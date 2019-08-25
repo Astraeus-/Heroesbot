@@ -1,5 +1,5 @@
-const BaseCommand = require('../Classes/BaseCommand.js')
-const { Logger } = require('../util.js')
+const BaseCommand = require('../Classes/BaseCommand.js');
+const { Logger } = require('../util.js');
 
 class Help extends BaseCommand {
   constructor (bot) {
@@ -14,17 +14,17 @@ class Help extends BaseCommand {
         roles: [],
         users: []
       }
-    }
+    };
 
     const options = {
       prefix: '!',
       command: 'help',
       description: 'Lists all of Heroesbot\'s commands. Specify a command for additional info.',
       syntax: 'help <command>'
-    }
+    };
 
-    super(permissions, options)
-    this.bot = bot
+    super(permissions, options);
+    this.bot = bot;
   }
 
   exec (msg, args) {
@@ -33,20 +33,20 @@ class Help extends BaseCommand {
       footer: this.bot.embed.footer,
       title: '',
       fields: []
-    }
+    };
 
-    let helpCommand
+    let helpCommand;
 
     if (args[0]) {
-      const helpArg = args[0].toLowerCase()
-      const commands = Array.from(this.bot.commands.values())
-      helpCommand = commands.find((c) => c.command === helpArg || c.aliases.includes(helpArg))
+      const helpArg = args[0].toLowerCase();
+      const commands = Array.from(this.bot.commands.values());
+      helpCommand = commands.find((c) => c.command === helpArg || c.aliases.includes(helpArg));
     }
 
     if (helpCommand) {
-      let aliases = helpCommand.aliases.join(', ')
-      if (aliases.length === 0) aliases = 'No command aliases'
-      embed.title = `📖 ${helpCommand.prefix + helpCommand.command} help 📖`
+      let aliases = helpCommand.aliases.join(', ');
+      if (aliases.length === 0) aliases = 'No command aliases';
+      embed.title = `📖 ${helpCommand.prefix + helpCommand.command} help 📖`;
       embed.fields.push({
         name: 'Aliases',
         value: aliases
@@ -62,27 +62,27 @@ class Help extends BaseCommand {
       }, {
         name: 'DM Invokable',
         value: helpCommand.invokeDM
-      })
+      });
     } else {
-      embed.title = '📖 Heroesbot command list 📖'
+      embed.title = '📖 Heroesbot command list 📖';
       this.bot.commands.forEach((command) => {
-        if (command.ignoreInHelp) return
-        if (!command.enabled) return
+        if (command.ignoreInHelp) return;
+        if (!command.enabled) return;
         embed.fields.push({
           name: command.prefix + command.command,
           value: command.description
-        })
-      })
+        });
+      });
     }
 
     this.bot.getDMChannel(msg.author.id).then((channel) => {
       return channel.createMessage({
         embed: embed
-      })
+      });
     }).catch((error) => {
-      Logger.error(`Unable to provide ${msg.author.username} with help`, error)
-    })
+      Logger.error(`Unable to provide ${msg.author.username} with help`, error);
+    });
   }
 }
 
-module.exports = Help
+module.exports = Help;

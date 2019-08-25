@@ -1,8 +1,8 @@
-const CacheManager = require('../Classes/CacheManager')
-const heroesloungeApi = require('heroeslounge-api')
-const { Logger } = require('../util.js')
+const CacheManager = require('../Classes/CacheManager');
+const heroesloungeApi = require('heroeslounge-api');
+const { Logger } = require('../util.js');
 
-const path = require('path')
+const path = require('path');
 
 class MatchesTodayCache extends CacheManager {
   constructor () {
@@ -16,60 +16,60 @@ class MatchesTodayCache extends CacheManager {
         eu: {},
         na: {}
       }
-    }
+    };
 
-    super(settings)
+    super(settings);
   }
 
   cacheExpired (lastUpdated, expirationTime) {
-    return super.cacheExpired(lastUpdated, expirationTime)
+    return super.cacheExpired(lastUpdated, expirationTime);
   }
 
   fetchCache (region, expirationTime) {
-    const loc = path.join(__dirname, `../Data/Caches/MatchesToday${region}.json`)
+    const loc = path.join(__dirname, `../Data/Caches/MatchesToday${region}.json`);
     return this.readCacheFile(loc).then(async (cache) => {
       if (this.cacheExpired(cache.lastUpdatedAt, expirationTime)) {
-        cache = await this.updateCache(region)
+        cache = await this.updateCache(region);
       }
 
-      return cache
-    })
+      return cache;
+    });
   }
 
   readCacheFile (loc) {
-    return super.readCacheFile(loc)
+    return super.readCacheFile(loc);
   }
 
   updateCache (region) {
-    const timezone = region === 'eu' ? 'Europe/Berlin' : 'America/Los_Angeles'
-    const loc = path.join(__dirname, `../Data/Caches/MatchesToday${region}.json`)
+    const timezone = region === 'eu' ? 'Europe/Berlin' : 'America/Los_Angeles';
+    const loc = path.join(__dirname, `../Data/Caches/MatchesToday${region}.json`);
 
-    if (this.isUpdating[region]) return this.updateResponse[region]
-    this.isUpdating[region] = true
+    if (this.isUpdating[region]) return this.updateResponse[region];
+    this.isUpdating[region] = true;
 
     const updatedCache = this.update(timezone).then((data) => {
       const newCache = {
         lastUpdatedAt: Date.now(),
         data: data
-      }
+      };
 
-      return newCache
+      return newCache;
     }).then(async (newCache) => {
       await this.writeCacheFile(loc, newCache).catch((error) => {
-        throw error
-      })
+        throw error;
+      });
 
-      Logger.info(`Updated ${region} cache`)
-      this.isUpdating[region] = false
-      return newCache
-    })
-    this.updateResponse[region] = updatedCache
-    return updatedCache
+      Logger.info(`Updated ${region} cache`);
+      this.isUpdating[region] = false;
+      return newCache;
+    });
+    this.updateResponse[region] = updatedCache;
+    return updatedCache;
   }
 
   writeCacheFile (loc, data) {
-    return super.writeCacheFile(loc, data)
+    return super.writeCacheFile(loc, data);
   }
 }
 
-module.exports = new MatchesTodayCache()
+module.exports = new MatchesTodayCache();

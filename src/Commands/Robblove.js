@@ -1,6 +1,6 @@
-const BaseCommand = require('../Classes/BaseCommand.js')
-const { memeCooldown } = require('../config.js')
-const { Logger } = require('../util.js')
+const BaseCommand = require('../Classes/BaseCommand.js');
+const { memeCooldown } = require('../config.js');
+const { Logger } = require('../util.js');
 
 class Robblove extends BaseCommand {
   constructor (bot) {
@@ -15,7 +15,7 @@ class Robblove extends BaseCommand {
         roles: ['Lounge Master', 'Board', 'Managers', 'Moderators', 'VIP'],
         users: ['108153813143126016']
       }
-    }
+    };
 
     const options = {
       prefix: '#',
@@ -24,9 +24,9 @@ class Robblove extends BaseCommand {
       cooldown: memeCooldown,
       invokeDM: false,
       ignoreInHelp: true
-    }
+    };
 
-    super(permissions, options)
+    super(permissions, options);
   }
 
   exec (msg) {
@@ -41,14 +41,14 @@ class Robblove extends BaseCommand {
       '🇻',
       '🇪',
       '❤'
-    ]
+    ];
 
     for (const emoji of emojisArray) {
       msg.addReaction(emoji).catch((error) => {
-        Logger.warn(`Could not add emoji ${emoji}`, error)
-      })
+        Logger.warn(`Could not add emoji ${emoji}`, error);
+      });
     }
   }
 }
 
-module.exports = Robblove
+module.exports = Robblove;

@@ -1,5 +1,5 @@
-const BaseCommand = require('../Classes/BaseCommand.js')
-const { Logger } = require('../util.js')
+const BaseCommand = require('../Classes/BaseCommand.js');
+const { Logger } = require('../util.js');
 
 class Match extends BaseCommand {
   constructor (bot) {
@@ -24,7 +24,7 @@ class Match extends BaseCommand {
         roles: [],
         users: []
       }
-    }
+    };
 
     const options = {
       prefix: '!',
@@ -32,10 +32,10 @@ class Match extends BaseCommand {
       aliases: [],
       description: 'Determines whether you have map pick or first pick.',
       syntax: 'match'
-    }
+    };
 
-    super(permissions, options)
-    this.bot = bot
+    super(permissions, options);
+    this.bot = bot;
   }
 
   exec (msg) {
@@ -43,21 +43,21 @@ class Match extends BaseCommand {
       color: this.bot.embed.color,
       footer: this.bot.embed.footer,
       description: ''
-    }
+    };
 
-    const base = 'The draft order has been randomly determined:\n'
-    const map = '```\n' + msg.author.username + ': Map pick \nOpponent: First pick \n```\n' + msg.author.username + ', please ban a map first.'
-    const pick = '```\n' + msg.author.username + ': First pick \nOpponent: Map pick \n```\nOpponent, please ban a map first.'
+    const base = 'The draft order has been randomly determined:\n';
+    const map = '```\n' + msg.author.username + ': Map pick \nOpponent: First pick \n```\n' + msg.author.username + ', please ban a map first.';
+    const pick = '```\n' + msg.author.username + ': First pick \nOpponent: Map pick \n```\nOpponent, please ban a map first.';
 
-    const output = Math.random() >= 0.5 ? map : pick
+    const output = Math.random() >= 0.5 ? map : pick;
 
-    embed.description += '[Amateur series rules](https://heroeslounge.gg/general/ruleset)\n[Division S rules](https://heroeslounge.gg/divisionS/ruleset)\nAmateur Series teams ban two maps each, as according to their ruleset\n\n'
-    embed.description += base + output
+    embed.description += '[Amateur series rules](https://heroeslounge.gg/general/ruleset)\n[Division S rules](https://heroeslounge.gg/divisionS/ruleset)\nAmateur Series teams ban two maps each, as according to their ruleset\n\n';
+    embed.description += base + output;
 
     return msg.channel.createMessage({ embed: embed }).catch((error) => {
-      Logger.error('Unable to respond with coinflip result', error)
-    })
+      Logger.error('Unable to respond with coinflip result', error);
+    });
   }
 }
 
-module.exports = Match
+module.exports = Match;

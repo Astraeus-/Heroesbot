@@ -1,16 +1,16 @@
-const dateformat = require('date-fns/format')
+const dateformat = require('date-fns/format');
 
 const Logger = {
   info: (msg) => {
-    console.log(`${dateformat(Date.now(), 'DD/MM/YYYY hh:mm:ss A')}|`, msg)
+    console.log(`${dateformat(Date.now(), 'DD/MM/YYYY hh:mm:ss A')}|`, msg);
   },
   warn: (msg, warning) => {
-    console.warn(`${dateformat(Date.now(), 'DD/MM/YYYY hh:mm:ss A')}| ${msg}`, warning)
+    console.warn(`${dateformat(Date.now(), 'DD/MM/YYYY hh:mm:ss A')}| ${msg}`, warning);
   },
   error: (msg, error) => {
-    console.error(`${dateformat(Date.now(), 'DD/MM/YYYY hh:mm:ss A')}| ${msg}`, error)
+    console.error(`${dateformat(Date.now(), 'DD/MM/YYYY hh:mm:ss A')}| ${msg}`, error);
   }
-}
+};
 
 const regions = [
   {
@@ -37,18 +37,18 @@ const regions = [
     heroesloungeId: null,
     hotslogsId: '5'
   }
-]
+];
 
 const timezone = regions.filter((region) => {
-  return region.timezone !== null
-})
+  return region.timezone !== null;
+});
 
 const heroesloungeId = regions.filter((region) => {
-  return region.heroesloungeId !== null
-})
+  return region.heroesloungeId !== null;
+});
 
 const hotslogsId = regions.filter((region) => {
-  return region.hotslogsId !== null
-})
+  return region.hotslogsId !== null;
+});
 
-module.exports = { Logger, timezone, heroesloungeId, hotslogsId, regions }
+module.exports = { Logger, timezone, heroesloungeId, hotslogsId, regions };

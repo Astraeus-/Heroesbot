@@ -1,6 +1,6 @@
-const BaseCommand = require('../Classes/BaseCommand.js')
-const { memeCooldown } = require('../config.js')
-const { Logger } = require('../util.js')
+const BaseCommand = require('../Classes/BaseCommand.js');
+const { memeCooldown } = require('../config.js');
+const { Logger } = require('../util.js');
 
 class Petman extends BaseCommand {
   constructor (bot) {
@@ -15,7 +15,7 @@ class Petman extends BaseCommand {
         roles: ['Lounge Master', 'Board', 'Managers', 'Moderators', 'VIP'],
         users: ['108153813143126016']
       }
-    }
+    };
 
     const options = {
       prefix: '#',
@@ -24,9 +24,9 @@ class Petman extends BaseCommand {
       cooldown: memeCooldown,
       invokeDM: false,
       ignoreInHelp: true
-    }
+    };
 
-    super(permissions, options)
+    super(permissions, options);
   }
 
   exec (msg) {
@@ -39,14 +39,14 @@ class Petman extends BaseCommand {
       '🇦',
       '🇳',
       ':Petman:438477216108773396'
-    ]
+    ];
 
     for (const emoji of emojisArray) {
       msg.addReaction(emoji).catch((error) => {
-        Logger.warn(`Could not add emoji ${emoji}`, error)
-      })
+        Logger.warn(`Could not add emoji ${emoji}`, error);
+      });
     }
   }
 }
 
-module.exports = Petman
+module.exports = Petman;

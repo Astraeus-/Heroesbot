@@ -1,7 +1,7 @@
-const BaseCommand = require('../Classes/BaseCommand.js')
-const { Logger } = require('../util.js')
+const BaseCommand = require('../Classes/BaseCommand.js');
+const { Logger } = require('../util.js');
 
-const { exec } = require('child_process')
+const { exec } = require('child_process');
 
 class Restart extends BaseCommand {
   constructor (bot) {
@@ -11,7 +11,7 @@ class Restart extends BaseCommand {
         roles: ['Admin'],
         users: ['108153813143126016']
       }
-    }
+    };
 
     const options = {
       prefix: '!',
@@ -21,39 +21,39 @@ class Restart extends BaseCommand {
       ignoreInHelp: true,
       min_args: 1,
       enabled: false
-    }
+    };
 
-    super(permissions, options)
-    this.bot = bot
+    super(permissions, options);
+    this.bot = bot;
   }
 
   exec (msg, args) {
-    if (this.bot.user.id === '321643992624267265') return
+    if (this.bot.user.id === '321643992624267265') return;
 
     if (args[0] === 'all') {
-      Logger.info('Restarting Heroesbot host, please wait...')
+      Logger.info('Restarting Heroesbot host, please wait...');
       exec('sudo /sbin/reboot', (error) => {
-        if (error) Logger.error('Error restarting Heroesbot', error)
-      })
+        if (error) Logger.error('Error restarting Heroesbot', error);
+      });
     } else if (args[0] === 'network') {
-      Logger.info('Restarting Heroesbot networking, please wait...')
+      Logger.info('Restarting Heroesbot networking, please wait...');
       exec('sudo ifconfig wlan0 down', (error) => {
-        if (error) Logger.error('Error disabling networking service Heroesbot', error)
-      })
+        if (error) Logger.error('Error disabling networking service Heroesbot', error);
+      });
 
       setTimeout(() => {
         exec('sudo ifconfig wlan0 up', (error) => {
-          if (error) Logger.error('Error enabling networking service Heroesbot', error)
-        })
-      }, 3000)
+          if (error) Logger.error('Error enabling networking service Heroesbot', error);
+        });
+      }, 3000);
     } else {
       this.bot.getDMChannel(msg.author.id).then((channel) => {
-        return channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`)
+        return channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`);
       }).catch((error) => {
-        Logger.warn('Could not inform invalid syntax', error)
-      })
+        Logger.warn('Could not inform invalid syntax', error);
+      });
     }
   }
 }
 
-module.exports = Restart
+module.exports = Restart;

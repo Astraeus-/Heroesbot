@@ -1,7 +1,7 @@
-const BaseCommand = require('../Classes/BaseCommand.js')
-const { Logger } = require('../util.js')
-const fs = require('fs').promises
-const path = require('path')
+const BaseCommand = require('../Classes/BaseCommand.js');
+const { Logger } = require('../util.js');
+const fs = require('fs').promises;
+const path = require('path');
 
 class Coinflip extends BaseCommand {
   constructor (bot) {
@@ -26,7 +26,7 @@ class Coinflip extends BaseCommand {
         roles: [],
         users: []
       }
-    }
+    };
 
     const options = {
       prefix: '!',
@@ -34,13 +34,13 @@ class Coinflip extends BaseCommand {
       aliases: ['flip', 'coinflip', 'flipcoin', 'toss', 'tosscoin', 'cointoss'],
       description: 'Flips a coin.',
       syntax: 'coin'
-    }
+    };
 
-    super(permissions, options)
+    super(permissions, options);
   }
 
   exec (msg) {
-    const output = Math.random() >= 0.5 ? 'heads' : 'tails'
+    const output = Math.random() >= 0.5 ? 'heads' : 'tails';
     fs.readFile(path.join(__dirname, `../Data/Images/${output}.png`)).then((file) => {
       return msg.channel.createMessage({
         content: 'Please use the `!match` command to determine the draft order.',
@@ -51,11 +51,11 @@ class Coinflip extends BaseCommand {
       {
         file: file,
         name: `${output}.png`
-      })
+      });
     }).catch((error) => {
-      Logger.error('Unable to respond with coinflip result', error)
-    })
+      Logger.error('Unable to respond with coinflip result', error);
+    });
   }
 }
 
-module.exports = Coinflip
+module.exports = Coinflip;
