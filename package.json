@@ -5,8 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node .",
-    "test": "standard",
-    "fix": "standard --fix"
+    "test": "eslint src --quiet",
+    "fix": "eslint src --fix"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,6 @@
     "node-cron": "^2.0.3"
   },
   "devDependencies": {
-    "standard": "^13.0.2"
+    "eslint": "^6.2.2"
   }
 }
