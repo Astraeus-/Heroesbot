@@ -75,6 +75,7 @@ class CheckBattleTag extends BaseCommand {
               inline: true
             };
           }
+
           return channel.createMessage({ embed: embed });
         } else {
           return channel.createMessage(`No data for battletag: ${battletag} in region ${specifiedRegion}`);

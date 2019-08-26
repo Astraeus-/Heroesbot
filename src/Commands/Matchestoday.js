@@ -204,6 +204,7 @@ const sendMatchesTodayResponse = (channel, Embeds) => {
         throw error;
       }));
   }
+
   return Promise.all(response);
 };
 

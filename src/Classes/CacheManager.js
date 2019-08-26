@@ -34,6 +34,7 @@ class CacheManager {
       } catch (error) {
         throw Error('Unable to parse JSON object');
       }
+
       return parsedData;
     }).catch((error) => {
       throw error;

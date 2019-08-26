@@ -48,6 +48,7 @@ class Reload extends BaseCommand {
         if (warnings.length > 0) {
           return channel.createMessage(warnings);
         }
+
         return msg.addReaction('✅');
       }).catch((error) => {
         Logger.warn('Unable to inform about command reload', error);

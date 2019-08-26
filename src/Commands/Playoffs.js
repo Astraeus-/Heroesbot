@@ -137,6 +137,7 @@ class Playoffs extends BaseCommand {
             }
           }
         }
+
         return captainPermissionUpdates;
       }).then((captainPermissionUpdates) => {
         return Promise.all(captainPermissionUpdates);
@@ -170,6 +171,7 @@ const sendErrorResponse = (channel, errorMessage) => {
       errorResponse = '';
     }
   }
+
   return channel.createMessage(errorResponse).catch((error) => {
     Logger.warn('Unable to send playoff error message', error);
   });

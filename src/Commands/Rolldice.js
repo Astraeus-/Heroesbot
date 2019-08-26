@@ -53,6 +53,7 @@ const rollDice = (nDice, nFaces) => {
     const roll = Math.floor((Math.random() * nFaces) + 1);
     outcomes.push(roll);
   }
+
   return outcomes;
 };
 

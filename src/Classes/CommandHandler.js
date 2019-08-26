@@ -93,6 +93,7 @@ class CommandHandler {
     } else {
       parameters = [];
     }
+
     return parameters;
   }
 }

@@ -32,6 +32,14 @@ module.exports = {
         'no-unused-vars': [
             'warn',
             { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
+        ],
+        'padding-line-between-statements': [
+            'error',
+            { "blankLine": "always", "prev": "block-like", "next": "return" }
+        ],
+        'no-multiple-empty-lines': [
+            'error',
+            { "max": 1, "maxEOF": 1 }
         ]
     }
 };

@@ -35,6 +35,7 @@ module.exports = (bot) => {
         } else {
           delete data[guild.id][member.user.id];
         }
+
         return fs.writeFile(path.join(__dirname, '../Data/Muted.json'), data);
       }).catch((error) => {
         Logger.warn('Unable to update muted list', error);

@@ -128,6 +128,7 @@ const getParticipatingTeams = async () => {
     for (let i = 0; i < regionTeams.length; i++) {
       teams = [...teams, ...regionTeams[i]];
     }
+
     return teams;
   });
 };
