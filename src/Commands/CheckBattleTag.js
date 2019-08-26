@@ -1,5 +1,4 @@
 const BaseCommand = require('../Classes/BaseCommand.js');
-const { Logger } = require('../util.js');
 
 const https = require('https');
 const regions = require('../util.js').hotslogsId;
@@ -54,7 +53,7 @@ class CheckBattleTag extends BaseCommand {
 
     const formattedBattletag = battletag.replace('#', '_');
 
-    getHotsLogsDetails(hotslogsRegionId, formattedBattletag).then((HotsLogsInfo) => {
+    return getHotsLogsDetails(hotslogsRegionId, formattedBattletag).then((HotsLogsInfo) => {
       return this.bot.getDMChannel(msg.author.id).then((channel) => {
         if (HotsLogsInfo) {
           const leaderboardData = HotsLogsInfo.LeaderboardRankings;
@@ -82,7 +81,7 @@ class CheckBattleTag extends BaseCommand {
         }
       });
     }).catch((error) => {
-      Logger.error('Unable to retrieve data', error);
+      throw Error('Unable to retrieve HotsLogs data');
     });
   }
 }

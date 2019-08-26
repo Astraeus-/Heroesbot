@@ -1,5 +1,4 @@
 const BaseCommand = require('../Classes/BaseCommand.js');
-const { Logger } = require('../util.js');
 
 class Help extends BaseCommand {
   constructor (bot) {
@@ -75,12 +74,12 @@ class Help extends BaseCommand {
       });
     }
 
-    this.bot.getDMChannel(msg.author.id).then((channel) => {
+    return this.bot.getDMChannel(msg.author.id).then((channel) => {
       return channel.createMessage({
         embed: embed
       });
     }).catch((error) => {
-      Logger.error(`Unable to provide ${msg.author.username} with help`, error);
+      throw Error(`Unable to provide ${msg.author.username} with help`);
     });
   }
 }

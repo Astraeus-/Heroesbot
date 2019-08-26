@@ -73,7 +73,7 @@ class Draft extends BaseCommand {
       });
     }
 
-    createDraft(map, teamA, teamB, timerOff).then((draft) => {
+    return createDraft(map, teamA, teamB, timerOff).then((draft) => {
       const battleground = draft.map.toLowerCase().replace(/\s/g, '-');
 
       embed.title += `${draft.map}`;
@@ -89,7 +89,7 @@ class Draft extends BaseCommand {
     }).then((embed) => {
       return msg.channel.createMessage({ embed: embed });
     }).catch((error) => {
-      Logger.error('Unable to create mockdraft', error);
+      throw Error('Unable to create mockdraft');
     });
   }
 }

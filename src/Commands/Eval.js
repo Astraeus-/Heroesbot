@@ -41,8 +41,8 @@ class Eval extends BaseCommand {
 
       if (inspectedOutput.length > 2000) throw Error(`Eval output is too large: ${inspectedOutput.length}`);
 
-      msg.channel.createMessage(`\`\`\`js\n${inspectedOutput}\`\`\``).catch((error) => {
-        Logger.error('Could not send eval result', error);
+      return msg.channel.createMessage(`\`\`\`js\n${inspectedOutput}\`\`\``).catch((error) => {
+        throw Error('Could not send eval result');
       });
     } catch (error) {
       msg.channel.createMessage(`Could not evaluate input properly\n${error}`).catch((error) => {

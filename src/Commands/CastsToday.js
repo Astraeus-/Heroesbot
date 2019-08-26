@@ -57,7 +57,7 @@ class CastsToday extends BaseCommand {
       });
     }
 
-    heroesloungeApi.getMatchesToday(timezone).then(async (matches) => {
+    return heroesloungeApi.getMatchesToday(timezone).then(async (matches) => {
       if (matches.length === 0) return null;
 
       matches.sort((a, b) => {
@@ -154,7 +154,7 @@ class CastsToday extends BaseCommand {
         }
       });
     }).catch((error) => {
-      Logger.error('Unable to list upcoming casts', error);
+      throw Error ('Unable to list upcoming casts');
     });
   }
 }

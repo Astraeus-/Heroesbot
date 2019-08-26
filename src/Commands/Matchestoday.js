@@ -86,7 +86,7 @@ class MatchesToday extends BaseCommand {
       });
     }
 
-    CacheManager.fetchCache(specifiedRegion, 15 * 60 * 1000).then(async (cache) => {
+    return CacheManager.fetchCache(specifiedRegion, 15 * 60 * 1000).then(async (cache) => {
       const matches = cache.data;
       if (matches.length === 0) return null;
 
@@ -184,7 +184,7 @@ class MatchesToday extends BaseCommand {
         }
       });
     }).catch((error) => {
-      Logger.error('Unable to list upcoming matches', error);
+      throw Error('Unable to list upcoming matches');
     });
   }
 }

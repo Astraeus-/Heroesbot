@@ -55,7 +55,7 @@ class CurrentBans extends BaseCommand {
 
     msg.channel.sendTyping();
 
-    heroesloungeApi.getBans().then(async (bans) => {
+    return heroesloungeApi.getBans().then(async (bans) => {
       if (bans.length === 0) return null;
 
       for (const ban of bans) {
@@ -95,7 +95,7 @@ class CurrentBans extends BaseCommand {
         return msg.channel.createMessage({ embed: embed });
       }
     }).catch((error) => {
-      Logger.error('Unable to list current bans', error);
+      throw Error ('Unable to list current bans');
     });
   }
 }

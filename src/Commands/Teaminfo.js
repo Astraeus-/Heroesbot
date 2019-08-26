@@ -49,7 +49,7 @@ class Teaminfo extends BaseCommand {
       ]
     };
 
-    CacheManager.fetchCache(24 * 60 * 60 * 1000).then(async (cache) => {
+    return CacheManager.fetchCache(24 * 60 * 60 * 1000).then(async (cache) => {
       const teams = cache.data;
       const selectedTeam = teams.find((team) => {
         return team.slug.toLowerCase() === args.join(' ').toLowerCase();
@@ -93,7 +93,7 @@ class Teaminfo extends BaseCommand {
         });
       }
     }).catch((error) => {
-      Logger.error('Unable to provide team info', error);
+      throw Error('Unable to provide team info');
     });
   }
 }

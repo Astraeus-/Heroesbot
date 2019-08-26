@@ -1,5 +1,4 @@
 const BaseCommand = require('../Classes/BaseCommand.js');
-const { Logger } = require('../util.js');
 const fs = require('fs').promises;
 const path = require('path');
 
@@ -41,7 +40,7 @@ class Coinflip extends BaseCommand {
 
   exec (msg) {
     const output = Math.random() >= 0.5 ? 'heads' : 'tails';
-    fs.readFile(path.join(__dirname, `../Data/Images/${output}.png`)).then((file) => {
+    return fs.readFile(path.join(__dirname, `../Data/Images/${output}.png`)).then((file) => {
       return msg.channel.createMessage({
         content: 'Please use the `!match` command to determine the draft order.',
         image: {
@@ -53,7 +52,7 @@ class Coinflip extends BaseCommand {
         name: `${output}.png`
       });
     }).catch((error) => {
-      Logger.error('Unable to respond with coinflip result', error);
+      throw Error('Unable to respond with coinflip result');
     });
   }
 }

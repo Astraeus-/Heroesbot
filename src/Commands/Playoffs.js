@@ -175,10 +175,4 @@ const sendErrorResponse = (channel, errorMessage) => {
   });
 };
 
-const Square = (number) => {
-  setTimeout(() => {
-    return Promise.resolve(number * number);
-  }, 1000);
-};
-
 module.exports = Playoffs;

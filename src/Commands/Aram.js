@@ -35,14 +35,14 @@ class Aram extends BaseCommand {
     });
 
     if (member) {
-      updateMember(member, role).then((notificationMessage) => {
+      return updateMember(member, role).then((notificationMessage) => {
         this.bot.getDMChannel(msg.author.id).then((channel) => {
           return channel.createMessage(notificationMessage);
         }).catch((error) => {
           Logger.warn(`Could not notify ${member.username} about ${role.name} status`, error);
         });
       }).catch((error) => {
-        Logger.error(`Could not update ${role.name} status of ${member.username}`, error);
+        throw Error(`Could not update ${role.name} status of ${member.username}`);
       });
     } else {
       this.bot.getDMChannel(msg.author.id).then((channel) => {

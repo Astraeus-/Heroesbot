@@ -52,7 +52,7 @@ class EditMessage extends BaseCommand {
         update.embed = null;
       }
 
-      editMessageChannel.getMessage(updateMessageId).then((message) => {
+      return editMessageChannel.getMessage(updateMessageId).then((message) => {
         if (message.author.id !== this.bot.user.id) {
           return this.bot.getDMChannel(msg.author.id).then((channel) => {
             return channel.createMessage('The message specified does not belong to Heroesbot');
@@ -63,7 +63,7 @@ class EditMessage extends BaseCommand {
           return message.edit(update);
         }
       }).catch((error) => {
-        Logger.error('Could not edit message', error);
+        throw Error('Could not edit message');
       });
     } else {
       this.bot.getDMChannel(msg.author.id).then((channel) => {

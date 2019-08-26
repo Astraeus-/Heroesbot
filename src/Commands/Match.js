@@ -1,5 +1,4 @@
 const BaseCommand = require('../Classes/BaseCommand.js');
-const { Logger } = require('../util.js');
 
 class Match extends BaseCommand {
   constructor (bot) {
@@ -55,7 +54,7 @@ class Match extends BaseCommand {
     embed.description += base + output;
 
     return msg.channel.createMessage({ embed: embed }).catch((error) => {
-      Logger.error('Unable to respond with coinflip result', error);
+      throw Error('Unable to respond with coinflip result');
     });
   }
 }

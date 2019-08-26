@@ -58,7 +58,7 @@ class CasterStatistics extends BaseCommand {
     const season = parseInt(args[0]);
     const seasonId = season - 3; // Id 1 belong to season 4.
 
-    heroesloungeApi.getSeasonCasterStatistics(seasonId).then((stats) => {
+    return heroesloungeApi.getSeasonCasterStatistics(seasonId).then((stats) => {
       embed.description += season;
       const roundData = stats.dataByRound;
 
@@ -74,7 +74,7 @@ class CasterStatistics extends BaseCommand {
         Logger.warn('Could not notify casterstatistics', error);
       });
     }).catch((error) => {
-      Logger.error(`Unable to get casterstatistics for season: ${season}`, error);
+      throw Error(`Unable to get casterstatistics for season: ${season}`);
     });
   }
 }
