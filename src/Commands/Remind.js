@@ -61,7 +61,7 @@ class Remind extends BaseCommand {
 
           return fs.writeFile(path.join(__dirname, '../Data/Reminders.json'), JSON.stringify(reminders, 0, 2)).then(() => {
             return this.bot.getDMChannel(msg.author.id).then((channel) => {
-              return channel.createMessage(`Sucessfully created reminder for ${dateformat(triggerDate, 'Do MMMM YYYY hh:mm A')}`);
+              return channel.createMessage(`Sucessfully created reminder for ${dateformat(triggerDate, 'do MMMM yyyy hh:mm a')}`);
             });
           });
         } else {
@@ -141,7 +141,7 @@ class Remind extends BaseCommand {
         for (const reminder of remindersToList) {
           embed.fields[0].value += `${reminder.Id}\n`;
           embed.fields[1].value += `${this.getChannelName(reminder.channelId)}\n`;
-          embed.fields[2].value += `${dateformat(new Date(reminder.time), 'D/M/YYYY HH:mm Z')}\n`;
+          embed.fields[2].value += `${dateformat(new Date(reminder.time), 'd/M/yyyy HH:mm z')}\n`;
           embed.fields[3].value += `${reminder.Id}: ${reminder.message}\n`;
         }
 

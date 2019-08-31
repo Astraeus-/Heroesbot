@@ -31,7 +31,7 @@ module.exports = {
         ],
         'no-unused-vars': [
             'warn',
-            { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
+            { "vars": "all", "argsIgnorePattern": "bot", "args": "after-used", "ignoreRestSiblings": false }
         ],
         'padding-line-between-statements': [
             'error',

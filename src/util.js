@@ -2,13 +2,13 @@ const dateformat = require('date-fns/format');
 
 const Logger = {
   info: (msg) => {
-    console.log(`${dateformat(Date.now(), 'DD/MM/YYYY hh:mm:ss A')}|`, msg);
+    console.log(`${dateformat(Date.now(), 'dd/MM/yyyy hh:mm:ss a')}|`, msg);
   },
   warn: (msg, warning) => {
-    console.warn(`${dateformat(Date.now(), 'DD/MM/YYYY hh:mm:ss A')}| ${msg}`, warning);
+    console.warn(`${dateformat(Date.now(), 'dd/MM/yyyy hh:mm:ss a')}| ${msg}`, warning);
   },
   error: (msg, error) => {
-    console.error(`${dateformat(Date.now(), 'DD/MM/YYYY hh:mm:ss A')}| ${msg}`, error);
+    console.error(`${dateformat(Date.now(), 'dd/MM/yyyy hh:mm:ss a')}| ${msg}`, error);
   }
 };
 
