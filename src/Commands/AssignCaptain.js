@@ -34,8 +34,6 @@ class AssignCaptain extends BaseCommand {
       }).catch((error) => {
         Logger.warn('Could not notify about captain syncing', error);
       });
-    }).catch((error) => {
-      throw Error ('Unable to sync captains');
     });
   }
 }

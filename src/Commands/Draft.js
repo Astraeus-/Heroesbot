@@ -88,8 +88,6 @@ class Draft extends BaseCommand {
       return embed;
     }).then((embed) => {
       return msg.channel.createMessage({ embed: embed });
-    }).catch((error) => {
-      throw Error('Unable to create mockdraft');
     });
   }
 }

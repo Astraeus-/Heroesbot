@@ -94,8 +94,6 @@ class CurrentBans extends BaseCommand {
       } else {
         return msg.channel.createMessage({ embed: embed });
       }
-    }).catch((error) => {
-      throw Error ('Unable to list current bans');
     });
   }
 }

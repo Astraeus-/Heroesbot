@@ -41,8 +41,6 @@ class Aram extends BaseCommand {
         }).catch((error) => {
           Logger.warn(`Could not notify ${member.username} about ${role.name} status`, error);
         });
-      }).catch((error) => {
-        throw Error(`Could not update ${role.name} status of ${member.username}`);
       });
     } else {
       this.bot.getDMChannel(msg.author.id).then((channel) => {

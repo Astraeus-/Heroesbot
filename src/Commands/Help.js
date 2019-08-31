@@ -78,8 +78,6 @@ class Help extends BaseCommand {
       return channel.createMessage({
         embed: embed
       });
-    }).catch((error) => {
-      throw Error(`Unable to provide ${msg.author.username} with help`);
     });
   }
 }

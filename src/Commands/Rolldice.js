@@ -40,9 +40,7 @@ class Rolldice extends BaseCommand {
       output = '```Total: ' + total + '```';
     }
 
-    return msg.channel.createMessage(output).catch((error) => {
-      throw Error('Could not roll dice');
-    });
+    return msg.channel.createMessage(output);
   }
 }
 

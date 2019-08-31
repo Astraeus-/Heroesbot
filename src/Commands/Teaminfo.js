@@ -92,8 +92,6 @@ class Teaminfo extends BaseCommand {
           return channel.createMessage(`Team with SLUG ${args} does not exist`);
         });
       }
-    }).catch((error) => {
-      throw Error('Unable to provide team info');
     });
   }
 }

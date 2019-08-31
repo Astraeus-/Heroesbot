@@ -69,8 +69,6 @@ class Remind extends BaseCommand {
             return channel.createMessage('Too many reminders! Please remove one of your other reminders to create a new one.');
           });
         }
-      }).catch((error) => {
-        throw Error('Unable to create reminder');
       });
     }
     case 'delete':
@@ -95,8 +93,6 @@ class Remind extends BaseCommand {
             return channel.createMessage(`Unable to remove reminder with id: ${deletionId}`);
           });
         }
-      }).catch((error) => {
-        throw Error('Unable to delete reminder');
       });
     }
     case 'list':
@@ -148,8 +144,6 @@ class Remind extends BaseCommand {
         return this.bot.getDMChannel(msg.author.id).then((channel) => {
           return channel.createMessage({ embed: embed });
         });
-      }).catch((error) => {
-        throw Error('Unable to list reminders');
       });
     default:
       this.bot.getDMChannel(msg.author.id).then((channel) => {

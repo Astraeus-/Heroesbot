@@ -183,8 +183,6 @@ class MatchesToday extends BaseCommand {
           return sendMatchesTodayResponse(channel, Embeds);
         }
       });
-    }).catch((error) => {
-      throw Error('Unable to list upcoming matches');
     });
   }
 }

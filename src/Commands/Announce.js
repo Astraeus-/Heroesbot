@@ -49,9 +49,7 @@ class Announce extends BaseCommand {
         announcement.embed = attachment;
       }
 
-      return announcementChannel.createMessage(announcement).catch((error) => {
-        throw Error('Could not make announcement');
-      });
+      return announcementChannel.createMessage(announcement);
     } else {
       this.bot.getDMChannel(msg.author.id).then((channel) => {
         return channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`);

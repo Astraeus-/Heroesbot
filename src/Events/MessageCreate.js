@@ -79,7 +79,7 @@ module.exports = (bot) => {
                 Commands handle sending responses for other errors themselves.
                 This is just the catch all for our logger.
               */
-            Logger.error('Command execution', error);
+            Logger.error(`Error executing command: ${command.command}`, error);
           }
         } finally {
           if (environment === 'production') {

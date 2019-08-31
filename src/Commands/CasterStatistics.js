@@ -73,8 +73,6 @@ class CasterStatistics extends BaseCommand {
       msg.channel.createMessage({ embed: embed }).catch((error) => {
         Logger.warn('Could not notify casterstatistics', error);
       });
-    }).catch((error) => {
-      throw Error(`Unable to get casterstatistics for season: ${season}`);
     });
   }
 }

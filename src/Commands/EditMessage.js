@@ -62,8 +62,6 @@ class EditMessage extends BaseCommand {
         } else {
           return message.edit(update);
         }
-      }).catch((error) => {
-        throw Error('Could not edit message');
       });
     } else {
       this.bot.getDMChannel(msg.author.id).then((channel) => {

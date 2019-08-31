@@ -26,9 +26,7 @@ class Ping extends BaseCommand {
   }
 
   exec (msg) {
-    return msg.channel.createMessage('Pong').catch((error) => {
-      throw Error('Unable to respond to ping');
-    });
+    return msg.channel.createMessage('Pong');
   }
 }
 

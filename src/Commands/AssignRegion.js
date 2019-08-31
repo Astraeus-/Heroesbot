@@ -29,14 +29,12 @@ class AssignRegion extends BaseCommand {
   }
 
   exec (msg) {
-    return syncRegionRoles(this.bot).then((response) => {
+    return syncRegionRoles(this.bot).then(() => {
       if (msg) {
         return msg.addReaction('✅').catch((error) => {
           Logger.warn('Could not notify region syncing', error);
         });
       }
-    }).catch((error) => {
-      throw Error ('Unable to sync region roles');
     });
   }
 }

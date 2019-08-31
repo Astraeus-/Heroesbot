@@ -51,8 +51,6 @@ class Coinflip extends BaseCommand {
         file: file,
         name: `${output}.png`
       });
-    }).catch((error) => {
-      throw Error('Unable to respond with coinflip result');
     });
   }
 }

@@ -81,8 +81,6 @@ class CheckBattleTag extends BaseCommand {
           return channel.createMessage(`No data for battletag: ${battletag} in region ${specifiedRegion}`);
         }
       });
-    }).catch((error) => {
-      throw Error('Unable to retrieve HotsLogs data');
     });
   }
 }

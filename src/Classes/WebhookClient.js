@@ -1,3 +1,5 @@
+const { environment } = require('../config.js');
+const { Logger } = require('../util.js');
 const https = require('https');
 
 class WebhookClient {
@@ -27,12 +29,13 @@ class WebhookClient {
     }
 
     const req = https.request(options, (res) => {
-      // console.log(`Status: ${res.statusCode}`)
-      // console.log(`Headers: ${JSON.stringify(res.headers)}`)
+      if (environment === 'debug') {
+        Logger.info(`Status: ${res.statusCode}`);
+      }
     });
 
     req.on('error', (error) => {
-      console.log(error);
+      Logger.error('Could not submit webhook', error);
     });
 
     req.write(JSON.stringify(postData));

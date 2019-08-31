@@ -153,8 +153,6 @@ class CastsToday extends BaseCommand {
           return channel.createMessage(`Region time of: ${timezone}\n\n ${response}`);
         }
       });
-    }).catch((error) => {
-      throw Error ('Unable to list upcoming casts');
     });
   }
 }
