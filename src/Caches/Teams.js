@@ -19,7 +19,7 @@ class TeamsCache extends CacheManager {
   }
 
   fetchCache (loc = this.loc, expirationTime) {
-    return super.fetchCache(expirationTime);
+    return super.fetchCache(loc, expirationTime);
   }
 
   readCacheFile (loc = this.loc) {
