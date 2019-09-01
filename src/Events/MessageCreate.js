@@ -53,34 +53,32 @@ module.exports = (bot) => {
           await command.exec(msg, args);
           CommandHandler.addCooldown(command, msg.channel.id, command.cooldown);
         } catch (error) {
+          let responseMessage = '';
           executionError.hasError = true;
           executionError.errorMessage = error.message;
 
           if (error.message === 'User does not have permission to use command') {
-            bot.getDMChannel(msg.author.id).then((channel) => {
-              return channel.createMessage(`You do not have permission to use ${command.prefix + command.command}`);
-            }).catch((error) => {
-              Logger.warn(`Could not inform about no permission for ${command.prefix + command.command}`, error);
-            });
+            responseMessage = `You do not have permission to use ${command.prefix + command.command}`;
           } else if (error.message === 'Invalid number of arguments') {
-            bot.getDMChannel(msg.author.id).then((channel) => {
-              channel.createMessage(`**Invalid number of arguments**\n\nCommand usage: ${command.prefix}${command.syntax}`);
-            }).catch((error) => {
-              Logger.warn(`Could not inform invalid number of arguments for ${command.command}`, error);
-            });
+            responseMessage = `**Invalid number of arguments**\n\nCommand usage: ${command.prefix}${command.syntax}`;
           } else if (error.message === 'Command is current on cooldown') {
-            bot.getDMChannel(msg.author.id).then((channel) => {
-              return channel.createMessage(`The command ${command.prefix + command.command} is on cooldown`);
-            }).catch((error) => {
-              Logger.warn(`Could not inform about ${command.prefix + command.command} being on cooldown`, error);
-            });
+            responseMessage = `The command ${command.prefix + command.command} is on cooldown`;
+          } else if (error.message === 'Could not request data') {
+            responseMessage = `The command ${command.prefix + command.command} is currently unavailable`;
           } else {
             /*
                 Commands handle sending responses for other errors themselves.
                 This is just the catch all for our logger.
               */
+            responseMessage = `Error executing command ${command.prefix + command.command} please try again later or contact Astraeus`;
             Logger.error(`Error executing command: ${command.command}`, error);
           }
+
+          bot.getDMChannel(msg.author.id).then((channel) => {
+            return channel.createMessage(responseMessage);
+          }).catch((error) => {
+            Logger.warn(`Could not inform about errors for ${command.prefix + command.command}`, error);
+          });
         } finally {
           if (environment === 'production') {
             const commandAuthor = `${msg.author.username}#${msg.author.discriminator}`;

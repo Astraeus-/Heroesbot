@@ -159,7 +159,8 @@ const createDraft = (map, teamA, teamB, timerOff) => {
     });
 
     req.on('error', (error) => {
-      reject(error);
+      Logger.error('Could not create draft', error);
+      reject(Error('Could not request data'));
     });
 
     req.write(JSON.stringify(requestData));

@@ -1,7 +1,8 @@
 const BaseCommand = require('../Classes/BaseCommand.js');
+const { Logger } = require('../util.js');
+const regions = require('../util.js').hotslogsId;
 
 const https = require('https');
-const regions = require('../util.js').hotslogsId;
 
 class CheckBattleTag extends BaseCommand {
   constructor (bot) {
@@ -81,16 +82,6 @@ class CheckBattleTag extends BaseCommand {
           return channel.createMessage(`No data for battletag: ${battletag} in region ${specifiedRegion}`);
         }
       });
-    }).catch((error) => {
-      if (error.message === 'getaddrinfo ENOTFOUND api.hotslogs.com api.hotslogs.com:443') {
-        return this.bot.getDMChannel(msg.author.id).then((channel) => {
-          return channel.createMessage('The HotsLogs API is currently unavailable, please try again later').then(() => {
-            throw error;
-          });
-        });
-      }
-
-      throw error;
     });
   }
 }
@@ -126,7 +117,8 @@ const getHotsLogsDetails = (regionId, formattedBattletag) => {
     });
 
     req.on('error', (error) => {
-      reject(error);
+      Logger.error('Could not request HotsLogs data', error);
+      reject(Error('Could not request data'));
     });
 
     req.end();
