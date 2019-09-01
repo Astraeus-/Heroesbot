@@ -81,6 +81,16 @@ class CheckBattleTag extends BaseCommand {
           return channel.createMessage(`No data for battletag: ${battletag} in region ${specifiedRegion}`);
         }
       });
+    }).catch((error) => {
+      if (error.message === 'getaddrinfo ENOTFOUND api.hotslogs.com api.hotslogs.com:443') {
+        return this.bot.getDMChannel(msg.author.id).then((channel) => {
+          return channel.createMessage('The HotsLogs API is currently unavailable, please try again later').then(() => {
+            throw error;
+          });
+        });
+      }
+
+      throw error;
     });
   }
 }
