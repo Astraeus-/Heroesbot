@@ -4,6 +4,7 @@ module.exports = {
   environment: process.env.NODE_ENV,
   token: process.env.TOKEN,
   defaultServer: process.env.DEFAULT_SERVER,
+  hpApiKey: process.env.HEROES_PROFILE_API_KEY,
   memeCooldown: process.env.REACTION_RESPONSE_COOLDOWN,
   embed: {
     color: 5759467,

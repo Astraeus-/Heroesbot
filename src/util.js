@@ -17,25 +17,25 @@ const regions = [
     name: 'eu',
     timezone: 'Europe/Berlin',
     heroesloungeId: 1,
-    hotslogsId: '2'
+    blizzardRegion: '2'
   },
   {
     name: 'na',
     timezone: 'America/Los_Angeles',
     heroesloungeId: 2,
-    hotslogsId: '1'
+    blizzardRegion: '1'
   },
   {
     name: 'kr',
     timezone: null,
     heroesloungeId: null,
-    hotslogsId: '3'
+    blizzardRegion: '3'
   },
   {
     name: 'cn',
     timezone: null,
     heroesloungeId: null,
-    hotslogsId: '5'
+    blizzardRegion: '5'
   }
 ];
 
@@ -47,8 +47,8 @@ const heroesloungeId = regions.filter((region) => {
   return region.heroesloungeId !== null;
 });
 
-const hotslogsId = regions.filter((region) => {
-  return region.hotslogsId !== null;
+const blizzardRegion = regions.filter((region) => {
+  return region.blizzardRegion !== null;
 });
 
-module.exports = { Logger, timezone, heroesloungeId, hotslogsId, regions };
+module.exports = { Logger, timezone, heroesloungeId, blizzardRegion, regions };
