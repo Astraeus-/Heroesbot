@@ -40,6 +40,10 @@ module.exports = {
         'no-multiple-empty-lines': [
             'error',
             { "max": 1, "maxEOF": 1 }
+        ],
+        'eol-last': [
+            "error", 
+            "always"
         ]
     }
 };
