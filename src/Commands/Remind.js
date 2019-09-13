@@ -27,7 +27,8 @@ class Remind extends BaseCommand {
       aliases: ['remindme', 'reminder'],
       description: 'Reminds a user in the channel',
       syntax: 'remind add <Year> <Month> <Day> <Hour> <Minute> <Message>\n!remind delete <reminder ID>\n!remind list',
-      min_args: 1
+      min_args: 1,
+      enabled: false
     };
 
     super(permissions, options);
