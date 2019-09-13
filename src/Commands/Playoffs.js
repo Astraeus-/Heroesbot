@@ -79,7 +79,7 @@ class Playoffs extends BaseCommand {
         
         return seasonTournaments;
       }).then(async (tournaments) => {
-        const playoffCategory = await this.bot.createChannel(guild.id, `Playoffs-${args[0].toUpperCase()}`, 4).catch((error) => {
+        const playoffCategory = await guild.createChannel(`Playoffs-${args[0].toUpperCase()}`, 4).catch((error) => {
           throw error;
         });
 
@@ -107,7 +107,7 @@ class Playoffs extends BaseCommand {
               Logger.error(`Unable to get division teams for division with id: ${division.id}`, error);
             });
 
-            const channel = await this.bot.createChannel(guild.id, `${tournaments[tournament].title}-${division.slug}`, 0, '', category.id).catch((error) => {
+            const channel = await guild.createChannel(`${tournaments[tournament].title}-${division.slug}`, 0, '', category.id).catch((error) => {
               const msg = `Unable to create channel ${tournaments[tournament].title}-${division.slug}`;
               errorMessage.push(msg);
               Logger.warn(msg, error);
