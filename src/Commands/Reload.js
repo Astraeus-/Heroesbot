@@ -44,7 +44,7 @@ class Reload extends BaseCommand {
         })
       ]
     ).then(() => {
-      this.bot.getDMChannel(msg.author.id).then((channel) => {
+      msg.author.getDMChannel().then((channel) => {
         if (warnings.length > 0) {
           return channel.createMessage(warnings);
         }

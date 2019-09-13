@@ -6,7 +6,7 @@ const dateformat = require('date-fns/format');
 const regions = require('../util.js').timezone;
 
 class CastsToday extends BaseCommand {
-  constructor (bot) {
+  constructor () {
     const permissions = {
       'Test-Server': {
         channels: ['robotchannel'],
@@ -31,7 +31,6 @@ class CastsToday extends BaseCommand {
     };
 
     super(permissions, options);
-    this.bot = bot;
   }
 
   exec (msg, args) {
@@ -40,13 +39,13 @@ class CastsToday extends BaseCommand {
     const timezone = region && region.timezone ? region.timezone : null;
 
     if (!timezone) {
-      return this.bot.getDMChannel(msg.author.id).then((channel) => {
+      return msg.author.getDMChannel().then((channel) => {
         return channel.createMessage(`The region ${args[0]} is not available`);
       });
     }
 
     if (msg.channel.guild) {
-      this.bot.getDMChannel(msg.author.id).then((channel) => {
+      msg.author.getDMChannel().then((channel) => {
         return channel.sendTyping();
       }).catch((error) => {
         Logger.warn(`Unable to sendTyping to ${msg.author.username}`, error);
@@ -146,7 +145,7 @@ class CastsToday extends BaseCommand {
 
       return response;
     }).then((response) => {
-      return this.bot.getDMChannel(msg.author.id).then((channel) => {
+      return msg.author.getDMChannel().then((channel) => {
         if (!response) {
           return channel.createMessage('There are no casted matches');
         } else {

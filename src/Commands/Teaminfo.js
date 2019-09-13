@@ -88,7 +88,7 @@ class Teaminfo extends BaseCommand {
       if (embed) {
         return msg.channel.createMessage({ embed: embed });
       } else {
-        return this.bot.getDMChannel(msg.author.id).then((channel) => {
+        return msg.author.getDMChannel().then((channel) => {
           return channel.createMessage(`Team with SLUG ${args} does not exist`);
         });
       }

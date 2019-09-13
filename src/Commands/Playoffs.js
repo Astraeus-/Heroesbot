@@ -142,7 +142,7 @@ class Playoffs extends BaseCommand {
       }).then((captainPermissionUpdates) => {
         return Promise.all(captainPermissionUpdates);
       }).then(() => {
-        return this.bot.getDMChannel(msg.author.id).then((channel) => {
+        return msg.author.getDMChannel().then((channel) => {
           return sendErrorResponse(channel, errorMessage);
         }).catch((error) => {
           Logger.warn('Unable to inform user about Playoff creations', error);
@@ -152,7 +152,7 @@ class Playoffs extends BaseCommand {
         Logger.error('Unable to create playoffs channels', error);
       });
     } else {
-      return this.bot.getDMChannel(msg.author.id).then((channel) => {
+      return msg.author.getDMChannel().then((channel) => {
         return channel.createMessage('Unable to create playoff channels.\nMissing permission: manageChannels');
       });
     }

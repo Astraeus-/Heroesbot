@@ -54,7 +54,7 @@ class EditMessage extends BaseCommand {
 
       return editMessageChannel.getMessage(updateMessageId).then((message) => {
         if (message.author.id !== this.bot.user.id) {
-          return this.bot.getDMChannel(msg.author.id).then((channel) => {
+          return msg.author.getDMChannel().then((channel) => {
             return channel.createMessage('The message specified does not belong to Heroesbot');
           }).catch((error) => {
             Logger.warn('Could not notify invalid editMessage message specified', error);
@@ -64,7 +64,7 @@ class EditMessage extends BaseCommand {
         }
       });
     } else {
-      this.bot.getDMChannel(msg.author.id).then((channel) => {
+      msg.author.getDMChannel().then((channel) => {
         return channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`);
       }).catch((error) => {
         Logger.warn('Could not notify invalid editMessage syntax', error);

@@ -61,12 +61,12 @@ class Remind extends BaseCommand {
           reminders.push(newReminder);
 
           return fs.writeFile(path.join(__dirname, '../Data/Reminders.json'), JSON.stringify(reminders, 0, 2)).then(() => {
-            return this.bot.getDMChannel(msg.author.id).then((channel) => {
+            return msg.author.getDMChannel().then((channel) => {
               return channel.createMessage(`Sucessfully created reminder for ${dateformat(triggerDate, 'do MMMM yyyy hh:mm a')}`);
             });
           });
         } else {
-          return this.bot.getDMChannel(msg.author.id).then((channel) => {
+          return msg.author.getDMChannel().then((channel) => {
             return channel.createMessage('Too many reminders! Please remove one of your other reminders to create a new one.');
           });
         }
@@ -85,12 +85,12 @@ class Remind extends BaseCommand {
           const removedReminder = reminders[removeIndex];
           reminders.splice(removeIndex, 1);
           return fs.writeFile(path.join(__dirname, '../Data/Reminders.json'), JSON.stringify(reminders, 0, 2)).then(() => {
-            return this.bot.getDMChannel(msg.author.id).then((channel) => {
+            return msg.author.getDMChannel().then((channel) => {
               return channel.createMessage(`Sucessfully removed reminder: \n\n\`\`\`\n${removedReminder.message}\n\`\`\``);
             });
           });
         } else {
-          return this.bot.getDMChannel(msg.author.id).then((channel) => {
+          return msg.author.getDMChannel().then((channel) => {
             return channel.createMessage(`Unable to remove reminder with id: ${deletionId}`);
           });
         }
@@ -142,12 +142,12 @@ class Remind extends BaseCommand {
           embed.fields[3].value += `${reminder.Id}: ${reminder.message}\n`;
         }
 
-        return this.bot.getDMChannel(msg.author.id).then((channel) => {
+        return msg.author.getDMChannel().then((channel) => {
           return channel.createMessage({ embed: embed });
         });
       });
     default:
-      this.bot.getDMChannel(msg.author.id).then((channel) => {
+      msg.author.getDMChannel().then((channel) => {
         return channel.createMessage(`Invalid input: \n\n${msg.content}`);
       });
 

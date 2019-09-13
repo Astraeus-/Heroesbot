@@ -2,7 +2,7 @@ const BaseCommand = require('../Classes/BaseCommand.js');
 const { Logger } = require('../util.js');
 
 class Announce extends BaseCommand {
-  constructor (bot) {
+  constructor () {
     const permissions = {
       'Test-Server': {
         channels: ['robotchannel'],
@@ -27,7 +27,6 @@ class Announce extends BaseCommand {
     };
 
     super(permissions, options);
-    this.bot = bot;
   }
 
   exec (msg, args) {
@@ -51,7 +50,7 @@ class Announce extends BaseCommand {
 
       return announcementChannel.createMessage(announcement);
     } else {
-      this.bot.getDMChannel(msg.author.id).then((channel) => {
+      msg.author.getDMChannel().then((channel) => {
         return channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`);
       }).catch((error) => {
         Logger.warn('Could not notify invalid announcement syntax', error);

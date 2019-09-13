@@ -49,14 +49,14 @@ class CheckBattleTag extends BaseCommand {
     const type = 'Heroes Profile';
 
     if (!regionId || !battletag.match(/[a-zA-Z0-9]{2,11}#[0-9]{1,6}/g)) {
-      return this.bot.getDMChannel(msg.author.id).then((channel) => {
+      return msg.author.getDMChannel().then((channel) => {
         return channel.createMessage('Unable to retrieve data: Invalid region or battletag specified');
       });
     }
 
     const data = type === 'Heroes Profile' ? await getHeroesProfileDetails(regionId, battletag) : await getHotsLogsDetails(regionId, battletag);
 
-    return this.bot.getDMChannel(msg.author.id).then(async (channel) => {
+    return msg.author.getDMChannel().then(async (channel) => {
       if (data) {
         embed.title = `${battletag}\nRegion: ${specifiedRegion}`;
         let leaderboardData;

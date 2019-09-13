@@ -23,7 +23,7 @@ module.exports = (bot) => {
       }
 
       if (command) {
-        if (!command.enabled) return bot.getDMChannel(msg.author.id).then((channel) => channel.createMessage(`Command ${command.prefix + command.command} is disabled`));
+        if (!command.enabled) return msg.author.getDMChannel().then((channel) => channel.createMessage(`Command ${command.prefix + command.command} is disabled`));
         if (!msg.channel.guild && !command.invokeDM) return msg.channel.createMessage(`The command ${command.prefix + command.command} is disabled for use in DM's`);
         
         let executionError = {
@@ -74,7 +74,7 @@ module.exports = (bot) => {
             Logger.error(`Error executing command: ${command.command}`, error);
           }
 
-          bot.getDMChannel(msg.author.id).then((channel) => {
+          msg.author.getDMChannel().then((channel) => {
             return channel.createMessage(responseMessage);
           }).catch((error) => {
             Logger.warn(`Could not inform about errors for ${command.prefix + command.command}`, error);

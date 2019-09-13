@@ -74,7 +74,7 @@ class Help extends BaseCommand {
       });
     }
 
-    return this.bot.getDMChannel(msg.author.id).then((channel) => {
+    return msg.author.getDMChannel().then((channel) => {
       return channel.createMessage({
         embed: embed
       });

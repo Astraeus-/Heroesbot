@@ -4,7 +4,7 @@ const TeamsCacheManager = require('../Caches/Teams.js');
 const { Logger } = require('../util.js');
 
 class UpdateCache extends BaseCommand {
-  constructor (bot) {
+  constructor () {
     const permissions = {
       'Test-Server': {
         channels: ['robotchannel'],
@@ -24,7 +24,6 @@ class UpdateCache extends BaseCommand {
     };
 
     super(permissions, options);
-    this.bot = bot;
   }
 
   exec (msg, args) {
@@ -51,7 +50,7 @@ class UpdateCache extends BaseCommand {
     }
 
     if (cacheData.length === 0) {
-      return this.bot.getDMChannel(msg.author.id).then((channel) => {
+      return msg.author.getDMChannel().then((channel) => {
         return channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`);
       });
     }
@@ -61,7 +60,7 @@ class UpdateCache extends BaseCommand {
         Logger.warn(`Could not notify about updating ${type} cache`, error);
       });
     }).catch((error) => {
-      this.bot.getDMChannel(msg.author.id).then((channel) => {
+      msg.author.getDMChannel().then((channel) => {
         return channel.createMessage(`Could not update ${type} cache \n\`\`\`js\n${error}\n\`\`\``);
       }).catch((error) => {
         Logger.warn(`Could not notify about failing to update ${type} cache`, error);

@@ -3,7 +3,7 @@ const { Logger } = require('../util.js');
 const { defaultServer } = require('../config.js');
 
 class Aram extends BaseCommand {
-  constructor (bot) {
+  constructor () {
     const permissions = {
       'Test-Server': {
         channels: [],
@@ -24,7 +24,6 @@ class Aram extends BaseCommand {
     };
 
     super(permissions, options);
-    this.bot = bot;
   }
 
   exec (msg) {
@@ -36,14 +35,14 @@ class Aram extends BaseCommand {
 
     if (member) {
       return updateMember(member, role).then((notificationMessage) => {
-        this.bot.getDMChannel(msg.author.id).then((channel) => {
+        msg.author.getDMChannel().then((channel) => {
           return channel.createMessage(notificationMessage);
         }).catch((error) => {
           Logger.warn(`Could not notify ${member.username} about ${role.name} status`, error);
         });
       });
     } else {
-      this.bot.getDMChannel(msg.author.id).then((channel) => {
+      msg.author.getDMChannel().then((channel) => {
         return channel.createMessage(`You are not part of ${guild.name} so can not assign ${role.name}`);
       }).catch((error) => {
         Logger.warn(`Could not notify ${msg.author.username} about not belonging to ${guild.name}`, error);

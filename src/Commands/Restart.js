@@ -47,7 +47,7 @@ class Restart extends BaseCommand {
         });
       }, 3000);
     } else {
-      this.bot.getDMChannel(msg.author.id).then((channel) => {
+      msg.author.getDMChannel().then((channel) => {
         return channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`);
       }).catch((error) => {
         Logger.warn('Could not inform invalid syntax', error);

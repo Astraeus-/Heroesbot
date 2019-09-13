@@ -66,7 +66,7 @@ class Draft extends BaseCommand {
 
     // Check that the map input actually exists.
     if (!checkMap(map)) {
-      return this.bot.getDMChannel(msg.author.id).then((channel) => {
+      return msg.author.getDMChannel().then((channel) => {
         return channel.createMessage(`Channel with abbreviation: ${map} does not exist`);
       }).catch((error) => {
         Logger.warn('Could not inform about invalid map syntax', error);

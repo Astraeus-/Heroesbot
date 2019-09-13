@@ -29,7 +29,7 @@ class AssignCaptain extends BaseCommand {
 
   exec (msg) {
     return syncCaptains(this.bot).then((response) => {
-      this.bot.getDMChannel(msg.author.id).then((channel) => {
+      msg.author.getDMChannel().then((channel) => {
         return channel.createMessage(`Updated captains: ${response.updatedCaptainCounter}\nErrors:\n${response.errorMessage}`);
       }).catch((error) => {
         Logger.warn('Could not notify about captain syncing', error);
