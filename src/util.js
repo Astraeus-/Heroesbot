@@ -1,4 +1,5 @@
 const dateformat = require('date-fns/format');
+const {env} = require('./config.js');
 
 const Logger = {
   info: (msg) => {
@@ -9,6 +10,11 @@ const Logger = {
   },
   error: (msg, error) => {
     console.error(`${dateformat(Date.now(), 'dd/MM/yyyy hh:mm:ss a')}| ${msg}\n`, error);
+  },
+  debug: (msg, error) => {
+    if (env === 'debug') {
+      console.log(`${dateformat(Date.now(), 'dd/MM/yyyy hh:mm:ss a')}| ${msg}\n`, error);
+    }
   }
 };
 

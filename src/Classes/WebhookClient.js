@@ -1,4 +1,3 @@
-const { env } = require('../config.js');
 const { Logger } = require('../util.js');
 const https = require('https');
 
@@ -29,9 +28,7 @@ class WebhookClient {
     }
 
     const req = https.request(options, (res) => {
-      if (env === 'debug') {
-        Logger.info(`Status: ${res.statusCode}`);
-      }
+      Logger.info(`Status: ${res.statusCode}`);
     });
 
     req.on('error', (error) => {
