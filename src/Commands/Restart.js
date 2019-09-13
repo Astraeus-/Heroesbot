@@ -1,10 +1,11 @@
 const BaseCommand = require('../Classes/BaseCommand.js');
 const { Logger } = require('../util.js');
+const { env } = require('../config.js');
 
 const { exec } = require('child_process');
 
 class Restart extends BaseCommand {
-  constructor (bot) {
+  constructor () {
     const permissions = {
       'Test-Server': {
         channels: ['robotchannel'],
@@ -24,11 +25,10 @@ class Restart extends BaseCommand {
     };
 
     super(permissions, options);
-    this.bot = bot;
   }
 
   exec (msg, args) {
-    if (this.bot.user.id === '321643992624267265') return;
+    if (env !== 'production') return;
 
     if (args[0] === 'all') {
       Logger.info('Restarting Heroesbot host, please wait...');
