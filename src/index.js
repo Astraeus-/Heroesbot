@@ -1,5 +1,5 @@
 const Client = require('./Client.js');
-const { token, environment } = require('./config.js');
+const { token, env } = require('./config.js');
 const cron = require('node-cron');
 
 const client = new Client(token, {
@@ -20,7 +20,7 @@ const remindTask = cron.schedule('* * * * *', () => {
 });
 
 client.launch().then(() => {
-  if (environment === 'production') {
+  if (env === 'production') {
     regionTask.start();
     remindTask.start();
   }

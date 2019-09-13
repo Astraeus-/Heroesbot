@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 module.exports = {
-  environment: process.env.NODE_ENV,
+  env: process.env.NODE_ENV,
   token: process.env.TOKEN,
   defaultServer: process.env.DEFAULT_SERVER,
   hpApiKey: process.env.HEROES_PROFILE_API_KEY,

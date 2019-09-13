@@ -1,6 +1,6 @@
 const Handler = require('../Classes/CommandHandler.js');
 const { Logger } = require('../util.js');
-const { webhooks, environment } = require('../config.js');
+const { webhooks, env } = require('../config.js');
 const WebhookClient = require('../Classes/WebhookClient.js');
 const webhook = new WebhookClient(webhooks.commandLogs.id, webhooks.commandLogs.token);
 
@@ -80,7 +80,7 @@ module.exports = (bot) => {
             Logger.warn(`Could not inform about errors for ${command.prefix + command.command}`, error);
           });
         } finally {
-          if (environment === 'production') {
+          if (env === 'production') {
             const commandAuthor = `${msg.author.username}#${msg.author.discriminator}`;
             const invokeChannel = msg.channel.guild ? `${msg.channel.name}` : 'DM Channel';
             const commandArgs = command.prefix === '!' ? args : '';

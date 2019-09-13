@@ -1,4 +1,4 @@
-const { defaultServer, webhooks, environment } = require('../config.js');
+const { defaultServer, webhooks, env } = require('../config.js');
 const WebhookClient = require('../Classes/WebhookClient.js');
 const webhook = new WebhookClient(webhooks.moderatorLogs.id, webhooks.moderatorLogs.token);
 const { Logger } = require('../util.js');
@@ -39,7 +39,7 @@ module.exports = (bot) => {
             }
           }
 
-          if (environment === 'production') {
+          if (env === 'production') {
             webhook.send(webhookResponse, embeds);
           }
         }
