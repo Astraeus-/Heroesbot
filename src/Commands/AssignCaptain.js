@@ -73,7 +73,7 @@ const syncCaptains = (bot) => {
             if (member.roles.includes(captainRole.id)) continue;
 
             syncedSloths.push(
-              bot.addGuildMemberRole(defaultServer, captainSloth.discord_id, captainRole.id).catch((error) => {
+              guild.addMemberRole(captainSloth.discord_id, captainRole.id).catch((error) => {
                 Logger.warn(`Unable to assign captain for team ${team.title} user ${captainSloth.title}`, error);
                 errorMessage += `Unable to assign captain for team ${team.title} user ${captainSloth.title}\n`;
               })

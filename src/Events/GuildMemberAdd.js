@@ -17,7 +17,7 @@ module.exports = (bot) => {
           return role.name === 'Muted';
         });
 
-        bot.addGuildMemberRole(guild.id, member.user.id, mutedRole.id, 'Attempted to circumvent mute').catch((error) => {
+        guild.addMemberRole(member.user.id, mutedRole.id, 'Attempted to circumvent mute').catch((error) => {
           Logger.error(`Unable to reassign muted role to ${member.user.username}`, error);
         });
         webhook.send({
@@ -43,7 +43,7 @@ module.exports = (bot) => {
           return role.name === regionRoleIds[returningSloth.region_id];
         });
 
-        bot.addGuildMemberRole(guild.id, member.user.id, regionRole.id).catch((error) => {
+        guild.addMemberRole(member.user.id, regionRole.id).catch((error) => {
           Logger.warn(`Unable to reassign region role to ${member.user.username}`, error);
         });
       }

@@ -46,7 +46,7 @@ module.exports = (bot) => {
     case 'Twitch Subscriber':
     case 'Honorary Sloth':
       if (addedRole) {
-        bot.addGuildMemberRole(guild.id, member.user.id, vip[guild.id].roleID);
+        guild.addMemberRole(member.user.id, vip[guild.id].roleID);
       } else {
         const guildRewardRoles = vip[guild.id].rewardRoles;
         const stillDeserving = member.roles.some((roleID) => {
@@ -61,7 +61,7 @@ module.exports = (bot) => {
             }
           });
         });
-        if (!stillDeserving) bot.removeGuildMemberRole(guild.id, member.user.id, vip[guild.id].roleID);
+        if (!stillDeserving) guild.removeMemberRole(member.user.id, vip[guild.id].roleID);
       }
       break;
     default:

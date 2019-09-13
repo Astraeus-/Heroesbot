@@ -42,13 +42,14 @@ class AssignRegion extends BaseCommand {
 const syncRegionRoles = async (bot) => {
   Logger.info('Synchronising region roles');
   return heroesloungeApi.getSloths().then((sloths) => {
+    const guild = bot.guilds.get(defaultServer);
     const regionIds = {};
     const regionDiscordRoleIds = {};
 
     for (const region of regions) {
       if (region.heroesloungeId) {
         regionIds[region.name] = region.heroesloungeId;
-        const regionRole = bot.guilds.get(defaultServer).roles.find((role) => {
+        const regionRole = guild.roles.find((role) => {
           return role.name.toLowerCase() === region.name;
         });
 
@@ -64,7 +65,7 @@ const syncRegionRoles = async (bot) => {
       const currentSloth = sloths[sloth];
       if (currentSloth.discord_id.length === 0) continue;
 
-      const member = bot.guilds.get(defaultServer).members.get(currentSloth.discord_id);
+      const member = guild.members.get(currentSloth.discord_id);
       if (!member) continue;
 
       const roles = member.roles;
@@ -80,19 +81,19 @@ const syncRegionRoles = async (bot) => {
       if (roles.includes(regionRoleId)) continue;
 
       if (currentSloth.region_id === regionIds['eu'] && roles.includes(regionDiscordRoleIds['na'])) {
-        bot.removeGuildMemberRole(defaultServer, currentSloth.discord_id, regionDiscordRoleIds['na']).catch((error) => {
+        guild.removeMemberRole(currentSloth.discord_id, regionDiscordRoleIds['na']).catch((error) => {
           Logger.error(`Error removing old region role from ${currentSloth.discord_tag}`, error);
         });
       }
 
       if (currentSloth.region_id === regionIds['na'] && roles.includes(regionDiscordRoleIds['eu'])) {
-        bot.removeGuildMemberRole(defaultServer, currentSloth.discord_id, regionDiscordRoleIds['eu']).catch((error) => {
+        guild.removeMemberRole(currentSloth.discord_id, regionDiscordRoleIds['eu']).catch((error) => {
           Logger.error(`Error removing old region role from ${currentSloth.discord_tag}`, error);
         });
       }
 
       syncedSloths.push(
-        bot.addGuildMemberRole(defaultServer, currentSloth.discord_id, regionRoleId).catch((error) => {
+        guild.addMemberRole(currentSloth.discord_id, regionRoleId).catch((error) => {
           Logger.error(`Error assigning region role to ${currentSloth.discord_tag}`, error);
         })
       );

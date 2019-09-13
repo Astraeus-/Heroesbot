@@ -3,7 +3,7 @@ const { Logger } = require('../util.js');
 const { defaultServer } = require('../config.js');
 
 class Aram extends BaseCommand {
-  constructor () {
+  constructor (bot) {
     const permissions = {
       'Test-Server': {
         channels: [],
@@ -24,6 +24,7 @@ class Aram extends BaseCommand {
     };
 
     super(permissions, options);
+    this.bot = bot;
   }
 
   exec (msg) {
