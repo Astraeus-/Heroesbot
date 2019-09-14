@@ -4,26 +4,8 @@ const heroesloungeApi = require('heroeslounge-api');
 
 class CurrentBans extends BaseCommand {
   constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: ['Admin'],
-        users: []
-      },
-      'Heroes Lounge': {
-        channels: ['match_lounge_1', 'match_lounge_2', 'match_lounge_3', 'match_lounge_4', 'match_lounge_5', 'match_lounge_6', 'match_lounge_7', 'match_lounge_8', 'match_lounge_9', 'match_lounge_10', 'match_lounge_11', 'match_lounge_12', 'match_lounge_13', 'match_lounge_14', 'match_lounge_15', 'match_lounge_16', 'match_lounge_17', 'match_lounge_18', 'match_lounge_19', 'match_lounge_20', 'devops'],
-        roles: [],
-        users: []
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'currentbans',
-      aliases: ['bans'],
-      description: 'Lists all of the current bans and bugs.',
-      syntax: 'currentbans'
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
     this.bot = bot;

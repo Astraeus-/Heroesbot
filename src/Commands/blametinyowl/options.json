@@ -1,0 +1,7 @@
+{
+    "prefix": "#",
+    "command": "blametinyowl",
+    "description": "Responds blaming tinyowl",
+    "invokeDM": false,
+    "ignoreInHelp": true
+  }

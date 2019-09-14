@@ -1,0 +1,7 @@
+{
+    "prefix": "#",
+    "command": "rito",
+    "description": "Have Heroesbot join in on the rito",
+    "invokeDM": false,
+    "ignoreInHelp": true
+  }

@@ -1,0 +1,9 @@
+{
+    "prefix": "!",
+    "command": "playoffs",
+    "description": "Creates the playoff channels for the specified region",
+    "syntax": "playoffs <region>",
+    "min_args": 1,
+    "invokeDM": false,
+    "ignoreInHelp": true
+  }

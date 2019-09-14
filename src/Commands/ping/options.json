@@ -1,0 +1,6 @@
+{
+    "prefix": "!",
+    "command": "ping",
+    "description": "Pings Heroesbot",
+    "syntax": "ping"
+  }

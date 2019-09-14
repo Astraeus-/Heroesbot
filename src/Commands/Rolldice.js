@@ -2,26 +2,8 @@ const BaseCommand = require('../Classes/BaseCommand.js');
 
 class Rolldice extends BaseCommand {
   constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: [],
-        users: []
-      },
-      'Heroes Lounge': {
-        channels: ['devops'],
-        roles: [],
-        users: []
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'roll',
-      aliases: ['rolldice', 'dice'],
-      description: 'Rolls dice',
-      syntax: 'roll [number of dice] d[number of faces] \nDefaults to 1 die, with 6 faces.'
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
   }

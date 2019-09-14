@@ -1,0 +1,7 @@
+{
+    "prefix": "#",
+    "command": "robbgate",
+    "description": "Recalls the #Robbgate event",
+    "invokeDM": false,
+    "ignoreInHelp": true
+  }

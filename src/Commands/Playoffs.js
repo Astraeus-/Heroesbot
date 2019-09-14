@@ -6,28 +6,8 @@ const regions = require('../util.js').heroesloungeId;
 
 class Playoffs extends BaseCommand {
   constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: [],
-        users: ['108153813143126016']
-      },
-      'Heroes Lounge': {
-        channels: ['devops'],
-        roles: [],
-        users: ['108153813143126016', '202174629245222912', '188331826970886144']
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'playoffs',
-      description: 'Creates the playoff channels for the specified region',
-      syntax: 'playoffs <region>',
-      min_args: 1,
-      invokeDM: false,
-      ignoreInHelp: true
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
     this.bot = bot;

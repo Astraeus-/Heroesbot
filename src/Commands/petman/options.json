@@ -1,0 +1,7 @@
+{
+    "prefix": "#",
+    "command": "petman",
+    "description": "Heroesbot joins in on the Petman chant",
+    "invokeDM": false,
+    "ignoreInHelp": true
+  }

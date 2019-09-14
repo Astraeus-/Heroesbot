@@ -4,28 +4,8 @@ const heroesloungeApi = require('heroeslounge-api');
 
 class CasterStatistics extends BaseCommand {
   constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: ['Admin'],
-        users: []
-      },
-      'Heroes Lounge': {
-        channels: ['casters_lounge'],
-        roles: ['Lounge Master', 'Board', 'Managers', 'Moderators', 'Casters-EU', 'Casters-NA'],
-        users: []
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'casterstatisticss',
-      aliases: ['caststats', 'casterstats'],
-      description: 'Provides you with the casting statistics of the specified season.',
-      syntax: 'casterstats <season>',
-      enabled: false,
-      min_args: 1
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
     this.bot = bot;

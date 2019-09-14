@@ -7,28 +7,8 @@ const regions = require('../util.js').timezone;
 
 class CastsToday extends BaseCommand {
   constructor () {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: ['Admin'],
-        users: []
-      },
-      'Heroes Lounge': {
-        channels: ['casters_lounge'],
-        roles: ['Lounge Master', 'Board', 'Managers', 'Moderators', 'Casters-EU', 'Casters-NA', 'CoCasters', 'External Casters', 'Trial Casters'],
-        users: []
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'caststoday',
-      aliases: ['casts'],
-      description: 'Lists all of today\'s upcoming casts for the given region.',
-      syntax: 'caststoday <region>',
-      min_args: 1,
-      cooldown: 15000
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
   }

@@ -1,0 +1,6 @@
+{
+    "prefix": "!",
+    "command": "eval",
+    "invokeDM": false,
+    "ignoreInHelp": true
+  }

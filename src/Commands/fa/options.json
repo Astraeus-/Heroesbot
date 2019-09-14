@@ -1,0 +1,7 @@
+{
+    "prefix": "!",
+    "command": "freeagent",
+    "aliases": ["fa"],
+    "description": "Add or remove yourself from the free agent role group",
+    "enabled": false
+  }

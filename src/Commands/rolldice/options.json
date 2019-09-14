@@ -1,0 +1,7 @@
+{
+    "prefix": "!",
+    "command": "roll",
+    "aliases": ["rolldice", "dice"],
+    "description": "Rolls dice",
+    "syntax": "roll [number of dice] d[number of faces] \nDefaults to 1 die, with 6 faces."
+  }

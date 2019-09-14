@@ -1,0 +1,9 @@
+{
+    "prefix": "!",
+    "command": "matchestoday",
+    "aliases": ["upcomingmatches", "today", "todaymatches"],
+    "description": "Lists all of today\"s upcoming matches for the specified region",
+    "syntax": "matchestoday <region>",
+    "min_args": 1,
+    "cooldown": 10000
+  }

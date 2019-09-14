@@ -1,30 +1,10 @@
 const BaseCommand = require('../Classes/BaseCommand.js');
-const { memeCooldown } = require('../config.js');
 const { Logger } = require('../util.js');
 
 class Robblove extends BaseCommand {
-  constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: ['Admin'],
-        users: []
-      },
-      'Heroes Lounge': {
-        channels: [],
-        roles: ['Lounge Master', 'Board', 'Managers', 'Moderators', 'VIP'],
-        users: ['108153813143126016']
-      }
-    };
-
-    const options = {
-      prefix: '#',
-      command: 'robblove',
-      description: 'Responds loving Robb',
-      cooldown: memeCooldown,
-      invokeDM: false,
-      ignoreInHelp: true
-    };
+  constructor () {
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
   }

@@ -7,27 +7,8 @@ const https = require('https');
 
 class CheckBattleTag extends BaseCommand {
   constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: ['Admin'],
-        users: []
-      },
-      'Heroes Lounge': {
-        channels: ['devops'],
-        roles: ['Lounge Master', 'Board', 'Managers', 'Moderators'],
-        users: []
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'checkbattletag',
-      aliases: ['cbt'],
-      description: 'Queries the HotsLogs or Heroes Profile Api for data on a Battletag.',
-      syntax: 'checkbattletag <region> <name#12345>',
-      min_args: 2
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
     this.bot = bot;

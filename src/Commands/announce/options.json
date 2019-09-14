@@ -1,0 +1,9 @@
+{
+    "prefix": "!",
+    "command": "announce",
+    "aliases": ["a"],
+    "description": "Makes an announcement in the specified channel.",
+    "syntax": "announce <#channel> <message>",
+    "min_args": 2,
+    "invokeDM": false
+  }

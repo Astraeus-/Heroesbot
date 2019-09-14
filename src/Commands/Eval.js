@@ -4,20 +4,8 @@ const util = require('util');
 
 class Eval extends BaseCommand {
   constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: ['Admin'],
-        users: ['108153813143126016']
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'eval',
-      invokeDM: false,
-      ignoreInHelp: true
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
     this.bot = bot;

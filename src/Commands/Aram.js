@@ -4,24 +4,8 @@ const { defaultServer } = require('../config.js');
 
 class Aram extends BaseCommand {
   constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: [],
-        roles: [],
-        users: []
-      },
-      'Heroes Lounge': {
-        channels: ['lfg'],
-        roles: [],
-        users: []
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'aram',
-      description: 'Add or remove yourself from the aram role group'
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
     this.bot = bot;

@@ -1,0 +1,7 @@
+{
+    "prefix": "!",
+    "command": "currentbans",
+    "aliases": ["bans"],
+    "description": "Lists all of the current bans and bugs.",
+    "syntax": "currentbans"
+  }

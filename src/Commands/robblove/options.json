@@ -1,0 +1,7 @@
+{
+    "prefix": "#",
+    "command": "robblove",
+    "description": "Responds loving Robb",
+    "invokeDM": false,
+    "ignoreInHelp": true
+  }

@@ -1,0 +1,8 @@
+{
+    "prefix": "!",
+    "command": "assigncaptain",
+    "aliases": [],
+    "description": "Assigns the Captain role to all the captains of participating teams.",
+    "syntax": "assigncaptain",
+    "ignoreInHelp": true
+  }

@@ -1,0 +1,12 @@
+{
+    "Test-Server": {
+      "channels": ["robotchannel"],
+      "roles": [],
+      "users": []
+    },
+    "Heroes Lounge": {
+      "channels": [],
+      "roles": [],
+      "users": []
+    }
+  }

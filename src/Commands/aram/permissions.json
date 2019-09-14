@@ -1,0 +1,12 @@
+{
+    "Test-Server": {
+      "channels": [],
+      "roles": [],
+      "users": []
+    },
+    "Heroes Lounge": {
+      "channels": ["lfg"],
+      "roles": [],
+      "users": []
+    }
+  }

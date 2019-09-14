@@ -1,26 +1,9 @@
 const BaseCommand = require('../Classes/BaseCommand.js');
 
 class Ping extends BaseCommand {
-  constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: ['Admin'],
-        users: []
-      },
-      'Heroes Lounge': {
-        channels: ['devops'],
-        roles: ['Lounge Master', 'Board', 'Managers', 'Moderators'],
-        users: []
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'ping',
-      description: 'Pings Heroesbot',
-      syntax: 'ping'
-    };
+  constructor () {
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
   }
@@ -31,3 +14,13 @@ class Ping extends BaseCommand {
 }
 
 module.exports = Ping;
+
+/*
+Each command needs to reference it's own folder for it's data.
+
+E.g: ping references ./ping/* for it's files.
+
+However, we also need to be able to inject additional data into this.
+  E.g: we have a global cooldown that we use for all our reaction responses.
+
+*/

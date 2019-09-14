@@ -5,23 +5,8 @@ const { Logger } = require('../util.js');
 
 class UpdateCache extends BaseCommand {
   constructor () {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: ['Admin'],
-        users: ['108153813143126016']
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'updatecache',
-      description: 'Updates the specified cache.',
-      syntax: 'updatecache <option>\nOptions are: teams, matches, all',
-      ignoreInHelp: true,
-      min_args: 1,
-      diasbled: true
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
   }

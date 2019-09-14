@@ -2,25 +2,8 @@ const BaseCommand = require('../Classes/BaseCommand.js');
 
 class Help extends BaseCommand {
   constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: [],
-        users: []
-      },
-      'Heroes Lounge': {
-        channels: [],
-        roles: [],
-        users: []
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'help',
-      description: 'Lists all of Heroesbot\'s commands. Specify a command for additional info.',
-      syntax: 'help <command>'
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
     this.bot = bot;

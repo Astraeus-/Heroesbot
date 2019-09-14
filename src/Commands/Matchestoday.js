@@ -8,28 +8,8 @@ const regions = require('../util.js').timezone;
 
 class MatchesToday extends BaseCommand {
   constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: ['Admin'],
-        users: []
-      },
-      'Heroes Lounge': {
-        channels: [],
-        roles: [],
-        users: []
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'matchestoday',
-      aliases: ['upcomingmatches', 'today', 'todaymatches'],
-      description: 'Lists all of today\'s upcoming matches for the specified region',
-      syntax: 'matchestoday <region>',
-      min_args: 1,
-      cooldown: 10000
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
     this.bot = bot;

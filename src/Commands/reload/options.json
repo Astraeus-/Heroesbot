@@ -1,0 +1,8 @@
+{
+    "prefix": "!",
+    "command": "reload",
+    "aliases": [],
+    "description": "Hot reloads the commands.",
+    "syntax": "reload",
+    "ignoreInHelp": true
+  }

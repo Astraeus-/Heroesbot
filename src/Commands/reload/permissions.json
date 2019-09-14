@@ -1,0 +1,7 @@
+{
+    "Test-Server": {
+      "channels": ["robotchannel"],
+      "roles": ["Admin"],
+      "users": []
+    }
+  }

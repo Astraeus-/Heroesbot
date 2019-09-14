@@ -1,0 +1,7 @@
+{
+    "prefix": "!",
+    "command": "coin",
+    "aliases": ["flip", "coinflip", "flipcoin", "toss", "tosscoin", "cointoss"],
+    "description": "Flips a coin.",
+    "syntax": "coin"
+  }

@@ -5,32 +5,8 @@ const http = require('http');
 
 class Draft extends BaseCommand {
   constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: ['Admin'],
-        users: []
-      },
-      'Heroes Lounge': {
-        channels: ['hots-experiences'],
-        roles: [],
-        users: []
-      },
-      'Nexus Schoolhouse': {
-        channels: ['mockdrafts'],
-        roles: [],
-        users: []
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'draft',
-      aliases: ['mock', 'mockdraft'],
-      description: 'Creates a Heroes of the Storm mockdraft.',
-      syntax: 'draft <map> <team 1> <team 2> [-nt]\nThe map is specialised by all first letters e.g.: Battlefield of Eternity = BOE.\nteam 1 has first pick by default.\nAdding optional flag "-nt" creates a draft with no pick timer.',
-      min_args: 3
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
     this.bot = bot;

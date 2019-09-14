@@ -1,0 +1,5 @@
+{
+    "prefix": "!",
+    "command": "aram",
+    "description": "Add or remove yourself from the aram role group"
+  }

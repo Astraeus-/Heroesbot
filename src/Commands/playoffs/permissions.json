@@ -1,0 +1,12 @@
+{
+    "Test-Server": {
+      "channels": ["robotchannel"],
+      "roles": [],
+      "users": ["108153813143126016"]
+    },
+    "Heroes Lounge": {
+      "channels": ["devops"],
+      "roles": [],
+      "users": ["108153813143126016", "202174629245222912", "188331826970886144"]
+    }
+  }

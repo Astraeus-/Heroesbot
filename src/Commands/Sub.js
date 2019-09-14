@@ -4,25 +4,8 @@ const { defaultServer } = require('../config.js');
 
 class Sub extends BaseCommand {
   constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: [],
-        roles: [],
-        users: []
-      },
-      'Heroes Lounge': {
-        channels: ['sub_recruitment_eu', 'sub_recruitment_na'],
-        roles: [],
-        users: []
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'sub',
-      aliases: ['substitute', 'subplayer'],
-      description: 'Add or remove yourself from the sub player role group'
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
     this.bot = bot;

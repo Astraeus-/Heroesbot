@@ -8,28 +8,8 @@ const dateformat = require('date-fns/format');
 
 class Remind extends BaseCommand {
   constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: ['Admin'],
-        users: []
-      },
-      'Heroes Lounge': {
-        channels: ['devops'],
-        roles: ['Lounge Master', 'Board', 'Managers', 'Moderators'],
-        users: []
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'remind',
-      aliases: ['remindme', 'reminder'],
-      description: 'Reminds a user in the channel',
-      syntax: 'remind add <Year> <Month> <Day> <Hour> <Minute> <Message>\n!remind delete <reminder ID>\n!remind list',
-      min_args: 1,
-      enabled: false
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
     this.bot = bot;

@@ -1,0 +1,6 @@
+{
+    "prefix": "!",
+    "command": "help",
+    "description": "Lists all of Heroesbot\"s commands. Specify a command for additional info.",
+    "syntax": "help <command>"
+  }

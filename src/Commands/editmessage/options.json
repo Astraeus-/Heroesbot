@@ -1,0 +1,9 @@
+{
+    "prefix": "!",
+    "command": "editmessage",
+    "aliases": ["edit"],
+    "description": "Replace the specified messsage with the updated message.",
+    "syntax": "edit <#channel> <message ID> <new message>",
+    "min_args": 3,
+    "invokeDM": false
+  }

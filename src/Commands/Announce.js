@@ -3,28 +3,8 @@ const { Logger } = require('../util.js');
 
 class Announce extends BaseCommand {
   constructor () {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: ['Admin'],
-        users: []
-      },
-      'Heroes Lounge': {
-        channels: ['devops'],
-        roles: ['Lounge Master', 'Board', 'Managers', 'Moderators'],
-        users: []
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'announce',
-      aliases: ['a'],
-      description: 'Makes an announcement in the specified channel.',
-      syntax: 'announce <#channel> <message>',
-      min_args: 2,
-      invokeDM: false
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
   }

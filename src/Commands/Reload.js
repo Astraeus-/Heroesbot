@@ -6,22 +6,8 @@ const path = require('path');
 
 class Reload extends BaseCommand {
   constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: ['Admin'],
-        users: []
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'reload',
-      aliases: [],
-      description: 'Hot reloads the commands.',
-      syntax: 'reload',
-      ignoreInHelp: true
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
     this.bot = bot;

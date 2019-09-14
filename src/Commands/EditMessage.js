@@ -3,28 +3,8 @@ const { Logger } = require('../util.js');
 
 class EditMessage extends BaseCommand {
   constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: ['Admin'],
-        users: []
-      },
-      'Heroes Lounge': {
-        channels: ['devops'],
-        roles: ['Lounge Master', 'Board', 'Managers', 'Moderators'],
-        users: []
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'editmessage',
-      aliases: ['edit'],
-      description: 'Replace the specified messsage with the updated message.',
-      syntax: 'edit <#channel> <message ID> <new message>',
-      min_args: 3,
-      invokeDM: false
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
     this.bot = bot;

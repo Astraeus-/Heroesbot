@@ -1,0 +1,8 @@
+{
+    "prefix": "!",
+    "command": "teaminfo",
+    "aliases": ["team"],
+    "description": "Returns info about a specified team.",
+    "syntax": "teaminfo [SLUG]",
+    "min_args": 1
+  }

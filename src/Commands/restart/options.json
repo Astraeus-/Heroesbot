@@ -1,0 +1,9 @@
+{
+    "prefix": "!",
+    "command": "restart",
+    "description": "Restarts elements of the host OS.",
+    "syntax": "restart <option>\nOptions are: network, all",
+    "ignoreInHelp": true,
+    "min_args": 1,
+    "enabled": false
+  }

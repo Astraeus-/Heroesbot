@@ -4,26 +4,8 @@ const { defaultServer } = require('../config.js');
 
 class Fa extends BaseCommand {
   constructor (bot) {
-    const permissions = {
-      'Test-Server': {
-        channels: [],
-        roles: [],
-        users: []
-      },
-      'Heroes Lounge': {
-        channels: ['lfg'],
-        roles: [],
-        users: []
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'freeagent',
-      aliases: ['fa'],
-      description: 'Add or remove yourself from the free agent role group',
-      enabled: false
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
     this.bot = bot;

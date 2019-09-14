@@ -6,23 +6,8 @@ const { exec } = require('child_process');
 
 class Restart extends BaseCommand {
   constructor () {
-    const permissions = {
-      'Test-Server': {
-        channels: ['robotchannel'],
-        roles: ['Admin'],
-        users: ['108153813143126016']
-      }
-    };
-
-    const options = {
-      prefix: '!',
-      command: 'restart',
-      description: 'Restarts elements of the host OS.',
-      syntax: 'restart <option>\nOptions are: network, all',
-      ignoreInHelp: true,
-      min_args: 1,
-      enabled: false
-    };
+    const commandFolder = __filename.substring(__dirname.length + 1, __filename.length - 3).toLowerCase();
+    const {permissions, options} = require(`./${commandFolder}/`);
 
     super(permissions, options);
   }
