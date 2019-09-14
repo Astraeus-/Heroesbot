@@ -1,6 +1,7 @@
 {
     "prefix": "!",
     "command": "match",
+    "category": "competition",
     "aliases": [],
     "description": "Determines whether you have map pick or first pick.",
     "syntax": "match"

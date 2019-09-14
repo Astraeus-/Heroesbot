@@ -1,6 +1,7 @@
 {
     "prefix": "!",
-    "command": "casterstatisticss",
+    "command": "casterstatistics",
+    "category": "casters",
     "aliases": ["caststats", "casterstats"],
     "description": "Provides you with the casting statistics of the specified season.",
     "syntax": "casterstats <season>",

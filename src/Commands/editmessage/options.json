@@ -1,6 +1,7 @@
 {
     "prefix": "!",
     "command": "editmessage",
+    "category": "admin",
     "aliases": ["edit"],
     "description": "Replace the specified messsage with the updated message.",
     "syntax": "edit <#channel> <message ID> <new message>",

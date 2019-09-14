@@ -1,6 +1,7 @@
 {
     "prefix": "!",
     "command": "announce",
+    "category": "admin",
     "aliases": ["a"],
     "description": "Makes an announcement in the specified channel.",
     "syntax": "announce <#channel> <message>",

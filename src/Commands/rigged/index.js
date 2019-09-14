@@ -3,11 +3,36 @@ const options = require('./options.json');
 
 const { memeCooldown } = require('../../config.js');
 
-if (!options.cooldown) {
-  options.cooldown = memeCooldown;
+const BaseCommand = require('../../Classes/BaseCommand.js');
+const { Logger } = require('../../util.js');
+
+class Rigged extends BaseCommand {
+  constructor () {
+    if (!options.cooldown) {
+      options.cooldown = memeCooldown;
+    }
+    
+    super(permissions, options);
+  }
+
+  exec (msg) {
+    const emojisArray = [
+      '🇷',
+      '🇮',
+      '🇬',
+      ':g_:364475638297657345',
+      '🇪',
+      '🇩',
+      ':BabyRage:438477910899163157'
+    ];
+
+    for (const emoji of emojisArray) {
+      msg.addReaction(emoji).catch((error) => {
+        Logger.warn(`Could not add emoji ${emoji}`, error);
+      });
+    }
+  }
 }
 
-module.exports = {
-  options: options,
-  permissions: permissions
-};
+module.exports = Rigged;
+

@@ -1,5 +1,6 @@
 {
     "prefix": "!",
     "command": "aram",
+    "category": "roleassignment",
     "description": "Add or remove yourself from the aram role group"
   }

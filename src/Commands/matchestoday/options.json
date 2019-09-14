@@ -1,6 +1,7 @@
 {
     "prefix": "!",
     "command": "matchestoday",
+    "category": "competition",
     "aliases": ["upcomingmatches", "today", "todaymatches"],
     "description": "Lists all of today\"s upcoming matches for the specified region",
     "syntax": "matchestoday <region>",

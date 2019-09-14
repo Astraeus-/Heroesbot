@@ -5,6 +5,7 @@ class BaseCommand {
     this.permissions  = permissions
     this.prefix       = options.prefix
     this.command      = options.command
+    this.category     = typeof options.category     != 'undefined' ? options.category     : ''
     this.aliases      = typeof options.aliases      != 'undefined' ? options.aliases      : []
     this.min_args     = typeof options.min_args     != 'undefined' ? options.min_args     : 0
     this.description  = typeof options.description  != 'undefined' ? options.description  : 'No description'

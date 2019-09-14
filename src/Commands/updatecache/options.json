@@ -1,6 +1,7 @@
 {
     "prefix": "!",
     "command": "updatecache",
+    "category": "admin",
     "description": "Updates the specified cache.",
     "syntax": "updatecache <option>\nOptions are: teams, matches, all",
     "ignoreInHelp": true,

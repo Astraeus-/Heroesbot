@@ -1,6 +1,7 @@
 {
     "prefix": "!",
     "command": "reload",
+    "category": "admin",
     "aliases": [],
     "description": "Hot reloads the commands.",
     "syntax": "reload",

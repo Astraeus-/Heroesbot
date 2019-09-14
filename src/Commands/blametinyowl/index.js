@@ -3,11 +3,42 @@ const options = require('./options.json');
 
 const { memeCooldown } = require('../../config.js');
 
-if (!options.cooldown) {
-  options.cooldown = memeCooldown;
+const BaseCommand = require('../../Classes/BaseCommand.js');
+const { Logger } = require('../../util.js');
+
+class Blametinyowl extends BaseCommand {
+  constructor () {
+    if (!options.cooldown) {
+      options.cooldown = memeCooldown;
+    }
+    
+    super(permissions, options);
+  }
+
+  exec (msg) {
+    const emojisArray = [
+      '#⃣',
+      '🇧',
+      '🇱',
+      '🇦',
+      '🇲',
+      '🇪',
+      '🇹',
+      '🇮',
+      '🇳',
+      '🇾',
+      '🇴',
+      '🇼',
+      ':l_:369122853460770828',
+      '🦉'
+    ];
+
+    for (const emoji of emojisArray) {
+      msg.addReaction(emoji).catch((error) => {
+        Logger.warn(`Could not add emoji ${emoji}`, error);
+      });
+    }
+  }
 }
 
-module.exports = {
-  options: options,
-  permissions: permissions
-};
+module.exports = Blametinyowl;

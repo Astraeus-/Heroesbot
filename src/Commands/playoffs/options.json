@@ -1,6 +1,7 @@
 {
     "prefix": "!",
     "command": "playoffs",
+    "category": "admin",
     "description": "Creates the playoff channels for the specified region",
     "syntax": "playoffs <region>",
     "min_args": 1,

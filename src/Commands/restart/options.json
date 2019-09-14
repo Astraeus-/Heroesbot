@@ -1,6 +1,7 @@
 {
     "prefix": "!",
     "command": "restart",
+    "category": "admin",
     "description": "Restarts elements of the host OS.",
     "syntax": "restart <option>\nOptions are: network, all",
     "ignoreInHelp": true,

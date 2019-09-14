@@ -1,6 +1,7 @@
 {
     "prefix": "!",
     "command": "sub",
+    "category": "roleassignment",
     "aliases": ["substitute", "subplayer"],
     "description": "Add or remove yourself from the sub player role group"
   }

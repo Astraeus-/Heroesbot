@@ -1,6 +1,7 @@
 {
     "prefix": "#",
     "command": "rito",
+    "category": "memes",
     "description": "Have Heroesbot join in on the rito",
     "invokeDM": false,
     "ignoreInHelp": true

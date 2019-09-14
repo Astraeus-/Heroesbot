@@ -1,6 +1,7 @@
 {
     "prefix": "#",
     "command": "petman",
+    "category": "memes",
     "description": "Heroesbot joins in on the Petman chant",
     "invokeDM": false,
     "ignoreInHelp": true

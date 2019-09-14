@@ -1,6 +1,7 @@
 {
     "prefix": "!",
     "command": "checkbattletag",
+    "category": "competition",
     "aliases": ["cbt"],
     "description": "Queries the HotsLogs or Heroes Profile Api for data on a Battletag.",
     "syntax": "checkbattletag <region> <name#12345>",

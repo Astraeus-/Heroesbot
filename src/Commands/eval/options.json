@@ -1,6 +1,7 @@
 {
     "prefix": "!",
     "command": "eval",
+    "category": "owner",
     "invokeDM": false,
     "ignoreInHelp": true
   }
