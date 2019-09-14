@@ -28,7 +28,7 @@ class WebhookClient {
     }
 
     const req = https.request(options, (res) => {
-      Logger.info(`Status: ${res.statusCode}`);
+      Logger.debug(`Status: ${res.statusCode}`);
     });
 
     req.on('error', (error) => {
