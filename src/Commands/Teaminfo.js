@@ -75,7 +75,7 @@ class Teaminfo extends BaseCommand {
       };
 
       for (const sloth of team.sloths) {
-        embed.fields[0].value += `${sloth.title}\n`;
+        embed.fields[0].value += `[${sloth.title}](https://heroeslounge.gg/user/view/${sloth.id})\n`;
         embed.fields[1].value += `${sloth.battle_tag}\n`;
       }
 
