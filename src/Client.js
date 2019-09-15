@@ -8,37 +8,63 @@ class Client {
     this.bot = new Eris(...args);
   }
 
-  launch () {
+  async launch () {
     this.bot.commands = new Map();
     this.bot.embed = embed;
 
-    this.loadCommands(path.join(__dirname, 'Commands'));
-    this.loadEvents(path.join(__dirname, 'Events'));
-
+    await Client.loadCommands(this.bot, path.join(__dirname, 'Commands'));
+    await Client.loadEvents(this.bot, path.join(__dirname, 'Events'));
     return this.bot.connect();
   }
 
-  loadCommands (dir) {
-    fs.readdir(dir).then((commands) => {
+  static async loadCommands (bot, dir) {
+    bot.commands.clear();
+
+    return fs.readdir(dir).then((commands) => {
       for (let i = 0; i < commands.length; i++) {
-        const Command = require(path.join(__dirname, 'Commands', commands[i]));
-        const command = new Command(this.bot);
-        this.bot.commands.set(command.command, command);
+        const command = Client.loadCommand(bot, commands[i]);
+        bot.commands.set(command.command, command);
       }
     }).catch((error) => {
       throw error;
     });
   }
 
-  loadEvents (dir) {
-    fs.readdir(dir).then((events) => {
+  static async loadEvents (bot, dir) {
+    bot.removeAllListeners();
+
+    return fs.readdir(dir).then((events) => {
       for (let i = 0; i < events.length; i++) {
-        const event = require(path.join(__dirname, 'Events', events[i]));
-        event(this.bot);
+        const event = Client.loadEvent(events[i]);
+        event(bot);
       }
     }).catch((error) => {
       throw error;
     });
+  }
+
+  static loadCommand(bot, commandDir) {
+    const commandCached = require.cache[require.resolve(path.join(__dirname, 'Commands', commandDir))];
+
+    if (commandCached) {
+      delete require.cache[require.resolve(path.join(__dirname, 'Commands', commandDir))];
+      delete require.cache[require.resolve(path.join(__dirname, 'Commands', commandDir, 'options.json'))];
+      delete require.cache[require.resolve(path.join(__dirname, 'Commands', commandDir, 'permissions.json'))];
+    }
+      
+    const Command = require(path.join(__dirname, 'Commands', commandDir));
+    return new Command(bot);
+  }
+
+  static loadEvent(eventType) {
+    const eventCached = require.cache[require.resolve(path.join(__dirname, 'Events', eventType))];
+
+    if (eventCached) {
+      delete require.cache[require.resolve(path.join(__dirname, 'Events', eventType))];
+    }
+
+    const event = require(path.join(__dirname, 'Events', eventType));
+    return event;
   }
 }
 
