@@ -11,7 +11,7 @@ class Sub extends BaseCommand {
         users: []
       },
       'Heroes Lounge': {
-        channels: ['lfg'],
+        channels: ['sub_recruitment_eu', 'sub_recruitment_na'],
         roles: [],
         users: []
       }
