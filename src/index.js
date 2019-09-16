@@ -14,7 +14,11 @@ const regionTask = cron.schedule('0 0 * * *', () => {
 });
 
 const remindTask = cron.schedule('* * * * *', () => {
-  client.bot.commands.get('remind').remind();
+  const remindCommand = client.bot.commands.get('remind');
+
+  if (remindCommand.enabled) {
+    remindCommand.remind();
+  }
 }, {
   scheduled: false
 });

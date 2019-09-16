@@ -24,7 +24,7 @@ class Remind extends BaseCommand {
       const triggerDate = new Date(args[1], args[2] - 1, args[3], args[4], args[5], 0);
       const triggerMs = Date.parse(triggerDate);
 
-      return fs.readFile(path.join(__dirname, '../Data/Reminders.json'), { encoding: 'utf8' }).then(reminders => JSON.parse(reminders)).then((reminders) => {
+      return fs.readFile(path.join(__dirname, '../../Data/Reminders.json'), { encoding: 'utf8' }).then(reminders => JSON.parse(reminders)).then((reminders) => {
         const newReminder = {
           Id: reminders.length > 0 ? reminders[reminders.length - 1].Id + 1 : 1,
           time: triggerMs,
@@ -40,7 +40,7 @@ class Remind extends BaseCommand {
         if (currentReminderCount.length < 5) {
           reminders.push(newReminder);
 
-          return fs.writeFile(path.join(__dirname, '../Data/Reminders.json'), JSON.stringify(reminders, 0, 2)).then(() => {
+          return fs.writeFile(path.join(__dirname, '../../Data/Reminders.json'), JSON.stringify(reminders, 0, 2)).then(() => {
             return msg.author.getDMChannel().then((channel) => {
               return channel.createMessage(`Sucessfully created reminder for ${dateformat(triggerDate, 'do MMMM yyyy hh:mm a')}`);
             });
@@ -56,7 +56,7 @@ class Remind extends BaseCommand {
     case 'remove': {
       const deletionId = parseInt(args[1]);
 
-      return fs.readFile(path.join(__dirname, '../Data/Reminders.json'), { encoding: 'utf8' }).then(reminders => JSON.parse(reminders)).then((reminders) => {
+      return fs.readFile(path.join(__dirname, '../../Data/Reminders.json'), { encoding: 'utf8' }).then(reminders => JSON.parse(reminders)).then((reminders) => {
         const removeIndex = reminders.findIndex((reminder) => {
           return reminder.Id === deletionId;
         });
@@ -64,7 +64,7 @@ class Remind extends BaseCommand {
         if (removeIndex >= 0 && (reminders[removeIndex].creatorId === msg.author.id || msg.author.id === '108153813143126016')) {
           const removedReminder = reminders[removeIndex];
           reminders.splice(removeIndex, 1);
-          return fs.writeFile(path.join(__dirname, '../Data/Reminders.json'), JSON.stringify(reminders, 0, 2)).then(() => {
+          return fs.writeFile(path.join(__dirname, '../../Data/Reminders.json'), JSON.stringify(reminders, 0, 2)).then(() => {
             return msg.author.getDMChannel().then((channel) => {
               return channel.createMessage(`Sucessfully removed reminder: \n\n\`\`\`\n${removedReminder.message}\n\`\`\``);
             });
@@ -78,7 +78,7 @@ class Remind extends BaseCommand {
     }
     case 'list':
     case 'all':
-      return fs.readFile(path.join(__dirname, '../Data/Reminders.json'), { encoding: 'utf8' }).then(reminders => JSON.parse(reminders)).then((reminders) => {
+      return fs.readFile(path.join(__dirname, '../../Data/Reminders.json'), { encoding: 'utf8' }).then(reminders => JSON.parse(reminders)).then((reminders) => {
         const embed = {
           color: this.bot.embed.color,
           footer: this.bot.embed.footer,
@@ -136,7 +136,7 @@ class Remind extends BaseCommand {
   }
 
   remind () {
-    fs.readFile(path.join(__dirname, '../Data/Reminders.json'), { encoding: 'utf8' }).then(reminders => JSON.parse(reminders)).then((reminders) => {
+    fs.readFile(path.join(__dirname, '../../Data/Reminders.json'), { encoding: 'utf8' }).then(reminders => JSON.parse(reminders)).then((reminders) => {
       const currentTime = Date.now();
       for (let i = reminders.length - 1; i >= 0; i--) {
         if (reminders[i].time <= currentTime) {
@@ -148,7 +148,7 @@ class Remind extends BaseCommand {
         }
       }
 
-      return fs.writeFile(path.join(__dirname, '../Data/Reminders.json'), JSON.stringify(reminders, 0, 2));
+      return fs.writeFile(path.join(__dirname, '../../Data/Reminders.json'), JSON.stringify(reminders, 0, 2));
     }).catch((error) => {
       Logger.error('Unable to update reminder status', error);
     });
