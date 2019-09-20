@@ -17,16 +17,25 @@ class WebhookClient {
       }
     };
 
+    if (!Array.isArray(embeds)) {
+      Logger.debug(`Expected embeds to be array, got ${typeof embeds}`, embeds);
+      return;
+    }
+
     const postData = {
-      embeds: [
-        content
-      ]
+      embeds: []
     };
+
+    if (typeof content === 'object') {
+      postData['embeds'].push(content);
+    } else if (typeof content === 'string') {
+      postData['content'] = content;
+    }
 
     for (const embed of embeds) {
       postData.embeds.push(embed);
     }
-
+    
     const req = https.request(options, (res) => {
       Logger.debug(`Status: ${res.statusCode}`);
     });
