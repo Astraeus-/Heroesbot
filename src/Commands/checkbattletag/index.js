@@ -43,10 +43,10 @@ class CheckBattleTag extends BaseCommand {
         let ratings;
 
         if (type === 'Heroes Profile') {
-          const profileLink = await getHeroesProfileId(regionId, battletag).catch((error) => Logger.warn('Unable to retrieve profile Id', error));
+          const playerProfile = await getHeroesProfilePlayer(regionId, battletag).catch((error) => Logger.warn('Unable to retrieve Heroes Profile player details', error));
           leaderboardData = data[battletag];
           ratings = getRatingsHeroesProfile(leaderboardData);
-          embed.description = `[Heroes Profile](https://www.heroesprofile.com/Profile/?blizz_id=${profileLink[0].blizz_id}&battletag=${battletag.match(/^[a-zA-Z0-9]{2,11}/g)}&region=${regionId})`;
+          embed.description = `[Heroes Profile](${playerProfile.profile})`;
 
           const leaderboardDataKeys = Object.keys(leaderboardData);
           for (const mode in leaderboardDataKeys) {
@@ -90,11 +90,11 @@ class CheckBattleTag extends BaseCommand {
   }
 }
 
-const getHeroesProfileId = (regionId, battletag) => {
+const getHeroesProfilePlayer = (regionId, battletag) => {
   return new Promise((resolve, reject) => {
     const options = {
-      hostname: 'heroesprofile.com',
-      path: `/API/Profile/?api_key=${hpApiKey}&battletag=${encodeURIComponent(battletag)}&region=${regionId}`,
+      hostname: 'api.heroesprofile.com',
+      path: `/api/Player?mode=json&api_token=${hpApiKey}&battletag=${encodeURIComponent(battletag)}&region=${regionId}`,
       method: 'GET'
     };
 
@@ -132,8 +132,8 @@ const getHeroesProfileId = (regionId, battletag) => {
 const getHeroesProfileDetails = (regionId, battletag) => {
   return new Promise((resolve, reject) => {
     const options = {
-      hostname: 'heroesprofile.com',
-      path: `/API/MMR/Player/?api_key=${hpApiKey}&p_b=${encodeURIComponent(battletag)}&region=${regionId}`,
+      hostname: 'api.heroesprofile.com',
+      path: `/api/Player/MMR/?mode=json&api_token=${hpApiKey}&battletag=${encodeURIComponent(battletag)}&region=${regionId}`,
       method: 'GET'
     };
 
