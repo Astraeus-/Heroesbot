@@ -82,7 +82,7 @@ class CheckBattleTag extends BaseCommand {
           };
         }
 
-        return channel.createMessage({ embed: embed });
+        return channel.createMessage({ content: 'Currently Heroesbot does not account for minimum games played, use calculated MMR at own risk.', embed: embed });
       } else {
         return channel.createMessage(`No data for battletag: ${battletag} in region ${specifiedRegion}`);
       }
