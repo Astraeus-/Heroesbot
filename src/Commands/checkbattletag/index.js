@@ -2,6 +2,7 @@ const permissions = require('./permissions.json');
 const options = require('./options.json');
 const BaseCommand = require('../../Classes/BaseCommand.js');
 const { Logger } = require('../../util.js');
+const MMRCalc = require('../../Classes/MMRCalculator.js');
 
 const regions = require('../../util.js').blizzardRegion;
 const {hpApiKey} = require('../../config.js');
@@ -40,12 +41,13 @@ class CheckBattleTag extends BaseCommand {
       if (data) {
         embed.title = `${battletag}\nRegion: ${specifiedRegion}`;
         let leaderboardData;
+        let averageMMR;
         let ratings;
 
         if (type === 'Heroes Profile') {
           const playerProfile = await getHeroesProfilePlayer(regionId, battletag).catch((error) => Logger.warn('Unable to retrieve Heroes Profile player details', error));
           leaderboardData = data[battletag];
-          ratings = getRatingsHeroesProfile(leaderboardData);
+          ratings = MMRCalc.getRatingsHeroesProfile(leaderboardData);
           embed.description = `[Heroes Profile](${playerProfile.profile})`;
 
           const leaderboardDataKeys = Object.keys(leaderboardData);
@@ -57,9 +59,11 @@ class CheckBattleTag extends BaseCommand {
               inline: true
             };
           }
+
+          averageMMR = MMRCalc.calculateHeroesProfileAverageMMR(ratings);
         } else if (type === 'HotsLogs') {
           leaderboardData = data.LeaderboardRankings;
-          ratings = getRatingsHotsLogs(leaderboardData);
+          ratings = MMRCalc.getRatingsHotsLogs(leaderboardData);
 
           embed.description = `[HotsLogs](https://www.hotslogs.com/Player/Profile?PlayerID=${data.PlayerID})`;
 
@@ -70,9 +74,9 @@ class CheckBattleTag extends BaseCommand {
               inline: true
             };
           }
-        }
 
-        const averageMMR = calculateAverageMMR(ratings);
+          averageMMR = MMRCalc.calculateHotsLogsAverageMMR(ratings);
+        }
 
         if (averageMMR) {
           embed.fields[embed.fields.length] = {
@@ -82,7 +86,7 @@ class CheckBattleTag extends BaseCommand {
           };
         }
 
-        return channel.createMessage({ content: 'Currently Heroesbot does not account for minimum games played, use calculated MMR at own risk.', embed: embed });
+        return channel.createMessage({ embed: embed });
       } else {
         return channel.createMessage(`No data for battletag: ${battletag} in region ${specifiedRegion}`);
       }
@@ -207,87 +211,6 @@ const getHotsLogsDetails = (regionId, battletag) => {
 
     req.end();
   });
-};
-
-const calculateAverageMMR = (ratings) => {
-  if (ratings.size === 0) return null;
-
-  let totalMMR = 0;
-  let divider = 0;
-
-  ratings.forEach((rating, key) => {
-    switch (key) {
-    case 'Storm League':
-    case 'StormLeague':
-      totalMMR += rating * 0.7;
-      divider += 0.7;
-      break;
-      // case 'Hero League':
-      // case 'HeroLeague':
-      //   totalMMR += rating * 0.5
-      //   divider += 0.5
-      //   break
-      // case 'Team League':
-      // case 'TeamLeague':
-      //   totalMMR += rating * 0.3
-      //   divider += 0.3
-      //   break
-    case 'Unranked Draft':
-    case 'UnrankedDraft':
-      totalMMR += rating * 0.3;
-      divider += 0.3;
-      break;
-    }
-  });
-
-  return Math.floor(totalMMR / divider);
-};
-
-const getRatingsHotsLogs = (leaderBoard) => {
-  const ratings = new Map();
-
-  for (let i = 0; i < leaderBoard.length; i++) {
-    if (leaderBoard[i].GameMode === 'UnrankedDraft' || leaderBoard[i].GameMode === 'StormLeague') {
-      if (leaderBoard[i].LeagueRank !== null) {
-        ratings.set(leaderBoard[i].GameMode, leaderBoard[i].CurrentMMR);
-      }
-    }
-  }
-
-  if (ratings.size === 0) {
-    for (let i = 0; i < leaderBoard.length; i++) {
-      ratings.set(leaderBoard[i].GameMode, leaderBoard[i].CurrentMMR);
-    }
-  }
-
-  return ratings;
-};
-
-const getRatingsHeroesProfile = (leaderBoard) => {
-  const leaderboardModes = ['Quick Match', 'Unranked Draft', 'Storm League', 'Team League', 'Hero League'];
-  const ratings = new Map();
-
-  for (let gameMode of leaderboardModes) {
-    const modeData = leaderBoard[gameMode];
-
-    if (gameMode === 'Unranked Draft' || gameMode === 'Storm League') {
-      if (modeData && modeData.mmr != null) {
-        ratings.set(gameMode, modeData.mmr);
-      }
-    }
-  }
-
-  if (ratings.size === 0) {
-    for (let gameMode of leaderboardModes) {
-      const modeData = leaderBoard[gameMode];
-
-      if (modeData && modeData.mmr) {
-        ratings.set(gameMode, modeData.mmr);
-      }
-    }
-  }
-
-  return ratings;
 };
 
 module.exports = CheckBattleTag;

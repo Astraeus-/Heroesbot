@@ -5,8 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node .",
-    "test": "eslint src",
-    "fix": "eslint src --fix"
+    "test": "mocha",
+    "eslint": "eslint src && eslint test",
+    "eslint:fix": "eslint src --fix && eslint test --fix"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,8 @@
     "node-cron": "^2.0.3"
   },
   "devDependencies": {
-    "eslint": "^6.3.0"
+    "chai": "^4.2.0",
+    "eslint": "^6.3.0",
+    "mocha": "^6.2.1"
   }
 }
