@@ -2,7 +2,7 @@
     "prefix": "!",
     "command": "checkbattletag",
     "category": "competition",
-    "aliases": ["cbt"],
+    "aliases": ["cbt", "mmr"],
     "description": "Queries the HotsLogs or Heroes Profile Api for data on a Battletag.",
     "syntax": "checkbattletag <region> <name#12345>",
     "min_args": 2
