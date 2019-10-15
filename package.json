@@ -20,15 +20,15 @@
   },
   "homepage": "https://github.com/Astraeus-/Heroesbot#readme",
   "dependencies": {
-    "date-fns": "^2.0.1",
+    "date-fns": "^2.4.1",
     "dotenv": "^8.1.0",
-    "eris": "^0.10.1",
-    "heroeslounge-api": "^2.2.0",
+    "eris": "^0.11.0",
+    "heroeslounge-api": "^2.4.1",
     "node-cron": "^2.0.3"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^6.3.0",
+    "eslint": "^6.5.1",
     "mocha": "^6.2.1"
   }
 }
