@@ -48,6 +48,7 @@ const syncRegionRoles = async (bot) => {
     for (const sloth in sloths) {
       const currentSloth = sloths[sloth];
       if (currentSloth.discord_id.length === 0) continue;
+      if (currentSloth.discord_id === '221678731888951296') continue; // Ignore update spam from Schwifty
 
       const member = guild.members.get(currentSloth.discord_id);
       if (!member) continue;
