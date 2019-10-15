@@ -6,6 +6,8 @@ const MMRCalc = require('../../Classes/MMRCalculator.js');
 
 const regions = require('../../util.js').blizzardRegion;
 const {hpApiKey} = require('../../config.js');
+const hp = require('heroesprofile-api');
+const hpHandler = new hp(hpApiKey);
 const https = require('https');
 
 class CheckBattleTag extends BaseCommand {
@@ -35,7 +37,7 @@ class CheckBattleTag extends BaseCommand {
       });
     }
 
-    const data = type === 'Heroes Profile' ? await getHeroesProfileDetails(regionId, battletag) : await getHotsLogsDetails(regionId, battletag);
+    const data = type === 'Heroes Profile' ? await getHeroesProfileMMR(battletag, regionId) : await getHotsLogsDetails(regionId, battletag);
 
     return msg.author.getDMChannel().then(async (channel) => {
       if (data) {
@@ -45,7 +47,7 @@ class CheckBattleTag extends BaseCommand {
         let ratings;
 
         if (type === 'Heroes Profile') {
-          const playerProfile = await getHeroesProfilePlayer(regionId, battletag).catch((error) => Logger.warn('Unable to retrieve Heroes Profile player details', error));
+          const playerProfile = await getHeroesProfilePlayer(battletag, regionId).catch((error) => Logger.warn('Unable to retrieve Heroes Profile player details', error));
           leaderboardData = data[battletag];
           ratings = MMRCalc.getRatingsHeroesProfile(leaderboardData);
           embed.description = `[Heroes Profile](${playerProfile.profile})`;
@@ -94,82 +96,12 @@ class CheckBattleTag extends BaseCommand {
   }
 }
 
-const getHeroesProfilePlayer = (regionId, battletag) => {
-  return new Promise((resolve, reject) => {
-    const options = {
-      hostname: 'api.heroesprofile.com',
-      path: `/api/Player?mode=json&api_token=${hpApiKey}&battletag=${encodeURIComponent(battletag)}&region=${regionId}`,
-      method: 'GET'
-    };
-
-    const req = https.request(options, (res) => {
-      let rawResponse = '';
-      res.setEncoding('utf8');
-
-      res.on('data', (d) => {
-        rawResponse += d;
-      });
-
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          try {
-            const response = JSON.parse(rawResponse);
-            resolve(response);
-          } catch (err) {
-            reject(Error('Parse JSON response'));
-          }
-        } else {
-          reject(Error(`status Code ${res.statusCode} : Invalid request`));
-        }
-      });
-    });
-
-    req.on('error', (error) => {
-      Logger.error('Could not request Heroes Profile data', error);
-      reject(Error('Could not request data'));
-    });
-
-    req.end();
-  });
+const getHeroesProfilePlayer = (battletag, region) => {
+  return hpHandler.getPlayer(battletag, region);
 };
 
-const getHeroesProfileDetails = (regionId, battletag) => {
-  return new Promise((resolve, reject) => {
-    const options = {
-      hostname: 'api.heroesprofile.com',
-      path: `/api/Player/MMR/?mode=json&api_token=${hpApiKey}&battletag=${encodeURIComponent(battletag)}&region=${regionId}`,
-      method: 'GET'
-    };
-
-    const req = https.request(options, (res) => {
-      let rawResponse = '';
-      res.setEncoding('utf8');
-
-      res.on('data', (d) => {
-        rawResponse += d;
-      });
-
-      res.on('end', () => {
-        if (res.statusCode === 200) {
-          try {
-            const response = JSON.parse(rawResponse);
-            resolve(response);
-          } catch (err) {
-            reject(Error('Parse JSON response'));
-          }
-        } else {
-          reject(Error(`status Code ${res.statusCode} : Invalid request`));
-        }
-      });
-    });
-
-    req.on('error', (error) => {
-      Logger.error('Could not request Heroes Profile data', error);
-      reject(Error('Could not request data'));
-    });
-
-    req.end();
-  });
+const getHeroesProfileMMR = (battletag, region) => {
+  return hpHandler.getPlayerMMR(battletag, region);
 };
 
 const getHotsLogsDetails = (regionId, battletag) => {
