@@ -37,9 +37,17 @@ class CheckBattleTag extends BaseCommand {
       });
     }
 
-    const data = type === 'Heroes Profile' ? await getHeroesProfileMMR(battletag, regionId) : await getHotsLogsDetails(regionId, battletag);
-
     return msg.author.getDMChannel().then(async (channel) => {
+      let data;
+
+      if (type === 'Heroes Profile') {
+        data = await getHeroesProfileMMR(battletag, regionId).catch(() => {
+          data = undefined;
+        });
+      } else {
+        data = await getHotsLogsDetails(regionId, battletag);
+      }
+
       if (data) {
         embed.title = `${battletag}\nRegion: ${specifiedRegion}`;
         let leaderboardData;
