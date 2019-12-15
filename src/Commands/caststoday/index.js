@@ -66,6 +66,7 @@ class CastsToday extends BaseCommand {
       }
 
       let response = '';
+      let previousCastedMatchOffset = 1;
 
       for (const match in matches) {
         const division = await matchDivisions[match];
@@ -74,7 +75,10 @@ class CastsToday extends BaseCommand {
         const channels = await matchChannels[match];
 
         // Skip uncasted matches.
-        if (channels.length === 0 || casters.length === 0) continue;
+        if (channels.length === 0 || casters.length === 0) {
+          previousCastedMatchOffset++;
+          continue;
+        }
 
         let casterList = '';
         let channelList = '';
@@ -111,15 +115,16 @@ class CastsToday extends BaseCommand {
         const time = specifiedRegion === 'na' ? dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'hh:mm a') : dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'HH:mm:');
 
         // Group all match statement with the same time together.
-        if (match > 0 && matches[match].wbp > matches[match - 1].wbp) {
+        if (match - previousCastedMatchOffset >= 0 && matches[match].wbp > matches[match - previousCastedMatchOffset].wbp) {
           response += `\nAt ${time}\n`;
-        } else if (match > 0 && matches[match].wbp === matches[match - 1].wbp) {
+        } else if (match - previousCastedMatchOffset >= 0 && matches[match].wbp === matches[match - previousCastedMatchOffset].wbp) {
           response += '';
         } else {
           response += `At ${time}\n`;
         }
 
         response += `${casterList} will be bringing you a ${fixture} match between ${teams[0].title} and ${teams[1].title} on ${channelList}\n`;
+        previousCastedMatchOffset = 1;
       }
 
       return response;
