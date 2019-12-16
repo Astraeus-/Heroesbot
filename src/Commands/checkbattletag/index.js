@@ -27,11 +27,11 @@ class CheckBattleTag extends BaseCommand {
 
     const specifiedRegion = args[0].toLowerCase();
     const region = regions.find(region => region.name === specifiedRegion);
-    const regionId = region && region.blizzardRegion ? region.blizzardRegion : null;
+    const blizzardRegionId = region && region.blizzardRegion ? region.blizzardRegion : null;
     const battletag = args[1];
     const type = 'Heroes Profile';
 
-    if (!regionId || !battletag.match(/[a-zA-Z0-9]{2,11}#[0-9]{1,6}/g)) {
+    if (!blizzardRegionId || !battletag.match(/[a-zA-Z0-9]{2,11}#[0-9]{1,6}/g)) {
       return msg.author.getDMChannel().then((channel) => {
         return channel.createMessage('Unable to retrieve data: Invalid region or battletag specified');
       });
@@ -41,11 +41,11 @@ class CheckBattleTag extends BaseCommand {
       let data;
 
       if (type === 'Heroes Profile') {
-        data = await getHeroesProfileMMR(battletag, regionId).catch(() => {
+        data = await getHeroesProfileMMR(battletag, blizzardRegionId).catch(() => {
           data = undefined;
         });
       } else {
-        data = await getHotsLogsDetails(regionId, battletag);
+        data = await getHotsLogsDetails(blizzardRegionId, battletag);
       }
 
       if (data) {
@@ -55,19 +55,28 @@ class CheckBattleTag extends BaseCommand {
         let ratings;
 
         if (type === 'Heroes Profile') {
-          const playerProfile = await getHeroesProfilePlayer(battletag, regionId).catch((error) => Logger.warn('Unable to retrieve Heroes Profile player details', error));
+          const playerProfile = await getHeroesProfilePlayer(battletag, blizzardRegionId).catch((error) => Logger.warn('Unable to retrieve Heroes Profile player details', error));
           leaderboardData = data[battletag];
           ratings = MMRCalc.getRatingsHeroesProfile(leaderboardData);
           embed.description = `[Heroes Profile](${playerProfile.profile})`;
 
           const leaderboardDataKeys = Object.keys(leaderboardData);
-          for (const mode in leaderboardDataKeys) {
-            const gameMode = leaderboardData[leaderboardDataKeys[mode]];
-            embed.fields[mode] = {
-              name: leaderboardDataKeys[mode],
-              value: `__*** ${gameMode.mmr}***__`,
+
+          for (const key of leaderboardDataKeys) {
+            const gameMode = leaderboardData[key];
+            const fieldData = {
+              name: key,
+              value: '',
               inline: true
             };
+
+            if (ratings.has(key) && ratings.get(key).active) {
+              fieldData.value = `__*** ${gameMode.mmr}***__`;
+            } else {
+              fieldData.value = `${gameMode.mmr}`;
+            }
+
+            embed.fields.push(fieldData);
           }
 
           averageMMR = MMRCalc.calculateHeroesProfileAverageMMR(ratings);

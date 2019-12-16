@@ -95,10 +95,13 @@ class MMRCalculator {
       const modeData = data[gameMode];
     
       if (gameMode === 'Storm League' && modeData && modeData.games_played >= 10) {
+        modeData.active = true;
         ratings.set(gameMode, modeData);
       } else if (gameMode === 'Unranked Draft' && modeData && modeData.games_played >= 20) {
+        modeData.active = true;
         ratings.set(gameMode, modeData);
       } else if (gameMode === 'Quick Match' && modeData && modeData.games_played >= 25) {
+        modeData.active = true;
         ratings.set(gameMode, modeData);
       }
     }
