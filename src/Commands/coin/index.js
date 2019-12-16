@@ -14,7 +14,6 @@ class Coinflip extends BaseCommand {
     const output = Math.random() >= 0.5 ? 'heads' : 'tails';
     return fs.readFile(path.join(__dirname, `../../Data/Images/${output}.png`)).then((file) => {
       return msg.channel.createMessage({
-        content: 'Please use the `!match` command to determine the draft order.',
         image: {
           url: `attachment://${output}.png`
         }
