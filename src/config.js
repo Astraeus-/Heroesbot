@@ -9,7 +9,7 @@ module.exports = {
   embed: {
     color: 5759467,
     footer: {
-      icon_url: 'https://cdn.discordapp.com/avatars/108153813143126016/8750f8240096f884dbaca0423a3b4130.png',
+      icon_url: 'https://cdn.discordapp.com/avatars/108153813143126016/a17e2feaf381e367aee83f2fae000669.png',
       text: 'Developed by: Astraeus | PM for ideas and suggestions'
     }
   },
