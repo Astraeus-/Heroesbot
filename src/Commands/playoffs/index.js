@@ -58,27 +58,40 @@ class Playoffs extends BaseCommand {
         
         return seasonTournaments;
       }).then(async (tournaments) => {
-        const playoffCategory = await guild.createChannel(`Playoffs-${args[0].toUpperCase()}`, 4).catch((error) => {
+        /* Creates main category channel with permissions */
+        const playoffCategory = await guild.createChannel(`Playoffs-${args[0].toUpperCase()}`, 4, {
+          permissionOverwrites: [
+            {
+              id: guild.id,
+              type: 'role',
+              allow: 0,
+              deny: 1024
+            },
+            {
+              id: modRole.id,
+              type: 'role',
+              allow: 1024,
+              deny: 0
+            }
+          ]
+        }).catch((error) => {
           throw error;
-        });
-
-        /* Updates main category permissions */
-        playoffCategory.editPermission(guild.id, 0, 1024, 'role').catch((error) => {
-          const msg = 'Unable to update @everyone permissions';
-          errorMessage.push(msg);
-          Logger.warn(msg, error);
-        });
-        playoffCategory.editPermission(modRole.id, 1024, 0, 'role').catch((error) => {
-          const msg = 'Unable to update @Moderators permissions';
-          errorMessage.push(msg);
-          Logger.warn(msg, error);
         });
 
         return { playoffCategory, tournaments };
       }).then(async (playoffs) => {
         const tournaments = playoffs.tournaments;
         const category = playoffs.playoffCategory;
-        const captainPermissionUpdates = [];
+        const categoryPermissions = [];
+
+        for (const permission of category.permissionOverwrites.values()) {
+          categoryPermissions.push({
+            id: permission.id,
+            type: permission.type,
+            allow: permission.allow,
+            deny: permission.deny
+          });
+        }
 
         for (const tournament in tournaments) {
           for (const division of tournaments[tournament].divisions) {
@@ -86,13 +99,9 @@ class Playoffs extends BaseCommand {
               Logger.error(`Unable to get division teams for division with id: ${division.id}`, error);
             });
 
-            const channel = await guild.createChannel(`${tournaments[tournament].title}-${division.slug}`, 0, '', category.id).catch((error) => {
-              const msg = `Unable to create channel ${tournaments[tournament].title}-${division.slug}`;
-              errorMessage.push(msg);
-              Logger.warn(msg, error);
-            });
+            /* Create the permissionOverwrites array */
+            const permissionOverwrites = [].concat(categoryPermissions);
 
-            /* Grants access to the playoff channel to the team's captain */
             for (const team of divisionTeams) {
               const divisionTeamSloths = team.sloths;
 
@@ -102,24 +111,30 @@ class Playoffs extends BaseCommand {
                     const msg = `Unable to add ${sloth.title} of ${team.title} to ${channel.name}`;
                     errorMessage.push(msg);
                   } else {
-                    captainPermissionUpdates.push(
-                      channel.editPermission(sloth.discord_id, 1024, 0, 'member').catch((error) => {
-                        const msg = `Error adding ${sloth.title} of ${team.title} to ${channel.name}`;
-                        errorMessage.push(msg);
-                        Logger.warn(msg, error);
-                      })
-                    );
+                    permissionOverwrites.push({
+                      id: sloth.discord_id,
+                      type: 'member',
+                      allow: 1024,
+                      deny: 0
+                    });
                   }
                   break;
                 }
               }
             }
+
+            const channel = await guild.createChannel(`${tournaments[tournament].title}-${division.slug}`, 0, {
+              parentID: category.id,
+              permissionOverwrites: permissionOverwrites
+            }).catch((error) => {
+              const msg = `Unable to create channel ${tournaments[tournament].title}-${division.slug}`;
+              errorMessage.push(msg);
+              Logger.warn(msg, error);
+            });
           }
         }
 
-        return captainPermissionUpdates;
-      }).then((captainPermissionUpdates) => {
-        return Promise.all(captainPermissionUpdates);
+        return;
       }).then(() => {
         return msg.author.getDMChannel().then((channel) => {
           return sendErrorResponse(channel, errorMessage);
