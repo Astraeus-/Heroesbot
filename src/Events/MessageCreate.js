@@ -14,7 +14,7 @@ module.exports = (bot) => {
     if (commands) {
       let command;
       for (let i = 0; i < commands.length; i++) {
-        const curr = CommandHandler.findCommand(commands[i].slice(1));
+        const curr = CommandHandler.findCommand(commands[i].slice(1), bot.commands);
         if (curr) {
           command = curr;
           args = CommandHandler.listArguments(commands[i], msg);
@@ -51,7 +51,7 @@ module.exports = (bot) => {
           }
 
           await command.exec(msg, args);
-          CommandHandler.addCooldown(command, msg.channel.id, command.cooldown);
+          CommandHandler.addCooldown(command, msg.channel.id);
         } catch (error) {
           let responseMessage = '';
           executionError.hasError = true;

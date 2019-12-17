@@ -2,9 +2,9 @@
 const MMRCalc = require('../src/Classes/MMRCalculator.js');
 const expect = require('chai').expect;
 
-describe('Heroes Profile MMR', () => {
-  context('Storm League and Unranked draft have min games', () => {
-    it('Should equal', () => {
+describe('Heroes Profile MMR', function() {
+  context('Storm League and Unranked draft have min games', function() {
+    it('Should equal', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
@@ -27,8 +27,8 @@ describe('Heroes Profile MMR', () => {
     });
   });
 
-  context('Storm League has min games', () => {
-    it('Should equal', () => {
+  context('Storm League has min games', function() {
+    it('Should equal', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
@@ -51,8 +51,8 @@ describe('Heroes Profile MMR', () => {
     });
   });
 
-  context('Unranked Draft has min games', () => {
-    it('Should equal', () => {
+  context('Unranked Draft has min games', function() {
+    it('Should equal', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
@@ -75,8 +75,8 @@ describe('Heroes Profile MMR', () => {
     });
   });
 
-  context('Quick Match has min games', () => {
-    it('Should equal', () => {
+  context('Quick Match has min games', function() {
+    it('Should equal', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
@@ -99,8 +99,8 @@ describe('Heroes Profile MMR', () => {
     });
   });
 
-  context('Storm League and Unranked draft no min games', () => {
-    it('Should equal', () => {
+  context('Storm League and Unranked draft no min games', function() {
+    it('Should equal', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
@@ -123,8 +123,8 @@ describe('Heroes Profile MMR', () => {
     });
   });
 
-  context('Storm League no min games, no Unranked Draft data', () => {
-    it('Should equal', () => {
+  context('Storm League no min games, no Unranked Draft data', function() {
+    it('Should equal', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
@@ -142,8 +142,8 @@ describe('Heroes Profile MMR', () => {
     });
   });
 
-  context('Unranked Draft no min games, no Storm League data', () => {
-    it('Should equal', () => {
+  context('Unranked Draft no min games, no Storm League data', function() {
+    it('Should equal', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
@@ -161,8 +161,8 @@ describe('Heroes Profile MMR', () => {
     });
   });
 
-  context('Quick Match no min games, no Storm League and Unranked Draft data', () => {
-    it('Should equal', () => {
+  context('Quick Match no min games, no Storm League and Unranked Draft data', function() {
+    it('Should equal', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
@@ -175,8 +175,8 @@ describe('Heroes Profile MMR', () => {
     });
   });
 
-  context('No data at all', () => {
-    it('Should equal', () => {
+  context('No data at all', function() {
+    it('Should equal', function() {
       const data = {
       };
 
