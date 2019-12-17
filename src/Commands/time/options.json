@@ -1,8 +1,0 @@
-{
-    "prefix": "!",
-    "command": "time",
-    "category": "competition",
-    "aliases": ["now"],
-    "description": "Outputs the time of the invokers message.",
-    "syntax": "time"
-  }

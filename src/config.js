@@ -6,7 +6,7 @@ module.exports = {
   defaultServer: process.env.DEFAULT_SERVER,
   hpApiKey: process.env.HEROES_PROFILE_API_KEY,
   memeCooldown: process.env.REACTION_RESPONSE_COOLDOWN,
-  embed: {
+  embedDefault: {
     color: 5759467,
     footer: {
       icon_url: 'https://cdn.discordapp.com/avatars/108153813143126016/a17e2feaf381e367aee83f2fae000669.png',

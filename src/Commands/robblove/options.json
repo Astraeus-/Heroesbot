@@ -1,8 +1,0 @@
-{
-    "prefix": "#",
-    "command": "robblove",
-    "category": "memes",
-    "description": "Responds loving Robb",
-    "invokeDM": false,
-    "ignoreInHelp": true
-  }

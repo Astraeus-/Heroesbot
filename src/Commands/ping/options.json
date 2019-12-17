@@ -1,7 +1,0 @@
-{
-    "prefix": "!",
-    "command": "ping",
-    "category": "admin",
-    "description": "Pings Heroesbot",
-    "syntax": "ping"
-  }

@@ -1,7 +1,6 @@
 const Eris = require('eris');
 const fs = require('fs').promises;
 const path = require('path');
-const { embed } = require('./config.js');
 
 class Client {
   constructor (...args) {
@@ -10,7 +9,6 @@ class Client {
 
   async launch () {
     this.bot.commands = new Map();
-    this.bot.embed = embed;
 
     await Client.loadCommands(this.bot, path.join(__dirname, 'Commands'));
     await Client.loadEvents(this.bot, path.join(__dirname, 'Events'));
@@ -43,16 +41,14 @@ class Client {
     });
   }
 
-  static loadCommand(bot, commandDir) {
-    const commandCached = require.cache[require.resolve(path.join(__dirname, 'Commands', commandDir))];
+  static loadCommand(bot, commandName) {
+    const commandCached = require.cache[require.resolve(path.join(__dirname, 'Commands', commandName))];
 
     if (commandCached) {
-      delete require.cache[require.resolve(path.join(__dirname, 'Commands', commandDir))];
-      delete require.cache[require.resolve(path.join(__dirname, 'Commands', commandDir, 'options.json'))];
-      delete require.cache[require.resolve(path.join(__dirname, 'Commands', commandDir, 'permissions.json'))];
+      delete require.cache[require.resolve(path.join(__dirname, 'Commands', commandName))];
     }
       
-    const Command = require(path.join(__dirname, 'Commands', commandDir));
+    const Command = require(path.join(__dirname, 'Commands', commandName));
     return new Command(bot);
   }
 

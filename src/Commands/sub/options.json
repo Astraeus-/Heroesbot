@@ -1,9 +1,0 @@
-{
-    "prefix": "!",
-    "command": "sub",
-    "category": "roleassignment",
-    "aliases": ["substitute", "subplayer"],
-    "min_args": 1,
-    "description": "Add or remove yourself from a sub player group",
-    "syntax": "sub <Group>\nGroup options are: Rare, Legendary, Epic and Mythic."
-  }

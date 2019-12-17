@@ -1,9 +1,0 @@
-{
-    "prefix": "!",
-    "command": "assignregion",
-    "category": "admin",
-    "aliases": [],
-    "description": "Assigns the EU or NA region to all the registered website users.",
-    "syntax": "assignregion",
-    "ignoreInHelp": true
-  }

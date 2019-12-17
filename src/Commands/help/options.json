@@ -1,7 +1,0 @@
-{
-    "prefix": "!",
-    "command": "help",
-    "category": "utility",
-    "description": "Lists all of Heroesbot\"s commands. Specify a command for additional info.",
-    "syntax": "help <command>"
-  }

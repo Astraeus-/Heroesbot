@@ -1,8 +1,0 @@
-{
-    "prefix": "#",
-    "command": "blametinyowl",
-    "category": "memes",
-    "description": "Responds blaming tinyowl",
-    "invokeDM": false,
-    "ignoreInHelp": true
-  }

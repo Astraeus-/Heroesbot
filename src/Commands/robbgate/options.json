@@ -1,8 +1,0 @@
-{
-    "prefix": "#",
-    "command": "robbgate",
-    "category": "memes",
-    "description": "Recalls the #Robbgate event",
-    "invokeDM": false,
-    "ignoreInHelp": true
-  }

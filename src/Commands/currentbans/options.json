@@ -1,8 +1,0 @@
-{
-    "prefix": "!",
-    "command": "currentbans",
-    "category": "competition",
-    "aliases": ["bans"],
-    "description": "Lists all of the current bans and bugs.",
-    "syntax": "currentbans"
-  }
