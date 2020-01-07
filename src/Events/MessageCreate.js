@@ -4,6 +4,13 @@ const { webhooks, env } = require('../config.js');
 const WebhookClient = require('../Classes/WebhookClient.js');
 const webhook = new WebhookClient(webhooks.commandLogs.id, webhooks.commandLogs.token);
 
+const errorMessage = {
+  invalidArgumentCount: 'Invalid number of arguments',
+  onCooldown: 'Command is currently on cooldown',
+  invalidPermissions: 'User does not have permission to use command',
+  dataRequest: 'Could not request data'
+};
+
 module.exports = (bot) => {
   const CommandHandler = new Handler(bot);
   bot.on('messageCreate', async (msg) => {
@@ -33,20 +40,20 @@ module.exports = (bot) => {
 
         try {
           if (args.length < command.min_args) {
-            throw Error('Invalid number of arguments');
+            throw Error(errorMessage.invalidArgumentCount);
           }
 
           const cooldown = CommandHandler.checkCooldown(command, msg.channel.id);
           if (cooldown) {
             if (command.prefix === '!') {
-              throw Error('Command is current on cooldown');
+              throw Error(errorMessage.onCooldown);
             }
           }
 
           const hasPermissions = msg.channel.guild ? CommandHandler.checkPermissions(command, msg) : CommandHandler.checkUsersPermission(command, msg);
           if (!hasPermissions) {
             if (command.prefix === '!') {
-              throw Error('User does not have permission to use command');
+              throw Error(errorMessage.invalidPermissions);
             }
           }
 
@@ -57,13 +64,13 @@ module.exports = (bot) => {
           executionError.hasError = true;
           executionError.errorMessage = error.message;
 
-          if (error.message === 'User does not have permission to use command') {
+          if (error.message === errorMessage.invalidPermissions) {
             responseMessage = `You do not have permission to use ${command.prefix + command.command}`;
-          } else if (error.message === 'Invalid number of arguments') {
+          } else if (error.message === errorMessage.invalidArgumentCount) {
             responseMessage = `**Invalid number of arguments**\n\nCommand usage: ${command.prefix}${command.syntax}`;
-          } else if (error.message === 'Command is current on cooldown') {
+          } else if (error.message === errorMessage.onCooldown) {
             responseMessage = `The command ${command.prefix + command.command} is on cooldown`;
-          } else if (error.message === 'Could not request data') {
+          } else if (error.message === errorMessage.dataRequest) {
             responseMessage = `The command ${command.prefix + command.command} is currently unavailable`;
           } else {
             /*
