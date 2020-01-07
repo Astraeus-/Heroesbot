@@ -1,6 +1,6 @@
 const Handler = require('../Classes/CommandHandler.js');
 const { Logger } = require('../util.js');
-const { webhooks, env } = require('../config.js');
+const { webhooks, env, embedDefault } = require('../config.js');
 const WebhookClient = require('../Classes/WebhookClient.js');
 const webhook = new WebhookClient(webhooks.commandLogs.id, webhooks.commandLogs.token);
 
@@ -95,7 +95,7 @@ module.exports = (bot) => {
             const embeds = [];
             const webhookMessage = {
               title: `Command: ${command.prefix}${command.command}`,
-              color: bot.embed.color,
+              color: embedDefault.color,
               description: `Arguments: ${commandArgs} \nChannel: ${invokeChannel} \nUser: ${commandAuthor}`
             };
 

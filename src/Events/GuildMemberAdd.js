@@ -1,4 +1,4 @@
-const { webhooks } = require('../config.js');
+const { webhooks, embedDefault } = require('../config.js');
 const WebhookClient = require('../Classes/WebhookClient.js');
 const webhook = new WebhookClient(webhooks.moderatorLogs.id, webhooks.moderatorLogs.token);
 const heroesloungeApi = require('heroeslounge-api');
@@ -22,7 +22,7 @@ module.exports = (bot) => {
         });
         webhook.send({
           title: 'Attempt at avoiding mute',
-          color: bot.embed.color,
+          color: embedDefault.color,
           description: `:exclamation: User ${member.user.username} attempted to circumvent their mute on ${guild.name}`
         });
       }
