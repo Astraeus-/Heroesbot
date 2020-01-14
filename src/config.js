@@ -25,15 +25,6 @@ module.exports = {
     }
   },
   vip: {
-    '321640682840391680': {
-      Name: 'Test-Server',
-      roleID: '353991504672456716',
-      rewardRoles: [
-        'Patreon VIP',
-        'Twitch Subscriber',
-        'Honorary VIP'
-      ]
-    },
     '200267155479068672': {
       Name: 'Heroes Lounge',
       roleID: '225240536712216577',

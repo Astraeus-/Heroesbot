@@ -6,10 +6,10 @@ const util = require('util');
 class Eval extends BaseCommand {
   constructor (bot) {
     const permissions = {
-      'Test-Server': {
-        'channels': ['robotchannel'],
-        'roles': ['Admin'],
-        'users': ['108153813143126016']
+      'Heroes Lounge': {
+        'channels': ['devops'],
+        'roles': ['Lounge Master', 'Board'],
+        'users': []
       }
     };
 
@@ -18,7 +18,8 @@ class Eval extends BaseCommand {
       'command': 'eval',
       'category': 'owner',
       'invokeDM': false,
-      'ignoreInHelp': true
+      'ignoreInHelp': true,
+      'enabled': false
     };
     
     super(permissions, options, bot);

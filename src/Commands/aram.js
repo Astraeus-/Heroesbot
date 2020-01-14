@@ -7,11 +7,6 @@ const { defaultServer } = require('../config.js');
 class Aram extends BaseCommand {
   constructor (bot) {
     const permissions = {
-      'Test-Server': {
-        'channels': [],
-        'roles': [],
-        'users': []
-      },
       'Heroes Lounge': {
         'channels': ['lfg'],
         'roles': [],

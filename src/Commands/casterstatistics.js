@@ -7,11 +7,6 @@ const { Logger } = require('../util.js');
 class CasterStatistics extends BaseCommand {
   constructor () {
     const permissions = {
-      'Test-Server': {
-        'channels': ['robotchannel'],
-        'roles': ['Admin'],
-        'users': []
-      },
       'Heroes Lounge': {
         'channels': ['casters_lounge'],
         'roles': ['Lounge Master', 'Board', 'Managers', 'Moderators', 'Casters-EU', 'Casters-NA'],

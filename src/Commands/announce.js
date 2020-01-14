@@ -4,11 +4,6 @@ const { Logger } = require('../util.js');
 class Announce extends BaseCommand {
   constructor () {
     const permissions = {
-      'Test-Server': {
-        'channels': ['robotchannel'],
-        'roles': ['Admin'],
-        'users': []
-      },
       'Heroes Lounge': {
         'channels': ['devops'],
         'roles': ['Lounge Master', 'Board', 'Managers', 'Moderators'],

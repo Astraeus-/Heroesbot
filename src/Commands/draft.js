@@ -8,11 +8,6 @@ const http = require('http');
 class Draft extends BaseCommand {
   constructor () {
     const permissions = {
-      'Test-Server': {
-        'channels': ['robotchannel'],
-        'roles': ['Admin'],
-        'users': []
-      },
       'Heroes Lounge': {
         'channels': ['hots-experiences'],
         'roles': [],

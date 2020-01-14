@@ -7,11 +7,6 @@ const { defaultServer } = require('../config.js');
 class Sub extends BaseCommand {
   constructor (bot) {
     const permissions = {
-      'Test-Server': {
-        'channels': [],
-        'roles': [],
-        'users': []
-      },
       'Heroes Lounge': {
         'channels': ['sub_recruitment_eu', 'sub_recruitment_na'],
         'roles': [],

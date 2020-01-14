@@ -11,11 +11,6 @@ const regions = require('../util.js').timezone;
 class MatchesToday extends BaseCommand {
   constructor () {
     const permissions = {
-      'Test-Server': {
-        'channels': ['robotchannel'],
-        'roles': ['Admin'],
-        'users': []
-      },
       'Heroes Lounge': {
         'channels': [],
         'roles': [],

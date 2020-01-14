@@ -8,11 +8,6 @@ const regions = require('../util.js').heroesloungeId;
 class Playoffs extends BaseCommand {
   constructor (bot) {
     const permissions = {
-      'Test-Server': {
-        'channels': ['robotchannel'],
-        'roles': [],
-        'users': ['108153813143126016']
-      },
       'Heroes Lounge': {
         'channels': ['devops'],
         'roles': [],

@@ -11,11 +11,6 @@ const dateformat = require('date-fns/format');
 class Remind extends BaseCommand {
   constructor (bot) {
     const permissions = {
-      'Test-Server': {
-        'channels': ['robotchannel'],
-        'roles': ['Admin'],
-        'users': []
-      },
       'Heroes Lounge': {
         'channels': ['devops'],
         'roles': ['Lounge Master', 'Board', 'Managers', 'Moderators'],
