@@ -2,6 +2,7 @@
   "name": "heroesbot",
   "version": "3.3.1",
   "description": "Discord bot for Heroes Lounge",
+  "private": true,
   "main": "src/index.js",
   "scripts": {
     "start": "node .",
