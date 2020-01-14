@@ -22,8 +22,7 @@ class UpdateCache extends BaseCommand {
       'description': 'Updates the specified cache.',
       'syntax': 'updatecache <option>\nOptions are: teams, matches, all',
       'ignoreInHelp': true,
-      'min_args': 1,
-      'diasbled': true
+      'min_args': 1
     };
 
     super(permissions, options);
