@@ -15,10 +15,6 @@ module.exports = {
     }
   },
   webhooks: {
-    commandLogs: {
-      id: process.env.COMMAND_LOG_WEBHOOK_ID,
-      token: process.env.COMMAND_LOG_WEBHOOK_TOKEN
-    },
     moderatorLogs: {
       id: process.env.MODERATOR_LOG_WEBHOOK_ID,
       token: process.env.MODERATOR_LOG_WEBHOOK_TOKEN
