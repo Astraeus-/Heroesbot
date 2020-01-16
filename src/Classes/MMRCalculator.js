@@ -1,40 +1,6 @@
 
 class MMRCalculator {
 
-  static calculateHotsLogsAverageMMR (ratings) {
-    if (ratings.size === 0) return null;
-      
-    let totalMMR = 0;
-    let divider = 0;
-      
-    ratings.forEach((rating, key) => {
-      switch (key) {
-      case 'Storm League':
-      case 'StormLeague':
-        totalMMR += rating * 0.7;
-        divider += 0.7;
-        break;
-        // case 'Hero League':
-        // case 'HeroLeague':
-        //   totalMMR += rating * 0.5
-        //   divider += 0.5
-        //   break
-        // case 'Team League':
-        // case 'TeamLeague':
-        //   totalMMR += rating * 0.3
-        //   divider += 0.3
-        //   break
-      case 'Unranked Draft':
-      case 'UnrankedDraft':
-        totalMMR += rating * 0.3;
-        divider += 0.3;
-        break;
-      }
-    });
-      
-    return Math.floor(totalMMR / divider);
-  }
-
   static calculateHeroesProfileAverageMMR(ratings) {
     if (ratings.size === 0) return 2800;
 
@@ -118,27 +84,6 @@ class MMRCalculator {
     
     return ratings;
   }
-
-  static getRatingsHotsLogs(leaderBoard) {
-    const ratings = new Map();
-  
-    for (let i = 0; i < leaderBoard.length; i++) {
-      if (leaderBoard[i].GameMode === 'UnrankedDraft' || leaderBoard[i].GameMode === 'StormLeague') {
-        if (leaderBoard[i].LeagueRank !== null) {
-          ratings.set(leaderBoard[i].GameMode, leaderBoard[i].CurrentMMR);
-        }
-      }
-    }
-  
-    if (ratings.size === 0) {
-      for (let i = 0; i < leaderBoard.length; i++) {
-        ratings.set(leaderBoard[i].GameMode, leaderBoard[i].CurrentMMR);
-      }
-    }
-  
-    return ratings;
-  }
-
 }
 
 module.exports = MMRCalculator;
