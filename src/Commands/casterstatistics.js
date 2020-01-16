@@ -31,7 +31,6 @@ class CasterStatistics extends BaseCommand {
   exec (msg, args) {
     const embed = {
       color: embedDefault.color,
-      footer: embedDefault.footer,
       description: 'Overall casting statistics for season ',
       fields: [
         {

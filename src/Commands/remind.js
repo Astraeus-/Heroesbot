@@ -98,7 +98,6 @@ class Remind extends BaseCommand {
       return fs.readFile(path.join(__dirname, '../Data/Reminders.json'), { encoding: 'utf8' }).then(reminders => JSON.parse(reminders)).then((reminders) => {
         const embed = {
           color: embedDefault.color,
-          footer: embedDefault.footer,
           title: '',
           fields: []
         };

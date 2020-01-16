@@ -37,7 +37,9 @@ class Match extends BaseCommand {
   exec (msg) {
     const embed = {
       color: embedDefault.color,
-      footer: embedDefault.footer,
+      footer: {
+        text: 'If you require further assistance, contact one of our moderators'
+      },
       description: ''
     };
 

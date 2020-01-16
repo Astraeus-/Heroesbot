@@ -32,7 +32,6 @@ class Teaminfo extends BaseCommand {
   exec (msg, args) {
     const embed = {
       color: embedDefault.color,
-      footer: embedDefault.footer,
       fields: [
         {
           name: 'Players',

@@ -74,7 +74,7 @@ module.exports = (bot) => {
               Commands handle sending responses for other errors themselves.
               This is just the catch all for our logger.
             */
-            responseMessage = `Error executing command ${command.prefix + command.command} please try again later or contact Astraeus`;
+            responseMessage = `Error executing command ${command.prefix + command.command} please try again later`;
             Logger.error(`Error executing command: ${command.command}`, error);
           }
 

@@ -30,8 +30,7 @@ class CurrentBans extends BaseCommand {
     const embed = {
       title: 'Heroes Lounge Amateur League',
       color: embedDefault.color,
-      footer: embedDefault.footer,
-      description: '[Complete list and ruleset](https://heroeslounge.gg/general/ruleset)',
+      description: '[Current bans and known bugs](https://heroeslounge.gg/general/ruleset)',
       fields: [
         {
           name: 'Banned Heroes',

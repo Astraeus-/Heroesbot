@@ -26,7 +26,6 @@ class Help extends BaseCommand {
   exec (msg, args) {
     const embed = {
       color: embedDefault.color,
-      footer: embedDefault.footer,
       title: '',
       fields: []
     };

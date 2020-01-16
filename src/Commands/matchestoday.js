@@ -35,7 +35,6 @@ class MatchesToday extends BaseCommand {
   exec (msg, args) {
     const embed = {
       color: embedDefault.color,
-      footer: embedDefault.footer,
       description: '[Matches Today](https://heroeslounge.gg/calendar)',
       fields: [
         {
