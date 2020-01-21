@@ -1,5 +1,5 @@
 
-const BaseCommand = require('../Classes/BaseCommand.js');
+const BaseCommand = require('../Classes/BaseCommand');
 
 class Ping extends BaseCommand {
   constructor () {

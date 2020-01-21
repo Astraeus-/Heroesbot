@@ -1,5 +1,5 @@
 const CacheManager = require('../Classes/CacheManager');
-const heroesloungeApi = require('heroeslounge-api');
+const heroesloungeApi = require('../Classes/HeroesLounge');
 const { Logger } = require('../util.js');
 
 const path = require('path');
@@ -7,7 +7,7 @@ const path = require('path');
 class MatchesTodayCache extends CacheManager {
   constructor () {
     const settings = {
-      update: heroesloungeApi.getMatchesToday,
+      update: heroesloungeApi.getMatchesToday.bind(heroesloungeApi),
       isUpdating: {
         eu: false,
         na: false

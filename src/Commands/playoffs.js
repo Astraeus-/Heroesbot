@@ -1,8 +1,8 @@
 
-const BaseCommand = require('../Classes/BaseCommand.js');
+const BaseCommand = require('../Classes/BaseCommand');
+const heroesloungeApi = require('../Classes/HeroesLounge');
 const { Logger } = require('../util.js');
 
-const heroesloungeApi = require('heroeslounge-api');
 const regions = require('../util.js').heroesloungeId;
 
 class Playoffs extends BaseCommand {

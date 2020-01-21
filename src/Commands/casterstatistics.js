@@ -1,8 +1,8 @@
 
-const BaseCommand = require('../Classes/BaseCommand.js');
+const BaseCommand = require('../Classes/BaseCommand');
+const heroesloungeApi = require('../Classes/HeroesLounge');
 const { embedDefault } = require('../config.js');
 const { Logger } = require('../util.js');
-const heroesloungeApi = require('heroeslounge-api');
 
 class CasterStatistics extends BaseCommand {
   constructor () {

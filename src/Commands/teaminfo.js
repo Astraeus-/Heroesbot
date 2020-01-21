@@ -1,10 +1,10 @@
 
-const BaseCommand = require('../Classes/BaseCommand.js');
+const BaseCommand = require('../Classes/BaseCommand');
+const heroesloungeApi = require('../Classes/HeroesLounge');
 const { embedDefault } = require('../config.js');
 const { Logger } = require('../util.js');
 
 const CacheManager = require('../Caches/Teams.js');
-const heroesloungeApi = require('heroeslounge-api');
 
 class Teaminfo extends BaseCommand {
   constructor () {

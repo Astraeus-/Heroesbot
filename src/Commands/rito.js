@@ -1,7 +1,7 @@
 
 const { memeCooldown } = require('../config.js');
 
-const BaseCommand = require('../Classes/BaseCommand.js');
+const BaseCommand = require('../Classes/BaseCommand');
 const { Logger } = require('../util.js');
 
 class Rito extends BaseCommand {

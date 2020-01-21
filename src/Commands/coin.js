@@ -1,5 +1,5 @@
 
-const BaseCommand = require('../Classes/BaseCommand.js');
+const BaseCommand = require('../Classes/BaseCommand');
 const fs = require('fs').promises;
 const path = require('path');
 

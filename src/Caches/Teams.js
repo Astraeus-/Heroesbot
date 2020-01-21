@@ -1,5 +1,5 @@
 const CacheManager = require('../Classes/CacheManager');
-const heroesloungeApi = require('heroeslounge-api');
+const heroesloungeApi = require('../Classes/HeroesLounge');
 
 const path = require('path');
 
@@ -8,7 +8,7 @@ class TeamsCache extends CacheManager {
     const settings = {
       type: 'Teams',
       loc: path.join(__dirname, '../Data/Caches/Teamdata.json'),
-      update: heroesloungeApi.getTeams
+      update: heroesloungeApi.getTeams.bind(heroesloungeApi)
     };
 
     super(settings);

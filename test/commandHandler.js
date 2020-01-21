@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 const commandHandler = require('../src/Classes/CommandHandler');
-const baseCommand = require('../src/Classes/BaseCommand.js');
+const baseCommand = require('../src/Classes/BaseCommand');
 
 const expect = require('chai').expect;
 

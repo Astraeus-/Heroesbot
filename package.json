@@ -24,7 +24,7 @@
     "date-fns": "^2.8.1",
     "dotenv": "^8.2.0",
     "eris": "^0.11.2",
-    "heroeslounge-api": "^2.5.0",
+    "heroeslounge-api": "^3.0.0",
     "heroesprofile-api": "^0.2.0",
     "node-cron": "^2.0.3"
   },

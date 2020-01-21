@@ -1,7 +1,7 @@
 const { webhooks, embedDefault } = require('../config.js');
+const heroesloungeApi = require('../Classes/HeroesLounge');
 const WebhookClient = require('../Classes/WebhookClient.js');
 const webhook = new WebhookClient(webhooks.moderatorLogs.id, webhooks.moderatorLogs.token);
-const heroesloungeApi = require('heroeslounge-api');
 const { Logger } = require('../util.js');
 
 const fs = require('fs').promises;

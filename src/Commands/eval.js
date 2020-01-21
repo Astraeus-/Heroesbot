@@ -1,5 +1,5 @@
 
-const BaseCommand = require('../Classes/BaseCommand.js');
+const BaseCommand = require('../Classes/BaseCommand');
 const { Logger } = require('../util.js');
 const util = require('util');
 
