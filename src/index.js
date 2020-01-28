@@ -7,25 +7,27 @@ const client = new Client(token, {
   disableEveryone: false
 });
 
-const regionTask = cron.schedule('0 0 * * *', () => {
-  client.bot.commands.get('assignregion').exec();
+const regionTask = cron.schedule('0 0 * * Wednesday', () => {
+  if (env === 'production') {
+    client.bot.commands.get('assignregion').exec();
+  }
 }, {
   scheduled: false
 });
 
 const remindTask = cron.schedule('* * * * *', () => {
-  const remindCommand = client.bot.commands.get('remind');
+  if (env === 'production') {
+    const remindCommand = client.bot.commands.get('remind');
 
-  if (remindCommand.enabled) {
-    remindCommand.remind();
+    if (remindCommand.enabled) {
+      remindCommand.remind();
+    }
   }
 }, {
   scheduled: false
 });
 
 client.launch().then(() => {
-  if (env === 'production') {
-    regionTask.start();
-    remindTask.start();
-  }
+  regionTask.start();
+  remindTask.start();
 });
