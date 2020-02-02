@@ -7,7 +7,7 @@ const client = new Client(token, {
   disableEveryone: false
 });
 
-const regionTask = cron.schedule('0 0 * * Wednesday', () => {
+const regionTask = cron.schedule('0 0 * * Wed', () => {
   if (env === 'production') {
     client.bot.commands.get('assignregion').exec();
   }
