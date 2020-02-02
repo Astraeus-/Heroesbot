@@ -24,7 +24,7 @@ class CurrentBans extends BaseCommand {
       'command': 'currentbans',
       'category': 'competition',
       'aliases': ['bans'],
-      'description': 'Lists all of the current bans and bugs.',
+      'description': 'Lists all of the current bans and bugs for the Amateur League.',
       'syntax': 'currentbans'
     };
 
@@ -33,9 +33,10 @@ class CurrentBans extends BaseCommand {
 
   exec (msg) {
     const embed = {
+      title: 'Heroes Lounge Amateur League',
       color: embedDefault.color,
       footer: embedDefault.footer,
-      description: '[Current bans and known bugs](https://heroeslounge.gg/general/ruleset)',
+      description: '[Complete list and ruleset](https://heroeslounge.gg/general/ruleset)',
       fields: [
         {
           name: 'Banned Heroes',
