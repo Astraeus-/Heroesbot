@@ -103,7 +103,7 @@ const syncRegionRoles = async (bot) => {
     return syncedSloths;
   }).then((syncedSloths) => {
     return Promise.all(syncedSloths).then(() => {
-      Logger.info(`Region role synchronisation complete, updated ${syncedSloths.length} users`);
+      Logger.info(`Region role synchronisation complete, updated ${syncedSloths.length} ${syncedSloths.length === 0 || syncedSloths.length > 1 ? 'users' : 'user'}`);
       return 'Region role synchronisation complete';
     });
   }).catch((error) => {
