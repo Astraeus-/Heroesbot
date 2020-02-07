@@ -4,7 +4,7 @@ Discord bot for Heroes Lounge
 
 # Deployment
 
-Run `nmpm install --production`
+Run `npm install --production`
 
 Create a .env file based on the .env_template.
 
