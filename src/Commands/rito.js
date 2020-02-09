@@ -7,11 +7,6 @@ const { Logger } = require('../util.js');
 class Rito extends BaseCommand {
   constructor () {
     const permissions = {
-      'Test-Server': {
-        'channels': ['robotchannel'],
-        'roles': ['Admin'],
-        'users': []
-      },
       'Heroes Lounge': {
         'channels': [],
         'roles': ['Lounge Master', 'Board', 'Managers', 'Moderators', 'VIP'],

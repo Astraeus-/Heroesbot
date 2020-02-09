@@ -4,11 +4,6 @@ const BaseCommand = require('../Classes/BaseCommand');
 class Rolldice extends BaseCommand {
   constructor () {
     const permissions = {
-      'Test-Server': {
-        'channels': ['robotchannel'],
-        'roles': [],
-        'users': []
-      },
       'Heroes Lounge': {
         'channels': ['devops'],
         'roles': [],

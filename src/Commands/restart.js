@@ -8,10 +8,10 @@ const { exec } = require('child_process');
 class Restart extends BaseCommand {
   constructor () {
     const permissions = {
-      'Test-Server': {
-        'channels': ['robotchannel'],
-        'roles': ['Admin'],
-        'users': ['108153813143126016']
+      'Heroes Lounge': {
+        'channels': ['devops'],
+        'roles': ['Lounge Master', 'Board', 'Managers'],
+        'users': []
       }
     };
 

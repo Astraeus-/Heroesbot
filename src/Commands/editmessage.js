@@ -5,11 +5,6 @@ const { Logger } = require('../util.js');
 class EditMessage extends BaseCommand {
   constructor (bot) {
     const permissions = {
-      'Test-Server': {
-        'channels': ['robotchannel'],
-        'roles': ['Admin'],
-        'users': []
-      },
       'Heroes Lounge': {
         'channels': ['devops'],
         'roles': ['Lounge Master', 'Board', 'Managers', 'Moderators'],

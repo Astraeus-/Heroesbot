@@ -8,9 +8,9 @@ const path = require('path');
 class Reload extends BaseCommand {
   constructor (bot) {
     const permissions = {
-      'Test-Server': {
-        'channels': ['robotchannel'],
-        'roles': ['Admin'],
+      'Heroes Lounge': {
+        'channels': ['devops'],
+        'roles': ['Lounge Master', 'Board', 'Managers'],
         'users': []
       }
     };

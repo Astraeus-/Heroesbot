@@ -9,11 +9,6 @@ const regions = require('../util.js').timezone;
 class CastsToday extends BaseCommand {
   constructor () {
     const permissions = {
-      'Test-Server': {
-        'channels': ['robotchannel'],
-        'roles': ['Admin'],
-        'users': []
-      },
       'Heroes Lounge': {
         'channels': ['casters_lounge'],
         'roles': ['Lounge Master', 'Board', 'Managers', 'Moderators', 'Casters-EU', 'Casters-NA', 'CoCasters', 'External Casters', 'Trial Casters'],

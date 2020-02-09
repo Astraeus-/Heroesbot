@@ -11,11 +11,6 @@ const dateformat = require('date-fns/format');
 class Remind extends BaseCommand {
   constructor (bot) {
     const permissions = {
-      'Test-Server': {
-        'channels': ['robotchannel'],
-        'roles': ['Admin'],
-        'users': []
-      },
       'Heroes Lounge': {
         'channels': ['devops'],
         'roles': ['Lounge Master', 'Board', 'Managers', 'Moderators'],
@@ -103,7 +98,6 @@ class Remind extends BaseCommand {
       return fs.readFile(path.join(__dirname, '../Data/Reminders.json'), { encoding: 'utf8' }).then(reminders => JSON.parse(reminders)).then((reminders) => {
         const embed = {
           color: embedDefault.color,
-          footer: embedDefault.footer,
           title: '',
           fields: []
         };

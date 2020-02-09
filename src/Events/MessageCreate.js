@@ -1,8 +1,5 @@
 const Handler = require('../Classes/CommandHandler.js');
 const { Logger } = require('../util.js');
-const { webhooks, env, embedDefault } = require('../config.js');
-const WebhookClient = require('../Classes/WebhookClient.js');
-const webhook = new WebhookClient(webhooks.commandLogs.id, webhooks.commandLogs.token);
 
 const errorMessage = {
   invalidArgumentCount: 'Invalid number of arguments',
@@ -74,10 +71,10 @@ module.exports = (bot) => {
             responseMessage = `The command ${command.prefix + command.command} is currently unavailable`;
           } else {
             /*
-                Commands handle sending responses for other errors themselves.
-                This is just the catch all for our logger.
-              */
-            responseMessage = `Error executing command ${command.prefix + command.command} please try again later or contact Astraeus`;
+              Commands handle sending responses for other errors themselves.
+              This is just the catch all for our logger.
+            */
+            responseMessage = `Error executing command ${command.prefix + command.command} please try again later`;
             Logger.error(`Error executing command: ${command.command}`, error);
           }
 
@@ -86,41 +83,7 @@ module.exports = (bot) => {
           }).catch((error) => {
             Logger.warn(`Could not inform about errors for ${command.prefix + command.command}`, error);
           });
-        } finally {
-          if (env === 'production') {
-            const commandAuthor = `${msg.author.username}#${msg.author.discriminator}`;
-            const invokeChannel = msg.channel.guild ? `${msg.channel.name}` : 'DM Channel';
-            const commandArgs = command.prefix === '!' ? args : '';
-
-            const embeds = [];
-            const webhookMessage = {
-              title: `Command: ${command.prefix}${command.command}`,
-              color: embedDefault.color,
-              description: `Arguments: ${commandArgs} \nChannel: ${invokeChannel} \nUser: ${commandAuthor}`
-            };
-
-            if (executionError.hasError) {
-              webhookMessage.color = 16711680;
-              embeds.push({
-                title: 'Error',
-                color: 16711680,
-                description: `Message: ${executionError.errorMessage}`
-              });
-            }
-
-            webhook.send(webhookMessage, embeds);
-          }
         }
-      }
-    } else {
-      if (msg.channel.type === 1) {
-        const author = `${msg.author.username}#${msg.author.discriminator}`;
-        const info = `User: ${author}\n${msg.content}`;
-        webhook.send({
-          title: 'DM suggestion message',
-          color: 123456,
-          description: info
-        });
       }
     }
   });

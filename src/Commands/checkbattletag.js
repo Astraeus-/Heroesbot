@@ -11,11 +11,6 @@ const hpHandler = new hp(hpApiKey);
 class CheckBattleTag extends BaseCommand {
   constructor () {
     const permissions = {
-      'Test-Server': {
-        'channels': ['robotchannel'],
-        'roles': ['Admin'],
-        'users': []
-      },
       'Heroes Lounge': {
         'channels': ['devops'],
         'roles': ['Lounge Master', 'Board', 'Managers', 'Moderators'],
@@ -39,7 +34,6 @@ class CheckBattleTag extends BaseCommand {
   async exec (msg, args) {
     const embed = {
       color: embedDefault.color,
-      footer: embedDefault.footer,
       title: '',
       fields: [
       ]

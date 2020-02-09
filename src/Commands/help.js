@@ -5,11 +5,6 @@ const { embedDefault } = require('../config.js');
 class Help extends BaseCommand {
   constructor (bot) {
     const permissions = {
-      'Test-Server': {
-        'channels': ['robotchannel'],
-        'roles': [],
-        'users': []
-      },
       'Heroes Lounge': {
         'channels': [],
         'roles': [],
@@ -31,7 +26,6 @@ class Help extends BaseCommand {
   exec (msg, args) {
     const embed = {
       color: embedDefault.color,
-      footer: embedDefault.footer,
       title: '',
       fields: []
     };
