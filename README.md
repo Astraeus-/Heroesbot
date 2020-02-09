@@ -24,4 +24,10 @@ Muted.json
 Reminders.json
 ```
 
-Setup pm2 to restart the process on crash and potential reboot of the VPS.
+# Setting up pm2
+
+Run `npm install pm2 -g`
+Run `pm2 start src --name heroesbot`
+Run `pm2 startup`
+
+Follow the instructions in the terminal to setup auto-start.
