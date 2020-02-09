@@ -9,7 +9,7 @@ Run `npm install --production`
 Create a .env file based on the .env_template.
 
 Create the following directory structure inside of the src folder.
-You'll need these files, otherwise Heroesbot will complain and not work.
+You'll need these files, otherwise Heroesbot will not function properly.
 
 ```
 /Data
@@ -17,12 +17,19 @@ You'll need these files, otherwise Heroesbot will complain and not work.
     MatchesTodayeu.json
     MatchesTodayna.json
     Teamdata.json
-  /Images
-    heads.png
-    tails.png
 Muted.json
 Reminders.json
 ```
+
+Each of the cache files needs to contain the following JSON data:
+```json
+{
+  "lastUpdatedAt": 0,
+  "data": []
+}
+```
+
+The other data files are just empty JSON objects: `{}`.
 
 # Setting up pm2
 
