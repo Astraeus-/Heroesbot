@@ -1,5 +1,7 @@
 node_modules/
-Data/
 .env
 test.js
 TODO
+
+src/Data/*
+!src/Data/Images/
