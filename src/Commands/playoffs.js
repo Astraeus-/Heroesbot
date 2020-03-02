@@ -10,8 +10,8 @@ class Playoffs extends BaseCommand {
     const permissions = {
       'Heroes Lounge': {
         'channels': ['devops'],
-        'roles': [],
-        'users': ['108153813143126016', '202174629245222912', '188331826970886144']
+        'roles': ['Lounge Master', 'Board', 'Managers'],
+        'users': []
       }
     };
 
