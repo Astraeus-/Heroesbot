@@ -11,7 +11,13 @@ module.exports = (bot) => {
   bot.on('guildMemberAdd', (guild, member) => {
     // Check if the member is not trying to circumvent their mute.
     fs.readFile(path.join(__dirname, '../Data/Muted.json'), { encoding: 'utf8' }).then((data) => {
-      const isMutedMember = Object.keys(data).some((d) => d === member.user.id);
+      try {
+        data = JSON.parse(data);
+      } catch (error) {
+        throw Error('Unable to parse JSON object');
+      }
+
+      const isMutedMember = Object.keys(data[guild.id]).some((d) => d === member.user.id);
       if (isMutedMember) {
         const mutedRole = guild.roles.find((role) => {
           return role.name === 'Muted';

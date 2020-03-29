@@ -19,7 +19,16 @@ module.exports = (bot) => {
 
     switch (changedRole.name) {
     case 'Muted':
-      fs.readFile(path.join(__dirname, '../Data/Muted.json'), { encoding: 'utf8' }).then((data) => {
+      const mutedFileLoc = path.join(__dirname, '../Data/Muted.json');
+
+
+      fs.readFile(mutedFileLoc, { encoding: 'utf8' }).then((data) => {
+        try {
+          data = JSON.parse(data);
+        } catch (error) {
+          throw Error('Unable to parse JSON object');
+        }
+
         if (addedRole) {
           const mutedMember = {
             username: member.user.username,
@@ -36,7 +45,7 @@ module.exports = (bot) => {
           delete data[guild.id][member.user.id];
         }
 
-        return fs.writeFile(path.join(__dirname, '../Data/Muted.json'), data);
+        return fs.writeFile(mutedFileLoc, JSON.stringify(data, 0, 2));
       }).catch((error) => {
         Logger.warn('Unable to update muted list', error);
       });
