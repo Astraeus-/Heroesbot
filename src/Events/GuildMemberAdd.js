@@ -17,20 +17,24 @@ module.exports = (bot) => {
         throw Error('Unable to parse JSON object');
       }
 
-      const isMutedMember = Object.keys(data[guild.id]).some((d) => d === member.user.id);
-      if (isMutedMember) {
-        const mutedRole = guild.roles.find((role) => {
-          return role.name === 'Muted';
-        });
+      const guildData = data[guild.id];
+      if (guildData) {
+        const isMutedMember = Object.keys(guildData).some((d) => d === member.user.id);
 
-        guild.addMemberRole(member.user.id, mutedRole.id, 'Attempted to circumvent mute').catch((error) => {
-          Logger.error(`Unable to reassign muted role to ${member.user.username}`, error);
-        });
-        webhook.send({
-          title: 'Attempt at avoiding mute',
-          color: embedDefault.color,
-          description: `:exclamation: User ${member.user.username} attempted to circumvent their mute on ${guild.name}`
-        });
+        if (isMutedMember) {
+          const mutedRole = guild.roles.find((role) => {
+            return role.name === 'Muted';
+          });
+  
+          guild.addMemberRole(member.user.id, mutedRole.id, 'Attempted to circumvent mute').catch((error) => {
+            Logger.error(`Unable to reassign muted role to ${member.user.username}`, error);
+          });
+          webhook.send({
+            title: 'Attempt at avoiding mute',
+            color: embedDefault.color,
+            description: `:exclamation: User ${member.user.username} attempted to circumvent their mute on ${guild.name}`
+          });
+        }
       }
     }).catch((error) => {
       Logger.warn(`Unable to check mute ${member.user.username}#${member.user.discriminator}`, error);
