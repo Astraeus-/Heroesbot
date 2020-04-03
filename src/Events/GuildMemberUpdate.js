@@ -18,10 +18,8 @@ module.exports = (bot) => {
     const changedRole = guild.roles.get(changedRoleIds[0]);
 
     switch (changedRole.name) {
-    case 'Muted':
+    case 'Muted': {
       const mutedFileLoc = path.join(__dirname, '../Data/Muted.json');
-
-
       fs.readFile(mutedFileLoc, { encoding: 'utf8' }).then((data) => {
         try {
           data = JSON.parse(data);
@@ -50,6 +48,7 @@ module.exports = (bot) => {
         Logger.warn('Unable to update muted list', error);
       });
       break;
+    }
     case 'Patreon Superhero':
     case 'Patreon VIP':
     case 'Twitch Subscriber':
