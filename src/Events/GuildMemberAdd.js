@@ -53,6 +53,10 @@ module.exports = (bot) => {
           return role.name === regionRoleIds[returningSloth.region_id];
         });
 
+        if (!regionRole) {
+          throw Error(`Could not match region id ${returningSloth.region_id} to region role in guild ${guild.name} for ${returningSloth.title}`);
+        }
+
         guild.addMemberRole(member.user.id, regionRole.id).catch((error) => {
           Logger.warn(`Unable to reassign region role to ${member.user.username}`, error);
         });
