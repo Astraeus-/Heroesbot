@@ -4,7 +4,24 @@ const cron = require('node-cron');
 
 const client = new Client(token, {
   getAllUsers: true,
-  disableEveryone: false
+  allowedMentions: {
+    everyone: true,
+    roles: true,
+    users: true
+  },
+  intents: [
+    'guilds',
+    'guildMembers',
+    'guildBans',
+    'guildEmojis',
+    'guildIntegrations',
+    'guildWebhooks',
+    'guildPresences',
+    'guildMessages',
+    'guildMessageReactions',
+    'directMessages',
+    'directMessageReactions'
+  ]
 });
 
 const regionTask = cron.schedule('0 0 * * Wed', () => {
