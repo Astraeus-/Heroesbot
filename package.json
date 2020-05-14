@@ -23,7 +23,7 @@
   "dependencies": {
     "date-fns": "^2.11.1",
     "dotenv": "^8.2.0",
-    "eris": "git+https://github.com/abalabahaha/eris.git#dev",
+    "eris": "^0.13.1",
     "heroeslounge-api": "^3.0.0",
     "heroesprofile-api": "^0.2.0",
     "node-cron": "^2.0.3"
