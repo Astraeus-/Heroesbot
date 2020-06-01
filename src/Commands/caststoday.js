@@ -141,7 +141,10 @@ class CastsToday extends BaseCommand {
           response += `At ${time}\n`;
         }
 
-        response += `${casterList} will be bringing you a ${fixture} match between ${teams[0].title} and ${teams[1].title} on ${channelList}\n`;
+        const teamLeftTitle = teams[0] ? teams[0].title : 'TBD';
+        const teamRightTitle = teams[1] ? teams[1].title: 'TBD';
+
+        response += `${casterList} will be bringing you a ${fixture} match between ${teamLeftTitle} and ${teamRightTitle} on ${channelList}\n`;
         previousCastedMatchOffset = 1;
       }
 
