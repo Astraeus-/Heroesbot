@@ -83,6 +83,7 @@ class CastsToday extends BaseCommand {
         });
       }
 
+      const responseMessages = [];
       let response = '';
       let previousCastedMatchOffset = 1;
 
@@ -146,15 +147,29 @@ class CastsToday extends BaseCommand {
 
         response += `${casterList} will be bringing you a ${fixture} match between ${teamLeftTitle} and ${teamRightTitle} on ${channelList}\n`;
         previousCastedMatchOffset = 1;
+
+        if (response.length >= 1800) {
+          responseMessages.push(response);
+          response = '';
+        }
       }
 
-      return response;
-    }).then((response) => {
+      if (response.length > 0) {
+        responseMessages.push(response);
+      }
+
+      return responseMessages;
+    }).then((responseMessages) => {
       return msg.author.getDMChannel().then((channel) => {
-        if (!response) {
+        if (!responseMessages) {
           return channel.createMessage('There are no casted matches');
         } else {
-          return channel.createMessage(`Region time of: ${timezone}\n\n ${response}`);
+          const responses = responseMessages.map((response, index) => {
+            if (index == 0) response = `Region time of: ${timezone}\n\n${response}`;
+            return channel.createMessage(response);
+          });
+
+          return Promise.all(responses);
         }
       });
     });
