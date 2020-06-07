@@ -112,7 +112,7 @@ const getParticipatingTeams = async () => {
 
   for (let i = seasons.length - 1; i >= 0; i--) {
     if (seasonCounter >= 2) break;
-    if (seasons[i].type === 2) continue; // Ignore Division S seasons
+    if (seasons[i].type !== 1) continue; // Only sync Amateur Series seasons.
 
     if (seasons[i].is_active === 1 && seasons[i].reg_open === 0) {
       teamsByRegion = [...teamsByRegion, heroesloungeApi.getSeasonTeams(seasons[i].id)];
