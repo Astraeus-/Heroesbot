@@ -1,16 +1,15 @@
 
 const BaseCommand = require('../Classes/BaseCommand');
 const heroesloungeApi = require('../Classes/HeroesLounge');
-const { embedDefault } = require('../config.js');
 const { Logger } = require('../util.js');
 
 class CasterStatistics extends BaseCommand {
   constructor () {
     const permissions = {
       'Heroes Lounge': {
-        'channels': ['casters_lounge'],
-        'roles': ['Lounge Master', 'Board', 'Managers', 'Moderators', 'Casters-EU', 'Casters-NA'],
-        'users': []
+        'channels': ['casters_lounge', 'devops'],
+        'roles': ['Lounge Master', 'Board', 'Managers'],
+        'users': ['87976337234464768', '259429473265516545', '108153813143126016']
       }
     };
 
@@ -19,57 +18,34 @@ class CasterStatistics extends BaseCommand {
       'command': 'casterstatistics',
       'category': 'casters',
       'aliases': ['caststats', 'casterstats'],
-      'description': 'Provides you with the casting statistics of the specified season.',
-      'syntax': 'casterstats <season>',
-      'enabled': false,
-      'min_args': 1
+      'description': 'Provides you with the casting statistics between two specified dates.',
+      'syntax': 'casterstats <YYYY-MM-DD> <YYYY-MM-DD>',
+      'enabled': true,
+      'min_args': 2
     };
 
     super(permissions, options);
   }
 
-  exec (msg, args) {
-    const embed = {
-      color: embedDefault.color,
-      description: 'Overall casting statistics for season ',
-      fields: [
-        {
-          name: 'Round matches',
-          value: '',
-          inline: true
-        },
-        {
-          name: 'Casts',
-          value: '',
-          inline: true
-        },
-        {
-          name: 'Coverage',
-          value: '',
-          inline: true
-        }
-      ]
-    };
+  async exec (msg, args) {
+    const [startDate, endDate] = args;
 
-    const season = parseInt(args[0]);
-    const seasonId = season - 3; // Id 1 belong to season 4.
+    let matches;
 
-    return heroesloungeApi.getSeasonCasterStatistics(seasonId).then((stats) => {
-      embed.description += season;
-      const roundData = stats.dataByRound;
-
-      for (const entry in roundData) {
-        if (parseInt(entry) > 0) {
-          embed.fields[0].value += `Round ${entry}: ${roundData[entry].matches} matches\n`;
-          embed.fields[1].value += `${roundData[entry].casts}\n`;
-          embed.fields[2].value += `${roundData[entry].coverage !== 'undefined' ? roundData[entry].coverage : 0}%\n`;
-        }
-      }
-
-      msg.channel.createMessage({ embed: embed }).catch((error) => {
-        Logger.warn('Could not notify casterstatistics', error);
+    try {
+      matches = await heroesloungeApi.getMatchesWithApprovedCastBetween(startDate, endDate);
+    } catch (error) {
+      msg.author.getDMChannel().then((channel) => {
+        return channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`);
+      }).catch((error) => {
+        Logger.warn('Could not notify invalid announcement syntax', error);
       });
-    });
+
+      return;
+    }    
+
+    const numberOfMatches = Object.keys(matches);
+    return msg.channel.createMessage(`There were ${numberOfMatches.length} casted matches between ${startDate} and ${endDate}.`);
   }
 }
 
