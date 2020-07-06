@@ -164,7 +164,7 @@ class Playoffs extends BaseCommand {
       });
     } else {
       return msg.author.getDMChannel().then((channel) => {
-        return channel.createMessage('Unable to create playoff channels.\nMissing permission: manageChannels');
+        return channel.createMessage('Unable to create playoff channels.\nHeroesbot missing permission: manageChannels');
       });
     }
   }
