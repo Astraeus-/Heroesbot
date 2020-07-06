@@ -46,7 +46,7 @@ class Eval extends BaseCommand {
       return msg.channel.createMessage(`\`\`\`js\n${inspectedOutput}\`\`\``);
     } catch (error) {
       msg.channel.createMessage(`Could not evaluate input properly\n${error}`).catch((error) => {
-        Logger.warn('Could not notify invalid eval input', error);
+        Logger.warn(`Could not notify invalid ${this.command} syntax`, error);
       });
     }
   }

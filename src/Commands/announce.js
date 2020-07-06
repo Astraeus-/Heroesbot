@@ -49,7 +49,7 @@ class Announce extends BaseCommand {
       msg.author.getDMChannel().then((channel) => {
         return channel.createMessage(`Incorrect command **${this.prefix + this.command}** syntax \nCommand usage: ${this.syntax}`);
       }).catch((error) => {
-        Logger.warn('Could not notify invalid announcement syntax', error);
+        Logger.warn(`Could not notify invalid ${this.command} syntax`, error);
       });
     }
   }
