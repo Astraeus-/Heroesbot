@@ -20,9 +20,9 @@ class AssignAram extends BaseCommand {
       'command': 'assignaram',
       'category': 'admin',
       'aliases': [],
-      'description': 'Assigns captains participating in the playoff to the Aram Captains channel',
-      'syntax': 'assignaram <playoffID>',
-      'min_args': 1,
+      'description': 'Assigns captains participating in the playoff to the mentioned channel',
+      'syntax': 'assignaram <playoffID> <#channel>',
+      'min_args': 2,
       'ignoreInHelp': true
     };
     
@@ -31,83 +31,90 @@ class AssignAram extends BaseCommand {
 
   exec (msg, args) {
     const playoffID = args[0];
+    const syncChannel = this.bot.guilds.get(defaultServer).channels.get(msg.channelMentions[0]);
 
-    return syncAramCaptainLounge(this.bot, playoffID).then((response) => {
+    if (!syncChannel) {
+      return msg.author.getDMChannel().then((channel) => {
+        return channel.createMessage(`Invalid channel specified: ${args[1]}`);
+      });
+    }
+
+    if (!this.bot.guilds.get(defaultServer).members.get(this.bot.user.id).permission.has('manageChannels') && !syncChannel.permissionsOf(this.bot.user.id).has('manageRoles')) {
+      return msg.author.getDMChannel().then((channel) => {
+        return channel.createMessage('Unable to update captains.\nHeroesbot missing permission: manageChannels');
+      }); 
+    }
+
+    return syncAramCaptainLounge(playoffID, syncChannel).then((response) => {
       msg.author.getDMChannel().then((channel) => {
-        return channel.createMessage(`Updated Aram Captains Lounge: ${response.updatedCaptainCounter}\nErrors:\n${response.errorMessage}`);
+        return channel.createMessage(`Updated ${syncChannel.name}: ${response.updatedCaptainCounter}\nErrors:\n${response.errorMessage}`);
       }).catch((error) => {
-        Logger.warn('Could not notify about Aram captain syncing', error);
+        Logger.warn(`Could not notify ${syncChannel.name} captain syncing`, error);
       });
     });
   }
 }
 
-const syncAramCaptainLounge = (bot, playoffID) => {
+const syncAramCaptainLounge = (playoffID, syncChannel) => {
   Logger.info('Synchronising Aram Captains Lounge');
 
   return getAramTeams(playoffID).then((teams) => {
     teams = [].concat.apply([], teams);
-    
-    const aramCaptainChannel = bot.guilds.get(defaultServer).channels.find((channel) => {
-      return channel.name === 'aram_captains_lounge';
+
+    let errorMessage = '';
+    const syncedCaptains = [];
+
+    // Delete all of the existing captains.
+    syncChannel.permissionOverwrites.map(async(permission) => {
+      if (permission.type === 'member') {
+        await syncChannel.deletePermission(permission.id);
+      }
     });
 
-    if (aramCaptainChannel) {
-      // Delete all of the existing captains.
-      aramCaptainChannel.permissionOverwrites.map(async(permission) => {
-        if (permission.type === 'member') {
-          await aramCaptainChannel.deletePermission(permission.id);
+    for (const team of teams) {
+      if (team.sloths && team.sloths.length > 0 && team.disbanded === 0) {
+        let captainSloth;
+
+        for (const sloth of team.sloths) {
+          if (sloth.pivot.is_captain === 1) {
+            captainSloth = sloth;
+            break;
+          }
         }
-      });
 
-      let errorMessage = '';
-      const syncedCaptains = [];
+        if (!captainSloth) {
+          errorMessage += `No captain for ${team.title}\n`;
+          continue;
+        }
 
-      for (const team of teams) {
-        if (team.sloths && team.sloths.length > 0 && team.disbanded === 0) {
-          let captainSloth;
+        if (captainSloth.discord_id.length > 0) {
+          const member = syncChannel.guild.members.get(captainSloth.discord_id);
 
-          for (const sloth of team.sloths) {
-            if (sloth.pivot.is_captain === 1) {
-              captainSloth = sloth;
-              break;
-            }
-          }
-
-          if (!captainSloth) {
-            errorMessage += `No captain for ${team.title}\n`;
-            continue;
-          }
-
-          if (captainSloth.discord_id.length > 0) {
-            const member = aramCaptainChannel.guild.members.get(captainSloth.discord_id);
-
-            if (member) {
-              syncedCaptains.push(
-                aramCaptainChannel.editPermission(captainSloth.discord_id, 1024, 0, 'member').catch((error) => {
-                  Logger.warn(`Unable to add captain to aram captain lounge ${team.title} user ${captainSloth.title}`, error);
-                  errorMessage += `Unable to add captain to aram captain lounge ${team.title} user ${captainSloth.title}\n`;
-                })
-              );
-            } else {
-              errorMessage += `Captain not on discord for ${team.title} member ${captainSloth.title}\n`;
-            }
+          if (member) {
+            syncedCaptains.push(
+              syncChannel.editPermission(captainSloth.discord_id, 1024, 0, 'member').catch((error) => {
+                Logger.warn(`Unable to add captain to ${syncChannel.name} ${team.title} user ${captainSloth.title}`, error);
+                errorMessage += `Unable to add captain to ${syncChannel.name} ${team.title} user ${captainSloth.title}\n`;
+              })
+            );
           } else {
-            errorMessage += `No discord id for ${team.sloths[0].title} from ${team.title}\n`;
+            errorMessage += `Captain not on discord for ${team.title} member ${captainSloth.title}\n`;
           }
         } else {
-          errorMessage += `No sloths for ${team.title}\n`;
+          errorMessage += `No discord id for ${team.sloths[0].title} from ${team.title}\n`;
         }
+      } else {
+        errorMessage += `No sloths for ${team.title}\n`;
       }
-
-      return Promise.all(syncedCaptains).then(() => {
-        Logger.info(`Aram captains lounge synchronisation complete, added ${syncedCaptains.length} users`);
-        return {
-          updatedCaptainCounter: syncedCaptains.length,
-          errorMessage: errorMessage
-        };
-      });
     }
+
+    return Promise.all(syncedCaptains).then(() => {
+      Logger.info(`${syncChannel.name} captain synchronisation complete, added ${syncedCaptains.length} users`);
+      return {
+        updatedCaptainCounter: syncedCaptains.length,
+        errorMessage: errorMessage
+      };
+    });
   });
 };
 
