@@ -1,7 +1,7 @@
 
 class MMRCalculator {
   static calculateHeroesProfileAverageMMR(ratings) {
-    if (ratings.size === 0) return 2800;
+    if (ratings.size === 0) return this.defaultMMR;
 
     let totalMMR = 0;
     let divider = 0;
@@ -70,18 +70,20 @@ class MMRCalculator {
   }
 }
 
+MMRCalculator.defaultMMR = 3000;
+
 MMRCalculator.gameModes = {
   'Storm League': {
     weight: 0.7,
-    min_games: 10
+    min_games: 150
   },
   'Unranked Draft': {
     weight: 0.3,
-    min_games: 20
+    min_games: 150
   },
   'Quick Match': {
     weight: 1,
-    min_games: 25
+    min_games: 150
   }
 };
 
