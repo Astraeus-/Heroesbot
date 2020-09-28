@@ -130,7 +130,7 @@ class CastsToday extends BaseCommand {
         }
 
         const dateElements = matches[match].wbp.match(/\d+/g);
-        const localMatchTime = new Date(Date.UTC(dateElements[0], dateElements[1], dateElements[2], dateElements[3], dateElements[4], dateElements[5]));
+        const localMatchTime = new Date(Date.UTC(dateElements[0], dateElements[1] - 1, dateElements[2], dateElements[3], dateElements[4], dateElements[5]));
         const time = specifiedRegion === 'na' ? dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'hh:mm a') : dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'HH:mm:');
 
         // Group all match statement with the same time together.
