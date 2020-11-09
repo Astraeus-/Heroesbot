@@ -213,7 +213,8 @@ describe('Command Handler' , function() {
   
       context('Command user permission required', function() {
         it('Should have permission', function() {
-  
+          testingCommand.permissions['TestingGuildName'].users.push('1');
+
           const hasPermissions = handler.checkUsersPermission(testingCommand, mockMsg);
           expect(hasPermissions).to.be.true;
         });
