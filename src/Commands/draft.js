@@ -27,7 +27,8 @@ class Draft extends BaseCommand {
       'aliases': ['mock', 'mockdraft'],
       'description': 'Creates a Heroes of the Storm mockdraft.',
       'syntax': 'draft <map> <team 1> <team 2> [-nt]\nThe map is specialised by all first letters e.g.: Battlefield of Eternity = BOE.\nteam 1 has first pick by default.\nAdding optional flag `-nt` creates a draft with no pick timer.',
-      'min_args': 3
+      'min_args': 3,
+      'enabled': false,
     };
 
     super(permissions, options);
