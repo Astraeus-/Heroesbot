@@ -3,38 +3,19 @@ class MMRCalculator {
   static calculateHeroesProfileAverageMMR(ratings) {
     if (ratings.size === 0) return this.defaultMMR;
 
-    let totalMMR = 0;
-    let divider = 0;
-
-    const modes = Object.keys(this.gameModes);
-
-    for (let mode of modes) {
-      if ((ratings.size === 2 && ratings.has('Quick Match') && divider > 0) || divider === 1) break;
-
-      const modeRating = ratings.get(mode);
-      const modeData = this.gameModes[mode];
-
-      if (modeRating && modeRating.games_played > modeData.min_games) {
-        totalMMR += modeRating.mmr * modeData.weight;
-        divider += modeData.weight;
-      }
+    if (ratings.has('Storm League') && ratings.get('Storm League').active) {
+      return ratings.get('Storm League').mmr;
     }
 
-    if (totalMMR === 0 && divider === 0) {
-      for (let mode of modes) {
-        if ((ratings.size === 2 && ratings.has('Quick Match') && divider > 0) || divider === 1) break;
-        
-        const modeRating = ratings.get(mode);
-        const modeData = this.gameModes[mode];
-        
-        if (modeRating) {
-          totalMMR += modeRating.mmr * modeData.weight;
-          divider += modeData.weight;
-        }
-      }
+    if (ratings.has('Unranked Draft') && ratings.get('Unranked Draft').active) {
+      return ratings.get('Unranked Draft').mmr;
     }
-    
-    return Math.floor(totalMMR / divider);
+
+    if (ratings.has('Quick Match') && ratings.get('Quick Match').active) {
+      return ratings.get('Quick Match').mmr;
+    }
+
+    return this.defaultMMR;
   }
 
   static getRatingsHeroesProfile(data) {

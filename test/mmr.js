@@ -25,7 +25,55 @@ describe('Heroes Profile MMR', function() {
         }
       };
 
-      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(2649);
+      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(2572);
+    });
+  });
+
+  context('Storm League and Quick Match have min games', function() {
+    it('Should equal', function() {
+      const data = {
+        'Quick Match': {
+          'mmr': 2881,
+          'games_played': gameModes['Quick Match'].min_games,
+          'league_tier': 'master'
+        },
+        'Unranked Draft': {
+          'mmr': 2830,
+          'games_played': gameModes['Unranked Draft'].min_games - 1,
+          'league_tier': 'diamond'
+        },
+        'Storm League': {
+          'mmr': 2572,
+          'games_played': gameModes['Storm League'].min_games,
+          'league_tier': 'platinum'
+        }
+      };
+
+      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(2572);
+    });
+  });
+
+  context('Unranked Draft and Quick Match have min games', function() {
+    it('Should equal', function() {
+      const data = {
+        'Quick Match': {
+          'mmr': 2881,
+          'games_played': gameModes['Quick Match'].min_games,
+          'league_tier': 'master'
+        },
+        'Unranked Draft': {
+          'mmr': 2830,
+          'games_played': gameModes['Unranked Draft'].min_games,
+          'league_tier': 'diamond'
+        },
+        'Storm League': {
+          'mmr': 2572,
+          'games_played': gameModes['Storm League'].min_games - 1,
+          'league_tier': 'platinum'
+        }
+      };
+
+      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(2830);
     });
   });
 
@@ -101,7 +149,7 @@ describe('Heroes Profile MMR', function() {
     });
   });
 
-  context('Storm League and Unranked draft no min games', function() {
+  context('Storm League, Unranked draft and Quick Match no min games', function() {
     it('Should equal', function() {
       const data = {
         'Quick Match': {
@@ -121,7 +169,7 @@ describe('Heroes Profile MMR', function() {
         }
       };
 
-      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(2649);
+      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(defaultMMR);
     });
   });
 
@@ -140,7 +188,7 @@ describe('Heroes Profile MMR', function() {
         }
       };
 
-      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(2572);
+      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(defaultMMR);
     });
   });
 
@@ -159,7 +207,7 @@ describe('Heroes Profile MMR', function() {
         }
       };
 
-      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(2830);
+      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(defaultMMR);
     });
   });
 
@@ -173,7 +221,7 @@ describe('Heroes Profile MMR', function() {
         }
       };
 
-      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(2881);
+      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(defaultMMR);
     });
   });
 
