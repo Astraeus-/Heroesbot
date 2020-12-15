@@ -75,15 +75,9 @@ class CheckBattleTag extends BaseCommand {
         const gameMode = leaderboardData[key];
         const fieldData = {
           name: key,
-          value: '',
+          value: `${gameMode.mmr}`,
           inline: true
         };
-
-        if (ratings.has(key) && ratings.get(key).active) {
-          fieldData.value = `__*** ${gameMode.mmr}***__`;
-        } else {
-          fieldData.value = `${gameMode.mmr}`;
-        }
 
         embed.fields.push(fieldData);
       }
@@ -92,7 +86,7 @@ class CheckBattleTag extends BaseCommand {
 
       if (averageMMR) {
         embed.fields[embed.fields.length] = {
-          name: 'Average MMR',
+          name: 'Heroes Lounge MMR',
           value: `__***${averageMMR}***__`,
           inline: true
         };
