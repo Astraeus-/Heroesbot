@@ -40,17 +40,14 @@ class Match extends BaseCommand {
       footer: {
         text: 'If you require further assistance, contact one of our moderators'
       },
-      description: ''
+      description: '[Amateur series rules](https://heroeslounge.gg/general/ruleset)\n[Nexus Forces](https://heroeslounge.gg/nexus-forces-ruleset)\nAmateur Series teams ban two maps each, as according to their ruleset\n\n'
     };
 
-    const base = 'The draft order has been randomly determined:\n';
     const map = '```\n' + msg.author.username + ': Map pick \nOpponent: First pick \n```\n' + msg.author.username + ', please ban a map first.';
     const pick = '```\n' + msg.author.username + ': First pick \nOpponent: Map pick \n```\nOpponent, please ban a map first.';
 
-    const output = Math.random() >= 0.5 ? map : pick;
-
-    embed.description += '[Amateur series rules](https://heroeslounge.gg/general/ruleset)\n[Division S rules](https://heroeslounge.gg/divisionS/ruleset)\nAmateur Series teams ban two maps each, as according to their ruleset\n\n';
-    embed.description += base + output;
+    embed.description += 'The draft order has been randomly determined:\n';
+    embed.description += Math.random() >= 0.5 ? map : pick;
 
     return msg.channel.createMessage({ embed: embed });
   }
