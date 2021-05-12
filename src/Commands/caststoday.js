@@ -54,7 +54,7 @@ class CastsToday extends BaseCommand {
     }
 
     return heroesloungeApi.getMatchesToday(timezone).then(async (matches) => {
-      if (matches.length === 0) return null;
+      if (matches.length === 0) return [];
 
       matches.sort((a, b) => {
         return new Date(a.wbp) - new Date(b.wbp);
@@ -161,7 +161,7 @@ class CastsToday extends BaseCommand {
       return responseMessages;
     }).then((responseMessages) => {
       return msg.author.getDMChannel().then((channel) => {
-        if (!responseMessages) {
+        if (responseMessages.length === 0) {
           return channel.createMessage('There are no casted matches');
         } else {
           const responses = responseMessages.map((response, index) => {
