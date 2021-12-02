@@ -89,6 +89,6 @@ export default class Checkbattletag extends BaseInteraction {
       };
     }
 
-    interaction.createMessage({embeds: [embed]});
+    return interaction.createMessage({embeds: [embed]});
   }
 }

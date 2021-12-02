@@ -1,4 +1,4 @@
-import Eris, { CommandInteraction, Constants, Interaction } from 'eris';
+import Eris, {CommandInteraction, Constants, Interaction} from 'eris';
 
 export default abstract class BaseInteraction {
     name: string;
@@ -7,7 +7,7 @@ export default abstract class BaseInteraction {
     type: (Constants['ApplicationCommandTypes'])[keyof Constants['ApplicationCommandTypes']];
     defaultPermission: boolean;
 
-    constructor(
+    protected constructor(
       name: string, description: string,
       options: Eris.ApplicationCommandOptions[],
       type: (Constants['ApplicationCommandTypes'])[keyof Constants['ApplicationCommandTypes']],

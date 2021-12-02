@@ -1,4 +1,3 @@
-
 export default class MMRCalculator {
   private static defaultMMR = 3000;
   private static gameModes = {
