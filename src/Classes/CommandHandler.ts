@@ -1,5 +1,5 @@
 
-class CommandHandler {
+export default class CommandHandler {
   constructor () {
     this.commandCooldowns = [];
   }
@@ -87,5 +87,3 @@ class CommandHandler {
     return parameters;
   }
 }
-
-module.exports = CommandHandler;

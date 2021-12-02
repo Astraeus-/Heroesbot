@@ -1,13 +1,22 @@
-const { Logger } = require('../util.js');
-const https = require('https');
+import Eris from 'eris';
+import https from 'https';
+import { Logger } from '../util';
 
-class WebhookClient {
-  constructor (id, token) {
+interface PostData {
+  content?: string;
+  embeds: Eris.Embed[];
+}
+
+export default class WebhookClient {
+  id: string;
+  token: string;
+
+  constructor (id: string, token: string) {
     this.id = id;
     this.token = token;
   }
 
-  send (content, embeds = []) {
+  send (content: string | Eris.Embed, embeds: Eris.Embed[] = []) {
     const options = {
       hostname: 'discordapp.com',
       path: `/api/webhooks/${this.id}/${this.token}`,
@@ -17,19 +26,14 @@ class WebhookClient {
       }
     };
 
-    if (!Array.isArray(embeds)) {
-      Logger.debug(`Expected embeds to be array, got ${typeof embeds}`, embeds);
-      return;
-    }
-
-    const postData = {
-      embeds: []
+    const postData: PostData = {
+      embeds: [],
     };
 
-    if (typeof content === 'object') {
-      postData['embeds'].push(content);
-    } else if (typeof content === 'string') {
+    if (typeof content === 'string') {
       postData['content'] = content;
+    } else {
+      postData['embeds'].push(content);
     }
 
     for (const embed of embeds) {
@@ -48,5 +52,3 @@ class WebhookClient {
     req.end();
   }
 }
-
-module.exports = WebhookClient;

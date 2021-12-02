@@ -1,7 +1,13 @@
-const { Logger } = require('../util.js');
-const fs = require('fs').promises;
+import fs from 'fs/promises';
+import { Logger } from '../util';
 
-class CacheManager {
+export default class CacheManager {
+  private type;
+  private loc;
+  private update;
+  private isUpdating;
+  private updateResponse;
+
   constructor (settings) {
     /* eslint-disable */
     this.type           = typeof settings.type            != 'undefined' ? settings.type            : null
@@ -78,5 +84,3 @@ class CacheManager {
     });
   }
 }
-
-module.exports = CacheManager;
