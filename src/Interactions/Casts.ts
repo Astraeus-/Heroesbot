@@ -134,17 +134,17 @@ export default class Casts extends BaseInteraction {
 
       // Group all match statement with the same time together.
       if (match - previousCastedMatchOffset >= 0 && matches[match].wbp > matches[match - previousCastedMatchOffset].wbp) {
-        response += `\nAt ${time}\n`;
+        response += `\nAt ___${time}___\n`;
       } else if (match - previousCastedMatchOffset >= 0 && matches[match].wbp === matches[match - previousCastedMatchOffset].wbp) {
         response += '';
       } else {
-        response += `At ${time}\n`;
+        response += `At ___${time}___\n`;
       }
 
       const teamLeftTitle = teams[0] ? teams[0].title : 'TBD';
       const teamRightTitle = teams[1] ? teams[1].title: 'TBD';
 
-      response += `${casterList} will be bringing you a ${fixture} match between ${teamLeftTitle} and ${teamRightTitle} on ${channelList}\n`;
+      response += `**${casterList}** will be bringing you a ${fixture} match between *${teamLeftTitle}* and *${teamRightTitle}* on ${channelList}\n`;
       previousCastedMatchOffset = 1;
 
       if (response.length >= 1800) {
@@ -165,7 +165,7 @@ export default class Casts extends BaseInteraction {
     }
 
     responseMessages.map((response, index) => {
-      if (index == 0) response = `Region time of: ${timezone}\n\n${response}`;
+      if (index == 0) response = `Region time of: ${timezone}\n\`\`\`\n${response}\n\`\`\``;
 
       return interaction.createFollowup({
         content: response,
