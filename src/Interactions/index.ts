@@ -1,5 +1,8 @@
+export { default as AssignCaptain } from './AssignCaptain';
+export { default as AssignRegion } from './AssignRegion';
+export { default as AssignTournament } from './AssignTournament';
 export { default as Casts } from './Casts';
-export { default as Checkbattletag } from './CheckBattletag';
+export { default as CheckBattletag } from './CheckBattletag';
 export { default as Coin} from './Coin';
 export { default as Match } from './Match';
 export { default as Ping} from './Ping';
