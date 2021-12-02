@@ -1,4 +1,4 @@
-import Eris from 'eris';
+import Eris, { Constants } from 'eris';
 import BaseInteraction from '../Classes/BaseInteraction';
 
 export default class Ping extends BaseInteraction {
@@ -13,6 +13,6 @@ export default class Ping extends BaseInteraction {
   }
 
   execute (interaction: Eris.CommandInteraction) {
-    interaction.createMessage('Pong');
+    interaction.createMessage({content: 'Pong', flags: Constants.MessageFlags.EPHEMERAL});
   }
 }
