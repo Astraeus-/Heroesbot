@@ -1,29 +1,41 @@
-const { vip, defaultServer } = require('../config.js');
-const { Logger } = require('../util.js');
+import { vip, defaultServer } from '../config';
+import { Logger } from '../util';
 
-const fs = require('fs').promises;
-const path = require('path');
+import { promises as fs } from 'fs';
+import path from 'path';
+import HeroesbotClient from '../Client';
 
-module.exports = (bot) => {
-  bot.on('guildMemberUpdate', (guild, member, oldMember) => {
+export default (client: HeroesbotClient) => {
+  client.on('guildMemberUpdate', (guild, member, oldMember) => {
     if (guild.id === defaultServer) {
+      if (!oldMember) {
+        Logger.warn(`Missing old member data for ${member.username} to check VIP status`);
+        return;
+      }
+
       if (member.roles.length === oldMember.roles.length) return;
       const addedRole = member.roles.length > oldMember.roles.length;
   
       const changedRoleIds = addedRole ? member.roles.filter((role) => {
-        return !oldMember.roles.includes(role);
+        return !oldMember?.roles.includes(role);
       }) : oldMember.roles.filter((role) => {
         return !member.roles.includes(role);
       });
 
       const changedRole = guild.roles.get(changedRoleIds[0]);
 
+      if (!changedRole) {
+        return;
+      }
+
       switch (changedRole.name) {
       case 'Muted': {
         const mutedFileLoc = path.join(__dirname, '../Data/Muted.json');
         fs.readFile(mutedFileLoc, { encoding: 'utf8' }).then((data) => {
+          let mutes;
+
           try {
-            data = JSON.parse(data);
+            mutes = JSON.parse(data);
           } catch (error) {
             throw Error('Unable to parse JSON object');
           }
@@ -34,19 +46,19 @@ module.exports = (bot) => {
               startDate: new Date(Date.now())
             };
   
-            if (!data[guild.id]) {
-              data[guild.id] = {
+            if (!mutes[guild.id]) {
+              mutes[guild.id] = {
                 guildName: guild.name
               };
             }
-            data[guild.id][member.user.id] = mutedMember;
+            mutes[guild.id][member.user.id] = mutedMember;
           } else {
-            delete data[guild.id][member.user.id];
+            delete mutes[guild.id][member.user.id];
           }
   
-          return fs.writeFile(mutedFileLoc, JSON.stringify(data, 0, 2));
+          return fs.writeFile(mutedFileLoc, JSON.stringify(mutes, null, 2));
         }).catch((error) => {
-          Logger.warn('Unable to update muted list', error);
+          Logger.error('Unable to update muted list', error);
         });
         break;
       }
@@ -59,17 +71,14 @@ module.exports = (bot) => {
         } else {
           const guildRewardRoles = vip[guild.id].rewardRoles;
           const stillDeserving = member.roles.some((roleID) => {
-            return guild.roles.find((guildRole) => {
-              if (roleID === guildRole.id) {
-                if (!guildRewardRoles) {
-                  Logger.warn(`${guild.name} has no reward roles for ${member.user.username}`);
-                  return false;
-                } else {
-                  return guildRewardRoles.includes(guildRole.name);
-                }
-              }
-            });
+            const guildRole = member.guild.roles.get(roleID);
+            if (!guildRole) {
+              return false;
+            }
+            
+            return guildRewardRoles.includes(guildRole.name);
           });
+
           if (!stillDeserving) guild.removeMemberRole(member.user.id, vip[guild.id].roleID);
         }
         break;

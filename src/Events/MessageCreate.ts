@@ -1,5 +1,7 @@
-const Handler = require('../Classes/CommandHandler.js');
-const { Logger } = require('../util.js');
+import { Message } from 'eris';
+import Handler from '../Classes/CommandHandler';
+import HeroesbotClient from '../Client';
+import { Logger } from '../util';
 
 const errorMessage = {
   invalidArgumentCount: 'Invalid number of arguments',
@@ -8,29 +10,30 @@ const errorMessage = {
   dataRequest: 'Could not request data'
 };
 
-module.exports = (bot) => {
-  const CommandHandler = new Handler(bot);
-  bot.on('messageCreate', async (msg) => {
-    if (!bot.ready || !msg.author || msg.author.bot) return; // Ignore webhooks and bot users.
-    const commands = msg.content.match(/(?:!|#)(\S+)/gim); // regular expression to get anything starting with ! or # and any following characters except the white space.
+export default (client: HeroesbotClient) => {
+  const CommandHandler = new Handler();
+
+  client.on('messageCreate', async (message: Message) => {
+    if (!client.ready || !message.author || message.author.bot) return; // Ignore webhooks and bot users.
+    const commands = message.content.match(/(?:!|#)(\S+)/gim); // regular expression to get anything starting with ! or # and any following characters except the white space.
     let args;
 
     if (commands) {
       let command;
       for (let i = 0; i < commands.length; i++) {
-        const curr = CommandHandler.findCommand(commands[i].slice(1), bot.commands);
+        const curr = CommandHandler.findCommand(commands[i].slice(1), client.interactionCommands);
         if (curr) {
           command = curr;
-          args = CommandHandler.listArguments(commands[i], msg);
+          args = CommandHandler.listArguments(commands[i], message);
           break; // Only try to execute the first command we find.
         }
       }
 
       if (command) {
-        if (!command.enabled) return msg.author.getDMChannel().then((channel) => channel.createMessage(`Command ${command.prefix + command.command} is disabled`));
-        if (!msg.channel.guild && !command.invokeDM) return msg.channel.createMessage(`The command ${command.prefix + command.command} is disabled for use in DM's`);
+        if (!command.enabled) return message.author.getDMChannel().then((channel) => channel.createMessage(`Command ${command.prefix + command.command} is disabled`));
+        if (!message.guildID && !command.invokeDM) return message.channel.createMessage(`The command ${command.prefix + command.command} is disabled for use in DM's`);
         
-        let executionError = {
+        const executionError = {
           hasError: false,
           errorMessage: ''
         };
@@ -40,22 +43,22 @@ module.exports = (bot) => {
             throw Error(errorMessage.invalidArgumentCount);
           }
 
-          const cooldown = CommandHandler.checkCooldown(command, msg.channel.id);
+          const cooldown = CommandHandler.checkCooldown(command, message.channel.id);
           if (cooldown) {
             if (command.prefix === '!') {
               throw Error(errorMessage.onCooldown);
             }
           }
 
-          const hasPermissions = msg.channel.guild ? CommandHandler.checkPermissions(command, msg) : CommandHandler.checkUsersPermission(command, msg);
+          const hasPermissions = message.guildID ? CommandHandler.checkPermissions(command, message) : CommandHandler.checkUsersPermission(command, message);
           if (!hasPermissions) {
             if (command.prefix === '!') {
               throw Error(errorMessage.invalidPermissions);
             }
           }
 
-          await command.exec(msg, args);
-          CommandHandler.addCooldown(command, msg.channel.id);
+          await command.exec(message, args);
+          CommandHandler.addCooldown(command, message.channel.id);
         } catch (error) {
           let responseMessage = '';
           executionError.hasError = true;
@@ -78,7 +81,7 @@ module.exports = (bot) => {
             Logger.error(`Error executing command: ${command.command}`, error);
           }
 
-          msg.author.getDMChannel().then((channel) => {
+          message.author.getDMChannel().then((channel) => {
             return channel.createMessage(responseMessage);
           }).catch((error) => {
             Logger.warn(`Could not inform about errors for ${command.prefix + command.command}`, error);
