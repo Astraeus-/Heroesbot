@@ -1,12 +1,6 @@
 import dateformat from 'date-fns/format';
 import { env } from './config';
-
-interface Region {
-  name: string;
-  timezone: string | null;
-  heroesloungeId: 1 | 2 | null;
-  blizzardRegion: '1' | '2' | '3' | '5';
-}
+import { Region } from './types';
 
 export const Logger = {
   info: (msg: string) => {
@@ -25,7 +19,7 @@ export const Logger = {
   }
 };
 
-export const regions : Region[] = [
+export const regions: Region[] = [
   {
     name: 'eu',
     timezone: 'Europe/Berlin',

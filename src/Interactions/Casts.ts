@@ -3,7 +3,7 @@ import dateformat from 'date-fns/format';
 import HeroesloungeApi from '../Classes/HeroesLounge';
 import BaseInteraction from '../Classes/BaseInteraction';
 import { Logger, regions } from '../util';
-import { Match } from '../types';
+import { Match, Sloth, TwitchChannel } from '../types';
 
 export default class Casts extends BaseInteraction {
   constructor() {
@@ -95,13 +95,13 @@ export default class Casts extends BaseInteraction {
       let channelList = '';
 
       // Attach all of the casters to the casterList.
-      casters.forEach((caster: any) => {
+      casters.forEach((caster: Sloth) => {
         if (casterList.length > 0) casterList += ' and ';
         casterList += `${caster.title}`;
       });
 
       // Attach all of the channels to the channelList.
-      channels.forEach((channel: any) => {
+      channels.forEach((channel: TwitchChannel) => {
         if (channelList.length > 0) channelList += ' and ';
         channelList += `**${channel.title}**: <${channel.url}>`;
       });
