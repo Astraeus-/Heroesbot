@@ -3,9 +3,9 @@
   "version": "3.4.0",
   "description": "Discord bot for Heroes Lounge",
   "private": true,
-  "main": "src/index.js",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "node .",
+    "start": "ts-node .",
     "test": "mocha",
     "eslint": "eslint src && eslint test",
     "eslint:fix": "eslint src --fix && eslint test --fix"
@@ -23,14 +23,19 @@
   "dependencies": {
     "date-fns": "^2.19.0",
     "dotenv": "^8.2.0",
-    "eris": "^0.14.1",
+    "eris": "^0.16.1",
     "heroeslounge-api": "^3.0.0",
     "heroesprofile-api": "^0.2.0",
-    "node-cron": "^3.0.0"
+    "node-cron": "^3.0.0",
+    "ts-node": "^10.4.0"
   },
   "devDependencies": {
+    "@types/node-cron": "^3.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.5.0",
+    "@typescript-eslint/parser": "^5.5.0",
     "chai": "^4.2.0",
-    "eslint": "^7.12.1",
-    "mocha": "^7.2.0"
+    "eslint": "^7.32.0",
+    "mocha": "^7.2.0",
+    "typescript": "^4.5.2"
   }
 }
