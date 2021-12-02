@@ -1,24 +1,31 @@
-const dateformat = require('date-fns/format');
-const {env} = require('./config.js');
+import dateformat from 'date-fns/format';
+import { env } from './config';
 
-const Logger = {
-  info: (msg) => {
+interface Region {
+  name: string;
+  timezone: string | null;
+  heroesloungeId: 1 | 2 | null;
+  blizzardRegion: '1' | '2' | '3' | '5';
+}
+
+export const Logger = {
+  info: (msg: string) => {
     console.log(`${dateformat(Date.now(), 'dd/MM/yyyy hh:mm:ss a')}|`, msg);
   },
-  warn: (msg, warning) => {
+  warn: (msg: string, warning?: object) => {
     console.warn(`${dateformat(Date.now(), 'dd/MM/yyyy hh:mm:ss a')}| ${msg}\n`, warning);
   },
-  error: (msg, error) => {
+  error: (msg: string, error: object) => {
     console.error(`${dateformat(Date.now(), 'dd/MM/yyyy hh:mm:ss a')}| ${msg}\n`, error);
   },
-  debug: (msg, error) => {
+  debug: (msg: string, error?: object) => {
     if (env === 'debug') {
       console.log(`${dateformat(Date.now(), 'dd/MM/yyyy hh:mm:ss a')}| ${msg}\n`, error);
     }
   }
 };
 
-const regions = [
+export const regions : Region[] = [
   {
     name: 'eu',
     timezone: 'Europe/Berlin',
@@ -45,16 +52,14 @@ const regions = [
   }
 ];
 
-const timezone = regions.filter((region) => {
+export const timezone = regions.filter((region) => {
   return region.timezone !== null;
 });
 
-const heroesloungeId = regions.filter((region) => {
+export const heroesloungeId = regions.filter((region) => {
   return region.heroesloungeId !== null;
 });
 
-const blizzardRegion = regions.filter((region) => {
+export const blizzardRegion = regions.filter((region) => {
   return region.blizzardRegion !== null;
 });
-
-module.exports = { Logger, timezone, heroesloungeId, blizzardRegion, regions };
