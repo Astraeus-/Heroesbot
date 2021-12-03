@@ -11,7 +11,7 @@ export const env = process.env.NODE_ENV ?? 'development';
 export const token = process.env.TOKEN ?? 'invalid-token';
 export const defaultServer = process.env.DEFAULT_SERVER ?? 'invalid-server';
 export const hpApiKey = process.env.HEROES_PROFILE_API_KEY;
-export const hlApiKey = process.env.HEROES_LOUNGE_API_KEY;
+export const hlApiKey = process.env.HEROES_LOUNGE_API_KEY ?? 'invalid-hl-key';
 export const memeCooldown = process.env.REACTION_RESPONSE_COOLDOWN;
 export const embedDefault = {
   color: 5759467
