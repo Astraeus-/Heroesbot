@@ -6,19 +6,15 @@ import { webhooks, embedDefault, defaultServer } from '../config';
 import heroesloungeApi from '../Classes/HeroesLounge';
 import WebhookClient from '../Classes/WebhookClient';
 import HeroesbotClient from '../Client';
+import { Sloth } from 'heroeslounge-api';
 
 const webhook = new WebhookClient(webhooks.moderatorLogs.id, webhooks.moderatorLogs.token);
-
-interface Sloth {
-  title: string;
-  region_id: number;
-}
 
 export default (client: HeroesbotClient) => {
   client.on('guildMemberAdd', (guild, member) => {
     if (guild.id === defaultServer) {
       // Check if the user was already registered at Heroes Lounge.
-      heroesloungeApi.getSlothByDiscordId(member.user.id).then((sloths: Array<Sloth>) => {
+      heroesloungeApi.getSlothByDiscordId(member.user.id).then((sloths: Sloth[]) => {
         if (sloths.length > 0) {
           const returningSloth = sloths[0];
           const regionRoleIds: {[key: number]: string} = {

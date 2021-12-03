@@ -1,8 +1,8 @@
 import Eris, { Constants, Guild, GuildChannel } from 'eris';
+import { TeamSloth } from 'heroeslounge-api';
 import BaseInteraction from '../Classes/BaseInteraction';
 import HeroesLoungeApi from '../Classes/HeroesLounge';
 import { defaultServer } from '../config';
-import { Sloth } from '../types';
 import { Logger } from '../util';
 
 export default class AssignCaptain extends BaseInteraction {
@@ -49,7 +49,7 @@ export default class AssignCaptain extends BaseInteraction {
 
     for (const team of teams) {
       if (team.sloths && team.sloths.length > 0 && team.disbanded === 0) {
-        let captainSloth: Sloth;
+        let captainSloth: TeamSloth | null = null;
 
         for (const sloth of team.sloths) {
           if (sloth.pivot.is_captain === 1) {
@@ -58,7 +58,7 @@ export default class AssignCaptain extends BaseInteraction {
           }
         }
 
-        if (!captainSloth) {
+        if (captainSloth === null) {
           errorMessage += `No captain for ${team.title}\n`;
           continue;
         }
@@ -71,8 +71,8 @@ export default class AssignCaptain extends BaseInteraction {
 
             syncedSloths.push(
               guild.addMemberRole(captainSloth!.discord_id, captainRole!.id).catch((error) => {
-                Logger.warn(`Unable to assign captain for team ${team.title} user ${captainSloth.title}`, error);
-                errorMessage += `Unable to assign captain for team ${team.title} user ${captainSloth.title}\n`;
+                Logger.warn(`Unable to assign captain for team ${team.title} user ${captainSloth!.title}`, error);
+                errorMessage += `Unable to assign captain for team ${team.title} user ${captainSloth!.title}\n`;
               })
             );
           } else {

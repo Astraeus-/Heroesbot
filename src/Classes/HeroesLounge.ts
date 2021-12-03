@@ -1,4 +1,10 @@
-import heroesloungeApi from 'heroeslounge-api';
+import { Client } from 'heroeslounge-api';
 import { hlApiKey } from '../config';
 
-export default new heroesloungeApi(hlApiKey);
+class MyClient extends Client {
+  constructor(token: string) {
+    super(token);
+  }
+}
+
+export default new MyClient(hlApiKey);

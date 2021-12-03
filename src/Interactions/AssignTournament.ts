@@ -1,9 +1,9 @@
 import Eris, {Constants, GuildChannel, TextChannel} from 'eris';
 import BaseInteraction from '../Classes/BaseInteraction';
 import {Logger} from '../util';
-import HeroesLoungeApi from 'heroeslounge-api';
+import { Team, TeamSloth } from 'heroeslounge-api';
+import HeroesLoungeApi from '../Classes/HeroesLounge';
 import {defaultServer} from '../config';
-import { Sloth } from '../types';
 
 export default class AssignTournament extends BaseInteraction {
   constructor() {
@@ -75,7 +75,7 @@ export default class AssignTournament extends BaseInteraction {
   async syncAramCaptainLounge(playoffID: number, syncChannel: GuildChannel) {
     Logger.info('Synchronising Aram Captains Lounge');
 
-    const teams = await this.getAramTeams(playoffID);
+    const teams: Team[] = (await this.getAramTeams(playoffID)).flat();
 
     let errorMessage = '';
     const syncedCaptains = [];
@@ -89,7 +89,7 @@ export default class AssignTournament extends BaseInteraction {
 
     for (const team of teams) {
       if (team.sloths && team.sloths.length > 0 && team.disbanded === 0) {
-        let captainSloth: Sloth | null = null;
+        let captainSloth: TeamSloth | null = null;
 
         for (const sloth of team.sloths) {
           if (sloth.pivot.is_captain === 1) {

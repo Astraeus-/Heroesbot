@@ -3,7 +3,7 @@ import BaseInteraction from '../Classes/BaseInteraction';
 import {Logger, regions} from '../util';
 import {defaultServer} from '../config';
 import HeroesLoungeApi from '../Classes/HeroesLounge';
-import { Sloth } from '../types';
+import { Sloth } from 'heroeslounge-api';
 
 export default class AssignRegion extends BaseInteraction {
   constructor() {

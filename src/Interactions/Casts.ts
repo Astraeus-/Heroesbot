@@ -3,7 +3,7 @@ import dateformat from 'date-fns/format';
 import HeroesloungeApi from '../Classes/HeroesLounge';
 import BaseInteraction from '../Classes/BaseInteraction';
 import { Logger, regions } from '../util';
-import { Match, Sloth, TwitchChannel } from '../types';
+import { Playoff, Sloth, Team, TwitchChannel } from 'heroeslounge-api';
 
 export default class Casts extends BaseInteraction {
   constructor() {
@@ -31,7 +31,7 @@ export default class Casts extends BaseInteraction {
     const region = specifiedRegion && regions.find(region => region.name === specifiedRegion);
     const timezone = region && region.timezone ? region.timezone : null;
 
-    interaction.acknowledge(Constants.InteractionResponseTypes.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE);
+    await interaction.acknowledge(Constants.InteractionResponseTypes.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE);
 
     if (!timezone) {
       return interaction.createFollowup({
@@ -40,7 +40,7 @@ export default class Casts extends BaseInteraction {
       });
     }
 
-    const matches: Match[] = await HeroesloungeApi.getMatchesToday(timezone);
+    const matches = await HeroesloungeApi.getMatchesToday(timezone);
     if (!matches || matches.length === 0) {
       return interaction.createFollowup({
         content: 'There are no casted matches',
@@ -58,19 +58,21 @@ export default class Casts extends BaseInteraction {
     const matchCasters = [];
 
     for (let match = 0; match < matches.length; match++) {
-      matchDivisions[match] = matches[match].div_id ? HeroesloungeApi.getDivision(matches[match].div_id).catch((error: Error) => {
+      const currentMatch = matches[match];
+
+      matchDivisions[match] = currentMatch.div_id !== null ? HeroesloungeApi.getDivision(currentMatch.div_id).catch((error: Error) => {
         Logger.warn('Unable to get division info', error);
       }) : '';
 
-      matchTeams[match] = HeroesloungeApi.getMatchTeams(matches[match].id).catch((error: Error) => {
+      matchTeams[match] = HeroesloungeApi.getMatchTeams(currentMatch.id).catch((error: Error) => {
         Logger.warn('Unable to get match team info', error);
       });
 
-      matchCasters[match] = HeroesloungeApi.getMatchCasters(matches[match].id).catch((error: Error) => {
+      matchCasters[match] = HeroesloungeApi.getMatchCasters(currentMatch.id).catch((error: Error) => {
         Logger.warn('Unable to get caster info', error);
       });
 
-      matchChannels[match] = HeroesloungeApi.getMatchChannels(matches[match].id).catch((error: Error) => {
+      matchChannels[match] = HeroesloungeApi.getMatchChannels(currentMatch.id).catch((error: Error) => {
         Logger.warn('Unable to get match channel info', error);
       });
     }
@@ -81,12 +83,12 @@ export default class Casts extends BaseInteraction {
 
     for (let match = 0; match < matches.length; match++) {
       const division = await matchDivisions[match];
-      const teams = await matchTeams[match];
+      const teams: Team[] | void = await matchTeams[match];
       const casters = await matchCasters[match];
       const channels = await matchChannels[match];
 
       // Skip uncasted matches.
-      if (channels.length === 0 || casters.length === 0) {
+      if (channels && channels.length === 0 || casters && casters.length === 0) {
         previousCastedMatchOffset++;
         continue;
       }
@@ -95,31 +97,41 @@ export default class Casts extends BaseInteraction {
       let channelList = '';
 
       // Attach all of the casters to the casterList.
-      casters.forEach((caster: Sloth) => {
-        if (casterList.length > 0) casterList += ' and ';
-        casterList += `${caster.title}`;
-      });
+      if (casters) {
+        casters.forEach((caster: Sloth) => {
+          if (casterList.length > 0) casterList += ' and ';
+          casterList += `${caster.title}`;
+        });
+      }
 
       // Attach all of the channels to the channelList.
-      channels.forEach((channel: TwitchChannel) => {
-        if (channelList.length > 0) channelList += ' and ';
-        channelList += `**${channel.title}**: <${channel.url}>`;
-      });
+      if (channels) {
+        channels.forEach((channel: TwitchChannel) => {
+          if (channelList.length > 0) channelList += ' and ';
+          channelList += `**${channel.title}**: <${channel.url}>`;
+        });
+      }
 
       // Attach a division name or tournament + group.
       let fixture = '';
+      let playoff: Playoff | void;
 
-      if (division.playoff_id || matches[match].playoff_id) {
-        const playoff = matches[match].playoff_id ? await HeroesloungeApi.getPlayoff(matches[match].playoff_id).catch((error: Error) => {
-          Logger.warn('Unable to get playoff info', error);
-        }) : division.playoff_id ? await HeroesloungeApi.getPlayoff(division.playoff_id).catch((error: Error) => {
-          Logger.warn('Unable to get playoff info', error);
-        }) : '';
-
-        fixture = `Heroes Lounge ${playoff.title}${division ? ` ${division.title}` : ''}`;
+      if (typeof division === 'string') {
+        const currentMatch = matches[match];
+        if (currentMatch.playoff_id !== null) {
+          playoff = await HeroesloungeApi.getPlayoff(currentMatch.playoff_id).catch((error: Error) => {
+            Logger.warn('Unable to get playoff info', error);
+          });
+        }
       } else {
-        fixture = division.title;
+        if (division && division.playoff_id) {
+          playoff = await HeroesloungeApi.getPlayoff(division!.playoff_id).catch((error: Error) => {
+            Logger.warn('Unable to get playoff info', error);
+          });
+        }
       }
+  
+      fixture = `Heroes Lounge ${playoff ? playoff.title : ''}${division && (typeof division !== 'string') ? `${division.title}` : ''}`;
 
       const dateElements = matches[match].wbp.match(/\d+/g);
       const localMatchTime = new Date(Date.UTC(
@@ -141,8 +153,15 @@ export default class Casts extends BaseInteraction {
         response += `At ___${time}___\n`;
       }
 
-      const teamLeftTitle = teams[0] ? teams[0].title : 'TBD';
-      const teamRightTitle = teams[1] ? teams[1].title: 'TBD';
+      if (!teams) {
+        continue;
+      }
+
+      const leftTeam: Team = teams[0];
+      const teamLeftTitle = leftTeam !== null ? leftTeam.title : 'TBD';
+
+      const rightTeam: Team = teams[1];
+      const teamRightTitle = rightTeam !== null ? rightTeam.title: 'TBD';
 
       response += `**${casterList}** will be bringing you a ${fixture} match between *${teamLeftTitle}* and *${teamRightTitle}* on ${channelList}\n`;
       previousCastedMatchOffset = 1;
