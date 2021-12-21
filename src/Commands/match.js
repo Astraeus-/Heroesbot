@@ -40,7 +40,7 @@ class Match extends BaseCommand {
       footer: {
         text: 'If you require further assistance, contact one of our moderators'
       },
-      description: '[Amateur series rules](https://heroeslounge.gg/general/ruleset)\n[Nexus Forces](https://heroeslounge.gg/nexus-forces-ruleset)\nAmateur Series teams ban two maps each, as according to their ruleset\n\n'
+      description: '[Amateur series rules](https://heroeslounge.gg/general/ruleset)\nAmateur Series teams ban two maps each, as according to their ruleset\n\n'
     };
 
     const map = '```\n' + msg.author.username + ': Map pick \nOpponent: First pick \n```\n' + msg.author.username + ', please ban a map first.';
