@@ -1,8 +1,8 @@
 /* eslint-env mocha */
-const MMRCalc = require('../src/Classes/MMRCalculator.js');
-const expect = require('chai').expect;
+import { expect } from 'chai';
+import { Context, describe, it } from 'mocha';
 
-const {defaultMMR, gameModes} = MMRCalc;
+import MMRCalculator from '../src/Classes/MMRCalculator';
 
 describe('Heroes Profile MMR', function() {
   context('Storm League and Unranked draft have min games', function() {
@@ -10,22 +10,22 @@ describe('Heroes Profile MMR', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
-          'games_played': gameModes['Quick Match'].min_games,
+          'games_played': MMRCalculator.gameModes['Quick Match'].min_games,
           'league_tier': 'master'
         },
         'Unranked Draft': {
           'mmr': 2830,
-          'games_played': gameModes['Unranked Draft'].min_games,
+          'games_played': MMRCalculator.gameModes['Unranked Draft'].min_games,
           'league_tier': 'diamond'
         },
         'Storm League': {
           'mmr': 2572,
-          'games_played': gameModes['Storm League'].min_games,
+          'games_played': MMRCalculator.gameModes['Storm League'].min_games,
           'league_tier': 'platinum'
         }
       };
 
-      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(2572);
+      expect(MMRCalculator.calculateHeroesProfileAverageMMR(MMRCalculator.getRatingsHeroesProfile(data))).to.equal(2572);
     });
   });
 
@@ -34,22 +34,22 @@ describe('Heroes Profile MMR', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
-          'games_played': gameModes['Quick Match'].min_games,
+          'games_played': MMRCalculator.gameModes['Quick Match'].min_games,
           'league_tier': 'master'
         },
         'Unranked Draft': {
           'mmr': 2830,
-          'games_played': gameModes['Unranked Draft'].min_games - 1,
+          'games_played': MMRCalculator.gameModes['Unranked Draft'].min_games - 1,
           'league_tier': 'diamond'
         },
         'Storm League': {
           'mmr': 2572,
-          'games_played': gameModes['Storm League'].min_games,
+          'games_played': MMRCalculator.gameModes['Storm League'].min_games,
           'league_tier': 'platinum'
         }
       };
 
-      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(2572);
+      expect(MMRCalculator.calculateHeroesProfileAverageMMR(MMRCalculator.getRatingsHeroesProfile(data))).to.equal(2572);
     });
   });
 
@@ -58,22 +58,22 @@ describe('Heroes Profile MMR', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
-          'games_played': gameModes['Quick Match'].min_games,
+          'games_played': MMRCalculator.gameModes['Quick Match'].min_games,
           'league_tier': 'master'
         },
         'Unranked Draft': {
           'mmr': 2830,
-          'games_played': gameModes['Unranked Draft'].min_games,
+          'games_played': MMRCalculator.gameModes['Unranked Draft'].min_games,
           'league_tier': 'diamond'
         },
         'Storm League': {
           'mmr': 2572,
-          'games_played': gameModes['Storm League'].min_games - 1,
+          'games_played': MMRCalculator.gameModes['Storm League'].min_games - 1,
           'league_tier': 'platinum'
         }
       };
 
-      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(2830);
+      expect(MMRCalculator.calculateHeroesProfileAverageMMR(MMRCalculator.getRatingsHeroesProfile(data))).to.equal(2830);
     });
   });
 
@@ -82,22 +82,22 @@ describe('Heroes Profile MMR', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
-          'games_played': gameModes['Quick Match'].min_games - 1,
+          'games_played': MMRCalculator.gameModes['Quick Match'].min_games - 1,
           'league_tier': 'master'
         },
         'Unranked Draft': {
           'mmr': 2830,
-          'games_played': gameModes['Unranked Draft'].min_games - 1,
+          'games_played': MMRCalculator.gameModes['Unranked Draft'].min_games - 1,
           'league_tier': 'diamond'
         },
         'Storm League': {
           'mmr': 2572,
-          'games_played': gameModes['Storm League'].min_games,
+          'games_played': MMRCalculator.gameModes['Storm League'].min_games,
           'league_tier': 'platinum'
         }
       };
 
-      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(2572);
+      expect(MMRCalculator.calculateHeroesProfileAverageMMR(MMRCalculator.getRatingsHeroesProfile(data))).to.equal(2572);
     });
   });
 
@@ -106,22 +106,22 @@ describe('Heroes Profile MMR', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
-          'games_played':  gameModes['Quick Match'].min_games - 1,
+          'games_played':  MMRCalculator.gameModes['Quick Match'].min_games - 1,
           'league_tier': 'master'
         },
         'Unranked Draft': {
           'mmr': 2830,
-          'games_played': gameModes['Unranked Draft'].min_games,
+          'games_played': MMRCalculator.gameModes['Unranked Draft'].min_games,
           'league_tier': 'diamond'
         },
         'Storm League': {
           'mmr': 2572,
-          'games_played': gameModes['Storm League'].min_games - 1,
+          'games_played': MMRCalculator.gameModes['Storm League'].min_games - 1,
           'league_tier': 'platinum'
         }
       };
 
-      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(2830);
+      expect(MMRCalculator.calculateHeroesProfileAverageMMR(MMRCalculator.getRatingsHeroesProfile(data))).to.equal(2830);
     });
   });
 
@@ -130,22 +130,22 @@ describe('Heroes Profile MMR', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
-          'games_played': gameModes['Quick Match'].min_games,
+          'games_played': MMRCalculator.gameModes['Quick Match'].min_games,
           'league_tier': 'master'
         },
         'Unranked Draft': {
           'mmr': 2830,
-          'games_played': gameModes['Unranked Draft'].min_games - 1,
+          'games_played': MMRCalculator.gameModes['Unranked Draft'].min_games - 1,
           'league_tier': 'diamond'
         },
         'Storm League': {
           'mmr': 2572,
-          'games_played': gameModes['Storm League'].min_games - 1,
+          'games_played': MMRCalculator.gameModes['Storm League'].min_games - 1,
           'league_tier': 'platinum'
         }
       };
 
-      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(2881);
+      expect(MMRCalculator.calculateHeroesProfileAverageMMR(MMRCalculator.getRatingsHeroesProfile(data))).to.equal(2881);
     });
   });
 
@@ -154,22 +154,22 @@ describe('Heroes Profile MMR', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
-          'games_played': gameModes['Quick Match'].min_games - 1,
+          'games_played': MMRCalculator.gameModes['Quick Match'].min_games - 1,
           'league_tier': 'master'
         },
         'Unranked Draft': {
           'mmr': 2830,
-          'games_played': gameModes['Unranked Draft'].min_games - 1,
+          'games_played': MMRCalculator.gameModes['Unranked Draft'].min_games - 1,
           'league_tier': 'diamond'
         },
         'Storm League': {
           'mmr': 2572,
-          'games_played': gameModes['Storm League'].min_games - 1,
+          'games_played': MMRCalculator.gameModes['Storm League'].min_games - 1,
           'league_tier': 'platinum'
         }
       };
 
-      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(defaultMMR);
+      expect(MMRCalculator.calculateHeroesProfileAverageMMR(MMRCalculator.getRatingsHeroesProfile(data))).to.equal(MMRCalculator.defaultMMR);
     });
   });
 
@@ -178,17 +178,17 @@ describe('Heroes Profile MMR', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
-          'games_played': gameModes['Quick Match'].min_games - 1,
+          'games_played': MMRCalculator.gameModes['Quick Match'].min_games - 1,
           'league_tier': 'master'
         },
         'Storm League': {
           'mmr': 2572,
-          'games_played': gameModes['Storm League'].min_games - 1,
+          'games_played': MMRCalculator.gameModes['Storm League'].min_games - 1,
           'league_tier': 'platinum'
         }
       };
 
-      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(defaultMMR);
+      expect(MMRCalculator.calculateHeroesProfileAverageMMR(MMRCalculator.getRatingsHeroesProfile(data))).to.equal(MMRCalculator.defaultMMR);
     });
   });
 
@@ -197,17 +197,17 @@ describe('Heroes Profile MMR', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
-          'games_played': gameModes['Quick Match'].min_games - 1,
+          'games_played': MMRCalculator.gameModes['Quick Match'].min_games - 1,
           'league_tier': 'master'
         },
         'Unranked Draft': {
           'mmr': 2830,
-          'games_played': gameModes['Unranked Draft'].min_games - 1,
+          'games_played': MMRCalculator.gameModes['Unranked Draft'].min_games - 1,
           'league_tier': 'diamond'
         }
       };
 
-      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(defaultMMR);
+      expect(MMRCalculator.calculateHeroesProfileAverageMMR(MMRCalculator.getRatingsHeroesProfile(data))).to.equal(MMRCalculator.defaultMMR);
     });
   });
 
@@ -216,12 +216,12 @@ describe('Heroes Profile MMR', function() {
       const data = {
         'Quick Match': {
           'mmr': 2881,
-          'games_played': gameModes['Quick Match'].min_games - 1,
+          'games_played': MMRCalculator.gameModes['Quick Match'].min_games - 1,
           'league_tier': 'master'
         }
       };
 
-      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(defaultMMR);
+      expect(MMRCalculator.calculateHeroesProfileAverageMMR(MMRCalculator.getRatingsHeroesProfile(data))).to.equal(MMRCalculator.defaultMMR);
     });
   });
 
@@ -230,7 +230,7 @@ describe('Heroes Profile MMR', function() {
       const data = {
       };
 
-      expect(MMRCalc.calculateHeroesProfileAverageMMR(MMRCalc.getRatingsHeroesProfile(data))).to.equal(defaultMMR);
+      expect(MMRCalculator.calculateHeroesProfileAverageMMR(MMRCalculator.getRatingsHeroesProfile(data))).to.equal(MMRCalculator.defaultMMR);
     });
   });
 });

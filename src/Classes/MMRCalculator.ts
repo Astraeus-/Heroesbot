@@ -1,6 +1,6 @@
 export default class MMRCalculator {
-  private static defaultMMR = 3000;
-  private static gameModes = {
+  static defaultMMR = 3000;
+  static gameModes = {
     'Storm League': {
       weight: 0.7,
       min_games: 150
