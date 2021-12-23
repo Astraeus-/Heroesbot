@@ -1,6 +1,7 @@
 export { default as AssignCaptain } from './AssignCaptain';
 export { default as AssignRegion } from './AssignRegion';
 export { default as AssignTournament } from './AssignTournament';
+export { default as Bans } from './Bans';
 export { default as Casts } from './Casts';
 export { default as CheckBattletag } from './CheckBattletag';
 export { default as Coin} from './Coin';
