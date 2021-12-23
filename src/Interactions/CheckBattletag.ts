@@ -9,8 +9,9 @@ export default class Checkbattletag extends BaseInteraction {
   constructor() {
     const name = 'cbt';
     const description = 'Heroes profile MMR info for a Battletag';
+    const global = true;
     const type = Eris.Constants.ApplicationCommandTypes.CHAT_INPUT;
-    const options : Eris.ApplicationCommandOptions[] = [
+    const options: Eris.ApplicationCommandOptions[] = [
       {
         name: 'region',
         description: 'Region of the Battletag',
@@ -31,7 +32,9 @@ export default class Checkbattletag extends BaseInteraction {
       }
     ];
 
-    super(name, description, options, type);
+    const permissions = new Array<Eris.ApplicationCommandPermissions>();
+
+    super(name, description, options, type, permissions, global);
   }
 
   async execute (interaction: Eris.CommandInteraction) {

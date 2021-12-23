@@ -5,6 +5,7 @@ export default class RollDice extends BaseInteraction {
   constructor() {
     const name = 'Roll';
     const description = 'Rolls dice';
+    const global = true;
     const type = Eris.Constants.ApplicationCommandTypes.CHAT_INPUT;
     const options: Eris.ApplicationCommandOptions[] = [
       {
@@ -21,7 +22,9 @@ export default class RollDice extends BaseInteraction {
       }
     ];
 
-    super(name, description, options, type);
+    const permissions = new Array<Eris.ApplicationCommandPermissions>();
+
+    super(name, description, options, type, permissions, global);
   }
 
   execute (interaction: Eris.CommandInteraction) {

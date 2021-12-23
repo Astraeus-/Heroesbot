@@ -7,12 +7,14 @@ import * as Interactions from './Interactions';
 import { Logger } from './util';
 
 export default class HeroesbotClient extends Eris.Client {
-  interactionCommands: Map<string, BaseInteraction>
+  globalInteractionCommands: Map<string, BaseInteraction>
+  guildInteractionCommands: Map<string, BaseInteraction>
 
   constructor(token: string, options: Eris.ClientOptions) {
     super(token, options);
 
-    this.interactionCommands = new Map();
+    this.globalInteractionCommands = new Map();
+    this.guildInteractionCommands = new Map();
   }
 
   async launch() {
@@ -21,18 +23,37 @@ export default class HeroesbotClient extends Eris.Client {
   }
 
   async loadInteractions() {
-    this.interactionCommands.clear();
+    this.globalInteractionCommands.clear();
+    this.guildInteractionCommands.clear();
 
     const interactions = Object.values(Interactions);
     for (const interaction of interactions) {
       const initiatedInteraction = new interaction();
-      this.interactionCommands.set(initiatedInteraction.name.toLowerCase(), initiatedInteraction);
+      if (initiatedInteraction.global) {
+        this.globalInteractionCommands.set(initiatedInteraction.name.toLowerCase(), initiatedInteraction);
+      } else {
+        this.guildInteractionCommands.set(initiatedInteraction.name.toLowerCase(), initiatedInteraction);
+      }
     }
 
-    const interactionsArray : Eris.ApplicationCommandStructure[] = Array.from(this.interactionCommands.values());
-    Logger.info(`Loaded ${interactionsArray.length} commands`);
-    
-    return this.bulkEditGuildCommands(defaultServer, interactionsArray);
+    const guildInteractionsArray : Eris.ApplicationCommandStructure[] = Array.from(this.guildInteractionCommands.values());
+    const globalInteractionsArray : Eris.ApplicationCommandStructure[] = Array.from(this.globalInteractionCommands.values());
+
+    Logger.info(`Loaded ${globalInteractionsArray.length + guildInteractionsArray.length} commands`);
+
+    const guildCommands = await this.bulkEditGuildCommands(defaultServer, guildInteractionsArray);
+    const globalCommands = await this.bulkEditCommands(globalInteractionsArray);
+
+    // Heroes Lounge Guild
+    if (defaultServer === '200267155479068672') {
+      for (const command of guildCommands) {
+        const matchingInteraction = this.guildInteractionCommands.get(command.name);
+        
+        if (matchingInteraction && matchingInteraction.permissions.length > 0) {
+          await this.editCommandPermissions(defaultServer, command.id, matchingInteraction.permissions);
+        }
+      }
+    }
   }
 
   async loadEvents() {

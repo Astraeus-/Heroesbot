@@ -23,7 +23,9 @@ export default class Casts extends BaseInteraction {
       },
     ];
 
-    super(name, description, options, type);
+    const permissions = new Array<Eris.ApplicationCommandPermissions>();
+
+    super(name, description, options, type, permissions);
   }
 
   async execute (interaction: Eris.CommandInteraction) {
