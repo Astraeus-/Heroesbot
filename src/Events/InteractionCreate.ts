@@ -14,7 +14,11 @@ export default (client: HeroesbotClient) => {
       const interactionToExecute = client.guildInteractionCommands.get(interactionName) || client.globalInteractionCommands.get(interactionName);
 
       if (interactionToExecute) {
-        interactionToExecute.execute(interaction);
+        try {
+          interactionToExecute.execute(interaction);
+        } catch (error) {
+          Logger.error(`Could not execute interaction ${interaction.data.name}`, error);
+        }
       }
     } else {
       Logger.warn('Unknown interaction', interaction);
