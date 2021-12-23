@@ -7,4 +7,5 @@ export { default as Coin} from './Coin';
 export { default as Match } from './Match';
 export { default as Ping} from './Ping';
 export { default as RollDice } from './RollDice';
+export { default as Sub } from './Sub';
 export { default as Time } from './Time';
