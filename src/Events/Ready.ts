@@ -5,6 +5,9 @@ export default (client: HeroesbotClient) => {
   client.on('ready', async () => {    
     Logger.info('Heroesbot connected');
 
-    await client.loadInteractions();
+    if (client.startingUp) {
+      await client.loadInteractions();
+      client.startingUp = false;
+    }
   });
 };

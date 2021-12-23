@@ -7,6 +7,7 @@ import * as Interactions from './Interactions';
 import { Logger } from './util';
 
 export default class HeroesbotClient extends Eris.Client {
+  startingUp = true;
   globalInteractionCommands: Map<string, BaseInteraction>
   guildInteractionCommands: Map<string, BaseInteraction>
 
@@ -42,7 +43,7 @@ export default class HeroesbotClient extends Eris.Client {
     Logger.info(`Loaded ${globalInteractionsArray.length + guildInteractionsArray.length} commands`);
 
     const guildCommands = await this.bulkEditGuildCommands(defaultServer, guildInteractionsArray);
-    const globalCommands = await this.bulkEditCommands(globalInteractionsArray);
+    await this.bulkEditCommands(globalInteractionsArray);
 
     // Heroes Lounge Guild
     if (defaultServer === '200267155479068672') {
