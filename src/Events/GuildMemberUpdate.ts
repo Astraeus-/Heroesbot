@@ -1,8 +1,6 @@
 import { vip, defaultServer } from '../config';
 import { Logger } from '../util';
 
-import { promises as fs } from 'fs';
-import path from 'path';
 import HeroesbotClient from '../Client';
 
 export default (client: HeroesbotClient) => {
@@ -29,39 +27,6 @@ export default (client: HeroesbotClient) => {
       }
 
       switch (changedRole.name) {
-      case 'Muted': {
-        const mutedFileLoc = path.join(__dirname, '../Data/Muted.json');
-        fs.readFile(mutedFileLoc, { encoding: 'utf8' }).then((data) => {
-          let mutes;
-
-          try {
-            mutes = JSON.parse(data);
-          } catch (error) {
-            throw Error('Unable to parse JSON object');
-          }
-  
-          if (addedRole) {
-            const mutedMember = {
-              username: member.user.username,
-              startDate: new Date(Date.now())
-            };
-  
-            if (!mutes[guild.id]) {
-              mutes[guild.id] = {
-                guildName: guild.name
-              };
-            }
-            mutes[guild.id][member.user.id] = mutedMember;
-          } else {
-            delete mutes[guild.id][member.user.id];
-          }
-  
-          return fs.writeFile(mutedFileLoc, JSON.stringify(mutes, null, 2));
-        }).catch((error) => {
-          Logger.error('Unable to update muted list', error);
-        });
-        break;
-      }
       case 'Patreon Superhero':
       case 'Patreon VIP':
       case 'Twitch Subscriber':
