@@ -11,7 +11,7 @@ export default (client: HeroesbotClient) => {
 
       const interactionName = interaction.data.name;
 
-      const interactionToExecute = client.interactionCommands.get(interactionName);
+      const interactionToExecute = client.guildInteractionCommands.get(interactionName) || client.globalInteractionCommands.get(interactionName);
 
       if (interactionToExecute) {
         interactionToExecute.execute(interaction);

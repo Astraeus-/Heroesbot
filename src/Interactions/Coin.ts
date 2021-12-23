@@ -8,10 +8,12 @@ export default class Coin extends BaseInteraction {
   constructor() {
     const name = 'Coin';
     const description = 'Flips a coin';
+    const global = true;
     const type = Eris.Constants.ApplicationCommandTypes.CHAT_INPUT;
     const options = new Array<Eris.ApplicationCommandOptions>();
+    const permissions = new Array<Eris.ApplicationCommandPermissions>();
 
-    super(name, description, options, type);
+    super(name, description, options, type, permissions, global);
   }
 
   async execute (interaction: Eris.CommandInteraction) {

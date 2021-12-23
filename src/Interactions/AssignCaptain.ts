@@ -10,10 +10,26 @@ export default class AssignCaptain extends BaseInteraction {
     const name = 'AssignCaptain';
     const description = 'Assign the captain role to all team captains';
     const type = Eris.Constants.ApplicationCommandTypes.CHAT_INPUT;
-    const enabled = false;
     const options = new Array<Eris.ApplicationCommandOptions>();
+    const permissions: Eris.ApplicationCommandPermissions[] = [
+      {
+        id: '200988760027037698', // Lounge master
+        type: Constants.ApplicationCommandPermissionTypes.ROLE,
+        permission: true,
+      },
+      {
+        id: '386451356908781568', // Board
+        type: Constants.ApplicationCommandPermissionTypes.ROLE,
+        permission: true,
+      },
+      {
+        id: '494793884942073856', // Managers
+        type: Constants.ApplicationCommandPermissionTypes.ROLE,
+        permission: true,
+      },
+    ];
 
-    super(name, description, options, type, enabled);
+    super(name, description, options, type, permissions);
   }
 
   async execute (interaction: Eris.CommandInteraction) {
