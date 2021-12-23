@@ -1,14 +1,8 @@
-import { promises as fs } from 'fs';
-import path from 'path';
-
 import { Logger } from '../util';
-import { webhooks, embedDefault, defaultServer } from '../config';
+import { defaultServer } from '../config';
 import heroesloungeApi from '../Classes/HeroesLounge';
-import WebhookClient from '../Classes/WebhookClient';
 import HeroesbotClient from '../Client';
 import { Sloth } from 'heroeslounge-api';
-
-const webhook = new WebhookClient(webhooks.moderatorLogs.id, webhooks.moderatorLogs.token);
 
 export default (client: HeroesbotClient) => {
   client.on('guildMemberAdd', (guild, member) => {
@@ -36,45 +30,7 @@ export default (client: HeroesbotClient) => {
         }
       }).catch((error: Error) => {
         Logger.error('Unable to verify sloth on website', error);
-      });
-
-      // Check if the member is not trying to circumvent their mute.
-      fs.readFile(path.join(__dirname, '../Data/Muted.json'), { encoding: 'utf8' }).then((data) => {
-        let parsedData;
-        try {
-          parsedData = JSON.parse(data);
-        } catch (error) {
-          throw Error('Unable to parse JSON object');
-        }
-
-        const guildData = parsedData[guild.id];
-        if (guildData) {
-          const isMutedMember = Object.keys(guildData).some((d) => d === member.user.id);
-
-          if (isMutedMember) {
-            const mutedRole = guild.roles.find((role) => {
-              return role.name === 'Muted';
-            });
-
-            if (!mutedRole) {
-              Logger.warn(`Unable to find muted role to assign to ${member.user.username}`);
-              return;
-            }
-    
-            guild.addMemberRole(member.user.id, mutedRole.id, 'Attempted to circumvent mute').catch((error) => {
-              Logger.error(`Unable to reassign muted role to ${member.user.username}`, error);
-            });
-            webhook.send({
-              title: 'Attempt at avoiding mute',
-              color: embedDefault.color,
-              description: `:exclamation: User ${member.user.username} attempted to circumvent their mute on ${guild.name}`,
-              type: 'rich',
-            });
-          }
-        }
-      }).catch((error) => {
-        Logger.warn(`Unable to check mute ${member.user.username}#${member.user.discriminator}`, error);
-      });      
+      });    
     }
   });
 };
