@@ -126,4 +126,14 @@ export default class AssignRegion extends BaseInteraction {
       return 'Region role synchronisation complete';
     });
   }
+
+  public static async cronSync(guild?: Guild) {
+    if (!guild) {
+      Logger.warn('Scheduled Region Role Sync: Unknown guild');
+      return;
+    }
+
+    const command = new AssignRegion();
+    command.syncRegionRoles(guild);
+  }
 }

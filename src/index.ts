@@ -1,6 +1,9 @@
+import cron from 'node-cron';
+
 import HeroesbotClient from '../src/Client';
 import Client from '../src/Client';
-import { token } from '../src/config';
+import { defaultServer, env, token } from '../src/config';
+import { AssignRegion } from './Interactions';
 
 const client: HeroesbotClient = new Client(token, {
   getAllUsers: true,
@@ -24,14 +27,14 @@ const client: HeroesbotClient = new Client(token, {
   ]
 });
 
-// const regionTask = cron.schedule('0 0 * * Wed', () => {
-//   if (env === 'production') {
-//     HeroesbotClient.interactionCommands.get('assignregion').exec();
-//   }
-// }, {
-//   scheduled: false
-// });
+const regionTask = cron.schedule('0 0 * * Wed', () => {
+  if (env === 'production') {
+    AssignRegion.cronSync(client.guilds.get(defaultServer));
+  }
+}, {
+  scheduled: false
+});
 
 client.launch().then(() => {
-  // regionTask.start();
+  regionTask.start();
 });
