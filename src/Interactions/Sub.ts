@@ -45,7 +45,7 @@ export default class Sub extends BaseInteraction {
     }
 
     const guild = interaction.channel.guild;
-    const specifiedRole = guild.roles.get(specifiedSubRole);
+    const specifiedRole = guild.roles.find(role => role.name === specifiedSubRole);
 
     if (!specifiedRole) {
       return interaction.createMessage({
