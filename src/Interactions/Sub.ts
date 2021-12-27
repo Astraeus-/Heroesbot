@@ -64,10 +64,10 @@ export default class Sub extends BaseInteraction {
     let status = '';
     if (interaction.member.roles.includes(specifiedRole.id)) {
       interaction.member.removeRole(specifiedRole.id);
-      status = 'removed';
+      status = 'Removed';
     } else {
       interaction.member.addRole(specifiedRole.id);
-      status = 'added';
+      status = 'Added';
     }
 
     return interaction.createMessage({
