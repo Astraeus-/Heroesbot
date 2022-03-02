@@ -21,7 +21,7 @@ export default (client: HeroesbotClient) => {
       }
 
       // Checks that the last entry is deleting from the same user that deleted this message
-      if (message.author.id === entry.targetID) {
+      if (message.author?.id === entry.targetID) {
         const webhookResponse = {
           title: 'Message Delete',
           color: 16711680,
