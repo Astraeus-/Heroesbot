@@ -1,5 +1,4 @@
 import Eris, { Constants } from 'eris';
-import dateformat from 'date-fns/format';
 import HeroesloungeApi from '../Classes/HeroesLounge';
 import BaseInteraction from '../Classes/BaseInteraction';
 import { Logger, regions } from '../util';
@@ -136,15 +135,23 @@ export default class Casts extends BaseInteraction {
       fixture = `Heroes Lounge ${playoff ? playoff.title : ''}${division && (typeof division !== 'string') ? `${division.title}` : ''}`;
 
       const dateElements = matches[match].wbp.match(/\d+/g);
-      const localMatchTime = new Date(Date.UTC(
+      const localMatchTime = Date.UTC(
         Number.parseInt(dateElements![0]),
         Number.parseInt(dateElements![1]) - 1,
         Number.parseInt(dateElements![2]),
         Number.parseInt(dateElements![3]),
         Number.parseInt(dateElements![4]),
         Number.parseInt(dateElements![5])
-      ));
-      const time = specifiedRegion === 'na' ? dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'hh:mm a') : dateformat(new Date(localMatchTime.toLocaleString('Ger', { timeZone: timezone })), 'HH:mm:');
+      );
+
+      const locale = specifiedRegion === 'na' ? 'en-US' : 'en-GB';
+      const formatter = new Intl.DateTimeFormat(locale, {
+        hour: 'numeric', minute: 'numeric',
+        timeZone: timezone,
+        timeZoneName: 'short',
+      });
+
+      const time = formatter.format(localMatchTime);
 
       // Group all match statement with the same time together.
       if (match - previousCastedMatchOffset >= 0 && matches[match].wbp > matches[match - previousCastedMatchOffset].wbp) {
