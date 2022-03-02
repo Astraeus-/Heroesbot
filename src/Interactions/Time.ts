@@ -1,5 +1,4 @@
 import Eris from 'eris';
-import dateformat from 'date-fns/format';
 import BaseInteraction from '../Classes/BaseInteraction';
 
 export default class Time extends BaseInteraction {
@@ -14,7 +13,11 @@ export default class Time extends BaseInteraction {
   }
 
   execute (interaction: Eris.CommandInteraction) {
-    const timestamp = dateformat(Date.now(), 'hh:mm:ss a');
+    const timestamp = new Intl.DateTimeFormat('en-US', {
+      hour: '2-digit',
+      minute: 'numeric',
+      second: 'numeric',
+    }).format(Date.now());
         
     interaction.createMessage(`The current time is ${timestamp}`);
   }
