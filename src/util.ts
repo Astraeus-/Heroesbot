@@ -1,20 +1,28 @@
-import dateformat from 'date-fns/format';
 import { env } from './config';
 import { Region } from './types';
 
+const formatter = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: 'numeric',
+  second: 'numeric',
+});
+
 export const Logger = {
   info: (msg: string) => {
-    console.log(`${dateformat(Date.now(), 'dd/MM/yyyy hh:mm:ss a')}|`, msg);
+    console.log(`${formatter.format(Date.now())}|`, msg);
   },
   warn: (msg: string, warning?: object) => {
-    console.warn(`${dateformat(Date.now(), 'dd/MM/yyyy hh:mm:ss a')}| ${msg}\n`, warning);
+    console.warn(`${formatter.format(Date.now())}| ${msg}\n`, warning);
   },
   error: (msg: string, error: object) => {
-    console.error(`${dateformat(Date.now(), 'dd/MM/yyyy hh:mm:ss a')}| ${msg}\n`, error);
+    console.error(`${formatter.format(Date.now())}| ${msg}\n`, error);
   },
   debug: (msg: string, error?: object) => {
     if (env === 'debug') {
-      console.log(`${dateformat(Date.now(), 'dd/MM/yyyy hh:mm:ss a')}| ${msg}\n`, error);
+      console.log(`${formatter.format(Date.now())}| ${msg}\n`, error);
     }
   }
 };
