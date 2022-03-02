@@ -3,6 +3,7 @@ import HP from 'heroesprofile-api';
 import BaseInteraction from '../Classes/BaseInteraction';
 import MMRCalculator from '../Classes/MMRCalculator';
 import { embedDefault, hpApiKey } from '../config';
+import { GameDataObject, GameMode, GameModeDataActive } from '../types';
 import { Logger, regions } from '../util';
 
 export default class Checkbattletag extends BaseInteraction {
@@ -65,8 +66,8 @@ export default class Checkbattletag extends BaseInteraction {
     }
 
     embed.title = `${battletag}\nRegion: ${specifiedRegion}`;
-    const leaderboardData: any = data[battletag];
-    const ratings: Map<string, any> = MMRCalculator.getRatingsHeroesProfile(leaderboardData);
+    const leaderboardData: GameDataObject = data[battletag];
+    const ratings: Map<GameMode, GameModeDataActive> = MMRCalculator.getRatingsHeroesProfile(leaderboardData);
     const averageMMR: number = MMRCalculator.calculateHeroesProfileAverageMMR(ratings);
 
     const playerProfile = await HpHandler.getPlayer(battletag, blizzardRegionID).catch((error: Error) => Logger.warn('Unable to retrieve Heroes Profile player details', error));
