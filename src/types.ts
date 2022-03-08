@@ -1,8 +1,18 @@
+import { Sloth } from 'heroeslounge-api';
+
 export interface Region {
     name: string;
     timezone: string | null;
     heroesloungeId: 1 | 2 | null;
     blizzardRegion: '1' | '2' | '3' | '5';
+}
+
+export interface Caster extends Sloth {
+  pivot: {
+    match_id: number;
+    caster_id: number;
+    approved: 0 | 1 | 2;
+  }
 }
 
 export type GameMode = 'Quick Match' | 'Unranked Draft' | 'Hero League' | 'Team League' | 'Storm League';

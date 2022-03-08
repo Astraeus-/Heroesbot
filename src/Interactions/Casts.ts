@@ -2,7 +2,8 @@ import Eris, { Constants } from 'eris';
 import HeroesloungeApi from '../Classes/HeroesLounge';
 import BaseInteraction from '../Classes/BaseInteraction';
 import { Logger, regions } from '../util';
-import { Playoff, Sloth, Team, TwitchChannel } from 'heroeslounge-api';
+import { Playoff, Team, TwitchChannel } from 'heroeslounge-api';
+import { Caster } from '../types';
 
 export default class Casts extends BaseInteraction {
   constructor() {
@@ -99,9 +100,13 @@ export default class Casts extends BaseInteraction {
 
       // Attach all of the casters to the casterList.
       if (casters) {
-        casters.forEach((caster: Sloth) => {
-          if (casterList.length > 0) casterList += ' and ';
-          casterList += `${caster.title}`;
+        casters.forEach((caster: Caster) => {
+          if (caster.pivot.approved === 1) {
+            if (casterList.length > 0)
+              casterList += ' and ';
+              
+            casterList += `${caster.title}`;
+          }          
         });
       }
 
@@ -126,7 +131,7 @@ export default class Casts extends BaseInteraction {
         }
       } else {
         if (division && division.playoff_id) {
-          playoff = await HeroesloungeApi.getPlayoff(division!.playoff_id).catch((error: Error) => {
+          playoff = await HeroesloungeApi.getPlayoff(division.playoff_id).catch((error: Error) => {
             Logger.warn('Unable to get playoff info', error);
           });
         }
@@ -136,12 +141,14 @@ export default class Casts extends BaseInteraction {
 
       const dateElements = matches[match].wbp.match(/\d+/g);
       const localMatchTime = Date.UTC(
+        /* eslint-disable  @typescript-eslint/no-non-null-assertion */
         Number.parseInt(dateElements![0]),
         Number.parseInt(dateElements![1]) - 1,
         Number.parseInt(dateElements![2]),
         Number.parseInt(dateElements![3]),
         Number.parseInt(dateElements![4]),
         Number.parseInt(dateElements![5])
+        /* eslint-enable  @typescript-eslint/no-non-null-assertion */
       );
 
       const locale = specifiedRegion === 'na' ? 'en-US' : 'en-GB';
