@@ -8,7 +8,7 @@ export interface Region {
 }
 
 export interface Caster extends Sloth {
-  pivot: {
+  pivot?: {
     match_id: number;
     caster_id: number;
     approved: 0 | 1 | 2;

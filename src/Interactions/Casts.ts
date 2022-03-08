@@ -101,10 +101,10 @@ export default class Casts extends BaseInteraction {
       // Attach all of the casters to the casterList.
       if (casters) {
         casters.forEach((caster: Caster) => {
-          if (caster.pivot.approved === 1) {
+          if (caster.pivot && caster.pivot.approved === 1) {
             if (casterList.length > 0)
               casterList += ' and ';
-              
+
             casterList += `${caster.title}`;
           }          
         });
