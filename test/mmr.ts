@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-import { Context, describe, it } from 'mocha';
+import { describe, it } from 'mocha';
 
 import MMRCalculator from '../src/Classes/MMRCalculator';
 
