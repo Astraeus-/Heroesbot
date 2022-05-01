@@ -174,10 +174,10 @@ export default class Casts extends BaseInteraction {
       }
 
       const leftTeam: Team = teams[0];
-      const teamLeftTitle = leftTeam !== null ? leftTeam.title : 'TBD';
+      const teamLeftTitle = leftTeam ? leftTeam.title : 'TBD';
 
       const rightTeam: Team = teams[1];
-      const teamRightTitle = rightTeam !== null ? rightTeam.title: 'TBD';
+      const teamRightTitle = rightTeam ? rightTeam.title: 'TBD';
 
       response += `**${casterList}** will be bringing you a ${fixture} match between *${teamLeftTitle}* and *${teamRightTitle}* on ${channelList}\n`;
       previousCastedMatchOffset = 1;
