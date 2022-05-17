@@ -22,9 +22,7 @@ export default class RollDice extends BaseInteraction {
       }
     ];
 
-    const permissions = new Array<Eris.ApplicationCommandPermissions>();
-
-    super(name, description, options, type, permissions, global);
+    super(name, description, options, type, global);
   }
 
   execute (interaction: Eris.CommandInteraction) {

@@ -33,9 +33,7 @@ export default class Checkbattletag extends BaseInteraction {
       }
     ];
 
-    const permissions = new Array<Eris.ApplicationCommandPermissions>();
-
-    super(name, description, options, type, permissions, global);
+    super(name, description, options, type, global);
   }
 
   async execute (interaction: Eris.CommandInteraction) {

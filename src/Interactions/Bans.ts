@@ -10,9 +10,8 @@ export default class Bans extends BaseInteraction {
     const description = 'Lists all of the current bans and bugs for the Amateur League';
     const type = Eris.Constants.ApplicationCommandTypes.CHAT_INPUT;
     const options = new Array<Eris.ApplicationCommandOptions>();
-    const permissions = new Array<Eris.ApplicationCommandPermissions>();
 
-    super(name, description, options, type, permissions);
+    super(name, description, options, type);
   }
 
   async execute (interaction: Eris.CommandInteraction) {

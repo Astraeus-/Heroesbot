@@ -1,6 +1,5 @@
 import Eris from 'eris';
 import BaseInteraction from './Classes/BaseInteraction';
-import { defaultServer } from './config';
 
 import * as Events from './Events';
 import * as Interactions from './Interactions';
@@ -41,20 +40,7 @@ export default class HeroesbotClient extends Eris.Client {
     const globalInteractionsArray : Eris.ApplicationCommandStructure[] = Array.from(this.globalInteractionCommands.values());
 
     Logger.info(`Loaded ${globalInteractionsArray.length + guildInteractionsArray.length} commands`);
-
-    const guildCommands = await this.bulkEditGuildCommands(defaultServer, guildInteractionsArray);
     await this.bulkEditCommands(globalInteractionsArray);
-
-    // Heroes Lounge Guild
-    if (defaultServer === '200267155479068672') {
-      for (const command of guildCommands) {
-        const matchingInteraction = this.guildInteractionCommands.get(command.name);
-        
-        if (matchingInteraction && matchingInteraction.permissions.length > 0) {
-          await this.editCommandPermissions(defaultServer, command.id, matchingInteraction.permissions);
-        }
-      }
-    }
   }
 
   async loadEvents() {

@@ -8,9 +8,8 @@ export default class CoCaster extends BaseInteraction {
     const description = 'Add or remove yourself from the CoCaster group';
     const type = Eris.Constants.ApplicationCommandTypes.CHAT_INPUT;
     const options = new Array<Eris.ApplicationCommandOptions>();
-    const permissions = new Array<Eris.ApplicationCommandPermissions>();
 
-    super(name, description, options, type, permissions);
+    super(name, description, options, type);
   }
 
   execute (interaction: Eris.CommandInteraction) {    

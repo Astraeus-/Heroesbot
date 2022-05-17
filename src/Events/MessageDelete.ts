@@ -25,7 +25,7 @@ export default (client: HeroesbotClient) => {
         const webhookResponse = {
           title: 'Message Delete',
           color: 16711680,
-          description: `Deleted by: ${entry.user.username}\nChannel: ${entry.channel!.name}`,
+          description: `Deleted by: ${entry.user.username}\nChannel: ${entry.channel?.name}`,
           type: 'rich',
         };
 
@@ -57,7 +57,7 @@ export default (client: HeroesbotClient) => {
           webhook.send(webhookResponse, embeds);
         }
       }
-    } catch (error: any) {
+    } catch (error) {
       Logger.warn(`Unable to retrieve audit logs for guild: ${message.channel.guild.name}`, error);
     }
   });

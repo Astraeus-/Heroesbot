@@ -8,9 +8,8 @@ export default class Match extends BaseInteraction {
     const description = 'Determines whether you have map pick or first pick';
     const type = Eris.Constants.ApplicationCommandTypes.CHAT_INPUT;
     const options = new Array<Eris.ApplicationCommandOptions>();
-    const permissions = new Array<Eris.ApplicationCommandPermissions>();
 
-    super(name, description, options, type, permissions);
+    super(name, description, options, type);
   }
 
   execute (interaction: Eris.CommandInteraction) {
