@@ -57,7 +57,7 @@ export default (client: HeroesbotClient) => {
           webhook.send(webhookResponse, embeds);
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       Logger.warn(`Unable to retrieve audit logs for guild: ${message.channel.guild.name}`, error);
     }
   });

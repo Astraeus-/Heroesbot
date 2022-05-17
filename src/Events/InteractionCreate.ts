@@ -16,7 +16,7 @@ export default (client: HeroesbotClient) => {
       if (interactionToExecute) {
         try {
           interactionToExecute.execute(interaction);
-        } catch (error) {
+        } catch (error: any) {
           Logger.error(`Could not execute interaction ${interaction.data.name}`, error);
         }
       }
