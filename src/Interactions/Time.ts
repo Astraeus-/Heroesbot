@@ -18,6 +18,6 @@ export default class Time extends BaseInteraction {
       second: 'numeric',
     }).format(Date.now());
         
-    interaction.createMessage(`The current time is ${timestamp}`);
+    return interaction.createMessage(`The current time is ${timestamp}`);
   }
 }

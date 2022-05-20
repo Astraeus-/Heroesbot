@@ -12,6 +12,6 @@ export default class Ping extends BaseInteraction {
   }
 
   execute (interaction: Eris.CommandInteraction) {
-    interaction.createMessage({content: 'Pong', flags: Constants.MessageFlags.EPHEMERAL});
+    return interaction.createMessage({content: 'Pong', flags: Constants.MessageFlags.EPHEMERAL});
   }
 }

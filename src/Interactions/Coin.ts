@@ -19,7 +19,7 @@ export default class Coin extends BaseInteraction {
     const output = Math.random() >= 0.5 ? 'heads' : 'tails';
     const imageFile = await fs.readFile(path.join(__dirname, `../Data/Images/${output}.png`));
 
-    interaction.createMessage('', {
+    return interaction.createMessage('', {
       file: imageFile,
       name: `${output}.png`,
     });

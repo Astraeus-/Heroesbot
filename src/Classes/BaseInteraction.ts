@@ -1,4 +1,5 @@
 import Eris, {CommandInteraction, Constants, Interaction} from 'eris';
+import { InteractionResponse } from '../types';
 
 export default abstract class BaseInteraction {
     name: string;
@@ -20,7 +21,7 @@ export default abstract class BaseInteraction {
       this.global = global ?? false;
     }
 
-    abstract execute(interaction: Interaction): void;
+    abstract execute(interaction: Interaction): InteractionResponse;
 
     protected getNumberValueFromCommandInteraction(name: string, interaction: CommandInteraction): number | null {
       const options = interaction.data.options;

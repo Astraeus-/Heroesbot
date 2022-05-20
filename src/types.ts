@@ -1,3 +1,4 @@
+import Eris from 'eris';
 import { Sloth } from 'heroeslounge-api';
 
 export interface Region {
@@ -29,3 +30,5 @@ export interface GameModeDataActive extends GameModeData {
 }
 
 export type GameDataObject = {[Key: string]: GameModeData}
+
+export type InteractionResponse = Promise<void> | Promise<Eris.Message<Eris.TextableChannel> | undefined>;

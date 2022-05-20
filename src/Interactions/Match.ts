@@ -22,8 +22,9 @@ export default class Match extends BaseInteraction {
     };
 
     const author = interaction.guildID ? interaction.member : interaction.user;
-        
-    if (!author) return;
+
+    if (!author)
+      return interaction.createFollowup('Unknown caller');
 
     const map = '```\n' + author.username + ': Map pick \nOpponent: First pick \n```\n' + author.username + ', please ban a map first.';
     const pick = '```\n' + author.username + ': First pick \nOpponent: Map pick \n```\nOpponent, please ban a map first.';
@@ -31,6 +32,6 @@ export default class Match extends BaseInteraction {
     embed.description += 'The draft order has been randomly determined:\n';
     embed.description += Math.random() >= 0.5 ? map : pick;
 
-    interaction.createMessage({embeds: [embed]});
+    return interaction.createMessage({embeds: [embed]});
   }
 }

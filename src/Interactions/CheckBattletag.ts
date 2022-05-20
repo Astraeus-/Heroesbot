@@ -37,7 +37,7 @@ export default class Checkbattletag extends BaseInteraction {
   }
 
   async execute (interaction: Eris.CommandInteraction) {
-    interaction.acknowledge(Constants.MessageFlags.EPHEMERAL);
+    await interaction.acknowledge(Constants.MessageFlags.EPHEMERAL);
     const embed: EmbedOptions = {
       color: embedDefault.color,
       title: '',

@@ -3,7 +3,7 @@ import HeroesbotClient from '../Client';
 import { Logger } from '../util';
 
 export default (client: HeroesbotClient) => {
-  client.on('interactionCreate', (interaction) => {        
+  client.on('interactionCreate', async (interaction) => {        
     if (!client.ready) return;
 
     if (interaction instanceof CommandInteraction) {
@@ -15,9 +15,9 @@ export default (client: HeroesbotClient) => {
 
       if (interactionToExecute) {
         try {
-          interactionToExecute.execute(interaction);
+          await interactionToExecute.execute(interaction);
         } catch (error: any) {
-          Logger.error(`Could not execute interaction ${interaction.data.name}`, error);
+          Logger.error(`Could not execute interaction: '${interaction.data.name}'`, error);
         }
       }
     } else {
