@@ -7,8 +7,8 @@ import { Logger } from './util';
 
 export default class HeroesbotClient extends Eris.Client {
   startingUp = true;
-  globalInteractionCommands: Map<string, BaseInteraction>
-  guildInteractionCommands: Map<string, BaseInteraction>
+  globalInteractionCommands: Map<string, BaseInteraction>;
+  guildInteractionCommands: Map<string, BaseInteraction>;
 
   constructor(token: string, options: Eris.ClientOptions) {
     super(token, options);

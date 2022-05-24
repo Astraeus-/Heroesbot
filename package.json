@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/Astraeus-/Heroesbot#readme",
   "dependencies": {
-    "dotenv": "^8.2.0",
+    "dotenv": "^16.0.1",
     "eris": "^0.16.1",
     "heroeslounge-api": "^3.1.1",
     "heroesprofile-api": "^0.2.1",
@@ -36,8 +36,8 @@
     "@typescript-eslint/eslint-plugin": "^5.5.0",
     "@typescript-eslint/parser": "^5.5.0",
     "chai": "^4.2.0",
-    "eslint": "^7.32.0",
-    "mocha": "^7.2.0",
+    "eslint": "^8.16.0",
+    "mocha": "^10.0.0",
     "typescript": "^4.5.2"
   }
 }
