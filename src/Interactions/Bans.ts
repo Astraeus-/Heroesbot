@@ -53,7 +53,7 @@ export default class Bans extends BaseInteraction {
 
     for (const ban of bans) {
       if (ban.literal) {
-        embed.fields[1]!.value += `-${ban.literal}\n`;
+        embed.fields[1].value += `-${ban.literal}\n`;
       } else {
         if (ban.talent_id && ban.hero_id) {
           const talent = await HeroesLoungeApi.getTalent(ban.talent_id).catch((error) => {
@@ -63,7 +63,7 @@ export default class Bans extends BaseInteraction {
             Logger.warn('Unable to get hero info', error);
           });
           if (hero && talent) {
-            embed.fields[2]!.value += `-${hero.title}- ${talent.title}\n`;
+            embed.fields[2].value += `-${hero.title}- ${talent.title}\n`;
           }
         } else if (ban.hero_id) {
           const hero = await HeroesLoungeApi.getHero(ban.hero_id).catch((error) => {
@@ -76,14 +76,14 @@ export default class Bans extends BaseInteraction {
             if (ban.round_start && ban.round_length) {
               roundInfo = `Rounds[${ban.round_start}-${ban.round_start + ban.round_length}]`;
             }
-            embed!.fields[0]!.value += `-${hero.title} ${roundInfo}\n`;
+            embed.fields[0].value += `-${hero.title} ${roundInfo}\n`;
           }
         }
       }
     }
 
     for (const field in embed.fields) {
-      if (embed.fields[field]!.value.length === 0) embed.fields[field]!.value += '-None';
+      if (embed.fields[field].value.length === 0) embed.fields[field].value += '-None';
     }
 
     return interaction.createFollowup({embeds: [embed]});
