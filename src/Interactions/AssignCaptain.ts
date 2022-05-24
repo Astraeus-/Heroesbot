@@ -1,5 +1,5 @@
 import Eris, { Constants, Guild, GuildChannel } from 'eris';
-import { TeamSloth } from 'heroeslounge-api';
+import { Team } from 'heroeslounge-api';
 import BaseInteraction from '../Classes/BaseInteraction';
 import HeroesLoungeApi from '../Classes/HeroesLounge';
 import { defaultServer } from '../config';
@@ -36,7 +36,6 @@ export default class AssignCaptain extends BaseInteraction {
 
   async syncCaptains(guild: Guild) {
     Logger.info('Synchronising captain roles');
-
     const teams = await this.getParticipatingTeams();
 
     let errorMessage = '';
@@ -46,43 +45,45 @@ export default class AssignCaptain extends BaseInteraction {
       return role.name === 'Captains';
     });
 
+    if (!captainRole) {
+      return {
+        updatedCaptainCounter: 0,
+        errorMessage: 'Unknown \'Captains\' role',
+      };
+    }
+
     for (const team of teams) {
-      if (team.sloths && team.sloths.length > 0 && team.disbanded === 0) {
-        let captainSloth: TeamSloth | null = null;
-
-        for (const sloth of team.sloths) {
-          if (sloth.pivot.is_captain === 1) {
-            captainSloth = sloth;
-            break;
-          }
-        }
-
-        if (captainSloth === null) {
-          errorMessage += `No captain for ${team.title}\n`;
-          continue;
-        }
-
-        if (captainSloth.discord_id.length > 0) {
-          const member = guild.members.get(captainSloth.discord_id);
-
-          if (member) {
-            if (member.roles.includes(captainRole!.id)) continue;
-
-            syncedSloths.push(
-              guild.addMemberRole(captainSloth!.discord_id, captainRole!.id).catch((error) => {
-                Logger.warn(`Unable to assign captain for team ${team.title} user ${captainSloth!.title}`, error);
-                errorMessage += `Unable to assign captain for team ${team.title} user ${captainSloth!.title}\n`;
-              })
-            );
-          } else {
-            errorMessage += `Captain not on discord for ${team.title} member ${captainSloth.title}\n`;
-          }
-        } else {
-          errorMessage += `No discord id for ${team.sloths[0].title} from ${team.title}\n`;
-        }
-      } else {
+      if (!team.sloths || team.sloths.length === 0 || team.disbanded === 1) {
         errorMessage += `No sloths for ${team.title}\n`;
+        continue;
       }
+
+      const captainSloth = team.sloths.find(sloth => sloth.pivot.is_captain === 1);
+      if (!captainSloth) {
+        errorMessage += `No captain for ${team.title}\n`;
+        continue;
+      }
+
+      if (captainSloth.discord_id.length === 0) {
+        errorMessage += `No discord id for ${team.sloths[0].title} from ${team.title}\n`;
+        continue;
+      }
+
+      const member = guild.members.get(captainSloth.discord_id);
+      if (!member) {
+        errorMessage += `Captain not on discord for ${team.title} member ${captainSloth.title}\n`;
+        continue;
+      }
+
+      // Check if the Discord member already is a captain
+      if (member.roles.includes(captainRole.id)) continue;
+
+      const syncTask = guild.addMemberRole(captainSloth.discord_id, captainRole.id).catch((error) => {
+        Logger.warn(`Unable to assign captain for team ${team.title} user ${captainSloth.title}`, error);
+        errorMessage += `Unable to assign captain for team ${team.title} user ${captainSloth.title}\n`;
+      });
+
+      syncedSloths.push(syncTask);
     }
 
     return Promise.all(syncedSloths).then(() => {
@@ -99,7 +100,7 @@ export default class AssignCaptain extends BaseInteraction {
       throw error;
     });
   
-    let teamsByRegion: any[] = [];
+    const teamsByRegion: Promise<Team[]>[] = [];
     let seasonCounter = 0;
   
     for (let i = seasons.length - 1; i >= 0; i--) {
@@ -107,7 +108,7 @@ export default class AssignCaptain extends BaseInteraction {
       if (seasons[i].type !== 1) continue; // Only sync Amateur Series seasons.
   
       if (seasons[i].is_active === 1 && seasons[i].reg_open === 0) {
-        teamsByRegion = [...teamsByRegion, HeroesLoungeApi.getSeasonTeams(seasons[i].id)];
+        teamsByRegion.push(HeroesLoungeApi.getSeasonTeams(seasons[i].id));
         seasonCounter++;
       } else if (seasons[i].is_active === 1 && seasons[i].reg_open === 1) {
         seasonCounter++;
@@ -115,12 +116,7 @@ export default class AssignCaptain extends BaseInteraction {
     }
   
     return Promise.all(teamsByRegion).then((regionTeams) => {
-      let teams: any[] = [];
-      for (let i = 0; i < regionTeams.length; i++) {
-        teams = [...teams, ...regionTeams[i]];
-      }
-  
-      return teams;
+      return regionTeams.flat();
     });
   }
 }
