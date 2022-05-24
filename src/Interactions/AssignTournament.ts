@@ -1,9 +1,9 @@
 import Eris, {Constants, GuildChannel, TextChannel} from 'eris';
 import BaseInteraction from '../Classes/BaseInteraction';
 import {Logger} from '../util';
-import { Team, TeamSloth } from 'heroeslounge-api';
 import HeroesLoungeApi from '../Classes/HeroesLounge';
 import {defaultServer} from '../config';
+import { Team } from 'heroeslounge-api';
 
 export default class AssignTournament extends BaseInteraction {
   constructor() {
@@ -55,8 +55,13 @@ export default class AssignTournament extends BaseInteraction {
     }
 
     const botClient = interaction.channel.guild.members.get(interaction.channel.client.user.id);
+    if (!botClient)
+      return interaction.createFollowup({
+        content: 'Could not find self',
+        flags: Constants.MessageFlags.EPHEMERAL,
+      });
 
-    if (!botClient!.permissions.has('manageChannels') || !syncChannel.permissionsOf(botClient!.id).has('manageRoles')) {
+    if (!botClient.permissions.has('manageChannels') || !syncChannel.permissionsOf(botClient.id).has('manageRoles')) {
       return interaction.createFollowup({
         content: 'Unable to update captains.\nHeroesbot missing permission: manageChannels',
         flags: Constants.MessageFlags.EPHEMERAL,
@@ -73,8 +78,7 @@ export default class AssignTournament extends BaseInteraction {
 
   async syncAramCaptainLounge(playoffID: number, syncChannel: GuildChannel) {
     Logger.info('Synchronising Aram Captains Lounge');
-
-    const teams: Team[] = (await this.getAramTeams(playoffID)).flat();
+    const teams = await this.getAramTeams(playoffID);
 
     let errorMessage = '';
     const syncedCaptains = [];
@@ -87,40 +91,34 @@ export default class AssignTournament extends BaseInteraction {
     });
 
     for (const team of teams) {
-      if (team.sloths && team.sloths.length > 0 && team.disbanded === 0) {
-        let captainSloth: TeamSloth | null = null;
-
-        for (const sloth of team.sloths) {
-          if (sloth.pivot.is_captain === 1) {
-            captainSloth = sloth;
-            break;
-          }
-        }
-
-        if (captainSloth == null) {
-          errorMessage += `No captain for ${team.title}\n`;
-          continue;
-        }
-
-        if (captainSloth.discord_id.length > 0) {
-          const member = syncChannel.guild.members.get(captainSloth.discord_id);
-
-          if (member) {
-            syncedCaptains.push(
-              syncChannel.editPermission(captainSloth.discord_id, 1024, 0, Constants.PermissionOverwriteTypes.USER).catch((error) => {
-                Logger.warn(`Unable to add captain to ${syncChannel.name} ${team.title} user ${captainSloth!.title}`, error);
-                errorMessage += `Unable to add captain to ${syncChannel.name} ${team.title} user ${captainSloth!.title}\n`;
-              })
-            );
-          } else {
-            errorMessage += `Captain not on discord for ${team.title} member ${captainSloth.title}\n`;
-          }
-        } else {
-          errorMessage += `No discord id for ${team.sloths[0].title} from ${team.title}\n`;
-        }
-      } else {
+      if (!team.sloths || team.sloths.length === 0 || team.disbanded === 1) {
         errorMessage += `No sloths for ${team.title}\n`;
+        continue;
       }
+
+      const captainSloth = team.sloths.find(sloth => sloth.pivot.is_captain === 1);
+      if (!captainSloth) {
+        errorMessage += `No captain for ${team.title}\n`;
+        continue;
+      }
+
+      if (captainSloth.discord_id.length === 0) {
+        errorMessage += `No discord id for ${team.sloths[0].title} from ${team.title}\n`;
+        continue;
+      }
+
+      const member = syncChannel.guild.members.get(captainSloth.discord_id);
+      if (!member) {
+        errorMessage += `Captain not on discord for ${team.title} member ${captainSloth.title}\n`;
+        continue;
+      }
+
+      const syncTask = syncChannel.editPermission(captainSloth.discord_id, 1024, 0, Constants.PermissionOverwriteTypes.USER).catch((error) => {
+        Logger.warn(`Unable to add captain to ${syncChannel.name} ${team.title} user ${captainSloth.title}`, error);
+        errorMessage += `Unable to add captain to ${syncChannel.name} ${team.title} user ${captainSloth.title}\n`;
+      });
+
+      syncedCaptains.push(syncTask);
     }
 
     return Promise.all(syncedCaptains).then(() => {
@@ -134,12 +132,14 @@ export default class AssignTournament extends BaseInteraction {
   
   async getAramTeams(playoffID: number) {
     const playoffDivisions = await HeroesLoungeApi.getPlayoffDivisions(playoffID);
-    const teams = [];
+    const teamsByDivision: Promise<Team[]>[] = [];
   
     for (const division of playoffDivisions) {
-      teams.push(HeroesLoungeApi.getDivisionTeams(division.id));
+      teamsByDivision.push(HeroesLoungeApi.getDivisionTeams(division.id));
     }
   
-    return Promise.all(teams);
+    return Promise.all(teamsByDivision).then((divisionTeams) => {
+      return divisionTeams.flat();
+    });
   }
 }
