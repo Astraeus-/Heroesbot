@@ -70,8 +70,12 @@ export default class AssignRegion extends BaseInteraction {
       const member = guild.members.get(currentSloth.discord_id);
       if (!member) continue;
 
-      const EU = regionDiscordRoleIDs.get('eu')!;
-      const NA = regionDiscordRoleIDs.get('na')!;
+      const EU = regionDiscordRoleIDs.get('eu');
+      const NA = regionDiscordRoleIDs.get('na');
+
+      if (!EU || !NA) {
+        throw Error('Could not find region roles');
+      }
       
       let regionRoleID : string;
       if (currentSloth.region_id === 1) {
