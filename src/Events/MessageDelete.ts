@@ -1,10 +1,7 @@
-import { defaultServer, webhooks, env } from '../config';
+import { defaultServer, webhooks } from '../config';
 import { Logger } from '../util';
-import WebhookClient from '../Classes/WebhookClient';
 import HeroesbotClient from '../Client';
 import Eris, { GuildChannel, Message } from 'eris';
-
-const webhook = new WebhookClient(webhooks.moderatorLogs.id, webhooks.moderatorLogs.token);
 
 export default (client: HeroesbotClient) => {
   client.on('messageDelete', async (message: Message) => {
@@ -29,8 +26,10 @@ export default (client: HeroesbotClient) => {
           type: 'rich',
         };
 
-        const embeds: Eris.Embed[] = [
-          {
+        const embeds: Eris.Embed[] = [webhookResponse];
+
+        if (message.content.length > 0) {
+          embeds.push({
             title: 'Message',
             color: 16711680,
             description: message.cleanContent,
@@ -39,8 +38,8 @@ export default (client: HeroesbotClient) => {
               icon_url: `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png`,
               text: `${message.author.username}#${message.author.discriminator}`
             }
-          }
-        ];
+          });
+        }
 
         if (message.attachments.length > 0) {
           for (const attachment of message.attachments) {
@@ -52,10 +51,10 @@ export default (client: HeroesbotClient) => {
             });
           }
         }
-
-        if (env === 'production') {
-          webhook.send(webhookResponse, embeds);
-        }
+          
+        await client.executeWebhook(webhooks.moderatorLogs.id, webhooks.moderatorLogs.token, {
+          embeds,
+        });
       }
     } catch (error: any) {
       Logger.warn(`Unable to retrieve audit logs for guild: ${message.channel.guild.name}`, error);
