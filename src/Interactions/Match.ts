@@ -18,7 +18,7 @@ export default class Match extends BaseInteraction {
       footer: {
         text: 'If you require further assistance, contact one of our moderators',
       },
-      description: '[Amateur series rules](https://heroeslounge.gg/general/ruleset)\nAmateur Series teams ban two maps each, as according to their ruleset\n\n',
+      description: '[Amateur series rules](https://heroeslounge.gg/general/ruleset)\nAmateur Series teams ban three maps each, as according to their ruleset\n\n',
     };
 
     const author = interaction.guildID ? interaction.member : interaction.user;
