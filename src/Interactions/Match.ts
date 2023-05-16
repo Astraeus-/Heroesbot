@@ -18,7 +18,7 @@ export default class Match extends BaseInteraction {
       footer: {
         text: 'If you require further assistance, contact one of our moderators',
       },
-      description: '[Amateur series rules](https://heroeslounge.gg/general/ruleset)\nAmateur Series teams ban three maps each, as according to their ruleset\n\n',
+      description: '[Amateur series rules](https://heroeslounge.gg/general/ruleset)\nAmateur Series teams ban two maps each, as according to their ruleset\nThese maps are currently in the pool:\n\n-Alterac Pass\n-Battlefield of Eternity\n-Braxis Holdout\n-Cursed Hollow\n-Dragon Shire\n-Garden of Terror\n-Infernal Shrines\n-Sky Temple\n-Tomb of the Spider Queen\n-Towers of Doom\n-Volskaya Foundry\n',
     };
 
     const author = interaction.guildID ? interaction.member : interaction.user;
