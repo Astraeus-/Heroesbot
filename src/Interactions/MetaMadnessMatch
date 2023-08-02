@@ -1,0 +1,37 @@
+import Eris from 'eris';
+import BaseInteraction from '../Classes/BaseInteraction';
+import { embedDefault } from '../config';
+
+export default class MetaMadnessMatch extends BaseInteraction {
+  constructor() {
+    const name = 'MetaMadnessMatch';
+    const description = 'Determines whether you have map pick or first pick for meta madness.';
+    const type = Eris.Constants.ApplicationCommandTypes.CHAT_INPUT;
+    const options = new Array<Eris.ApplicationCommandOptions>();
+
+    super(name, description, options, type);
+  }
+
+  execute (interaction: Eris.CommandInteraction) {
+    const embed : Eris.EmbedOptions = {
+      color: embedDefault.color,
+      footer: {
+        text: 'If you require further assistance, contact one of our moderators',
+      },
+      description: '[Meta Madness series rules](https://heroeslounge.gg/meta-madness-ruleset)\nOffseason teams ban five heroes each and then two maps each.\nThe prebanned heroes are:\nAnduin, Blaze, Brightwing, Chromie, Dehaka, Hanzo, Hogger, Johanna, Sylvanas and Valla\nPls start continue banning heroes in the order:\n1.Map pick bans one hero\n2.First pick bans two heroes\n3.Map pick bans two heroes\n4.First pick bans two heroes\n5.Map pick bans two heroes\n6.First pick bans one hero\nAmateur Series teams ban two maps each, as according to their ruleset\nAnd then the maps like the regular season the map pool is:\n-Alterac Pass\n-Battlefield of Eternity\n-Braxis Holdout\n-Cursed Hollow\n-Dragon Shire\n-Garden of Terror\n-Infernal Shrines\n-Sky Temple\n-Tomb of the Spider Queen\n-Towers of Doom\n-Volskaya Foundry\n',
+    };
+
+    const author = interaction.guildID ? interaction.member : interaction.user;
+
+    if (!author)
+      return interaction.createFollowup('Unknown caller');
+
+    const map = '```\n' + author.username + ': Map pick \nOpponent: First pick \n```\n' + author.username + ', please ban a hero first.';
+    const pick = '```\n' + author.username + ': First pick \nOpponent: Map pick \n```\nOpponent, please ban a hero first.';
+    
+    embed.description += 'The draft order has been randomly determined:\n';
+    embed.description += Math.random() >= 0.5 ? map : pick;
+
+    return interaction.createMessage({embeds: [embed]});
+  }
+}
