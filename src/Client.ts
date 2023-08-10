@@ -4,6 +4,7 @@ import BaseInteraction from './Classes/BaseInteraction';
 import * as Events from './Events';
 import * as Interactions from './Interactions';
 import { Logger } from './util';
+import { defaultServer } from './config';
 
 export default class HeroesbotClient extends Eris.Client {
   startingUp = true;
@@ -39,8 +40,11 @@ export default class HeroesbotClient extends Eris.Client {
     const guildInteractionsArray : Eris.ApplicationCommandStructure[] = Array.from(this.guildInteractionCommands.values());
     const globalInteractionsArray : Eris.ApplicationCommandStructure[] = Array.from(this.globalInteractionCommands.values());
 
-    Logger.info(`Loaded ${globalInteractionsArray.length + guildInteractionsArray.length} commands`);
+    Logger.info(`Loaded ${globalInteractionsArray.length} global commands`);
     await this.bulkEditCommands(globalInteractionsArray);
+
+    Logger.info(`Loaded ${guildInteractionsArray.length} guild commands`);
+    await this.bulkEditGuildCommands(defaultServer, guildInteractionsArray);
   }
 
   async loadEvents() {
