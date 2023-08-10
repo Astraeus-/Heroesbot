@@ -14,7 +14,8 @@ export default class Match extends BaseInteraction {
         type: Constants.ApplicationCommandOptionTypes.STRING,
         required: false,
         choices: [
-          {name: 'Seaon', value: 'season'},
+          {name: 'Regular Seaon', value: 'season'},
+          {name: 'Regular Season Playoffs', value: 'playoff'},
           {name: 'Meta Madness', value: 'madness'},
         ]
       }
@@ -42,6 +43,9 @@ export default class Match extends BaseInteraction {
     case 'madness':
       this.madness(embed, author);
       break;
+    case 'playoff':
+      this.playoff(embed, author);
+      break;
     case 'season':
     default:
       this.season(embed, author);
@@ -56,15 +60,29 @@ export default class Match extends BaseInteraction {
     const pick = '```\n' + author.username + ': First pick \nOpponent: Map pick \n```\nOpponent, please ban a hero first.';
 
     embed.description = '[Meta Madness rules](https://heroeslounge.gg/meta-madness-ruleset)\nTeams ban five heroes each, two maps each, as according to their ruleset\n\nThe prebanned heroes are:\nAnduin\nBlaze\nBrightwing\nChromie\nDehaka\nHanzo\nHogger\nJohanna\nSylvanas\nValla\n\nThese maps are currently in the pool:\n-Alterac Pass\n-Battlefield of Eternity\n-Braxis Holdout\n-Cursed Hollow\n-Dragon Shire\n-Garden of Terror\n-Infernal Shrines\n-Sky Temple\n-Tomb of the Spider Queen\n-Towers of Doom\n-Volskaya Foundry\n\n';
+    embed.description += 'The format is **Bo3**\n\n';
     embed.description += 'The draft order has been randomly determined:\n';
     embed.description += Math.random() >= 0.5 ? map : pick;
+  }
+
+  playoff(embed: Eris.EmbedOptions, author: Eris.Member | Eris.User) {
+    const map = '```\n' + author.username + ': Map pick \nOpponent: First pick \n```\n' + author.username + ', please ban a map first.';
+    const pick = '```\n' + author.username + ': First pick \nOpponent: Map pick \n```\nOpponent, please ban a map first.';
+    
+    embed.description = '[Regular Season Playoff rules](https://heroeslounge.gg/general/ruleset)\nTeams ban two maps each, as according to their ruleset\n\nThese maps are currently in the pool:\n-Alterac Pass\n-Battlefield of Eternity\n-Braxis Holdout\n-Cursed Hollow\n-Dragon Shire\n-Garden of Terror\n-Infernal Shrines\n-Sky Temple\n-Tomb of the Spider Queen\n-Towers of Doom\n-Volskaya Foundry\n\n';
+    embed.description += 'The format is **Bo5**\n\n';
+    embed.description += 'The draft order has been randomly determined:\n';
+    embed.description += Math.random() >= 0.5 ? map : pick;
+
+    return embed;
   }
 
   season(embed: Eris.EmbedOptions, author: Eris.Member | Eris.User) {
     const map = '```\n' + author.username + ': Map pick \nOpponent: First pick \n```\n' + author.username + ', please ban a map first.';
     const pick = '```\n' + author.username + ': First pick \nOpponent: Map pick \n```\nOpponent, please ban a map first.';
     
-    embed.description = '[Amateur Series Season rules](https://heroeslounge.gg/general/ruleset)\nAmateur Series teams ban two maps each, as according to their ruleset\n\nThese maps are currently in the pool:\n-Alterac Pass\n-Battlefield of Eternity\n-Braxis Holdout\n-Cursed Hollow\n-Dragon Shire\n-Garden of Terror\n-Infernal Shrines\n-Sky Temple\n-Tomb of the Spider Queen\n-Towers of Doom\n-Volskaya Foundry\n\n';
+    embed.description = '[Regular Season rules](https://heroeslounge.gg/general/ruleset)\nTeams ban two maps each, as according to their ruleset\n\nThese maps are currently in the pool:\n-Alterac Pass\n-Battlefield of Eternity\n-Braxis Holdout\n-Cursed Hollow\n-Dragon Shire\n-Garden of Terror\n-Infernal Shrines\n-Sky Temple\n-Tomb of the Spider Queen\n-Towers of Doom\n-Volskaya Foundry\n\n';
+    embed.description += 'The format is **Bo3**\n\n';
     embed.description += 'The draft order has been randomly determined:\n';
     embed.description += Math.random() >= 0.5 ? map : pick;
 
