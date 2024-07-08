@@ -14,10 +14,11 @@ export default class Sub extends BaseInteraction {
         type: Constants.ApplicationCommandOptionTypes.STRING,
         required: true,
         choices: [
-          {name: 'Rare', value: 'Sub Rare'},
-          {name: 'Legendary', value: 'Sub Legendary'},
-          {name: 'Epic', value: 'Sub Epic'},
-          {name: 'Mythic', value: 'Sub Mythic'},
+          {name: 'Division 1', value: 'Sub Division 1'},
+          {name: 'Division 2', value: 'Sub Division 2'},
+          {name: 'Division 3', value: 'Sub Division 3'},
+          {name: 'Division 4', value: 'Sub Division 4'},
+          {name: 'Division 5', value: 'Sub Division 5'},
         ],
       },
     ];
