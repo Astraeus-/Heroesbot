@@ -1,7 +1,7 @@
 import { GameDataObject, GameMode, GameModeDataActive } from '../types';
 
 export default class MMRCalculator {
-  static defaultMMR = 3000;
+  static defaultMMR = 3100;
   static gameModes = {
     'Storm League': {
       weight: 0.7,
